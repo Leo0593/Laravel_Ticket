@@ -10,7 +10,7 @@ CREATE TABLE Usuarios (
     Telefono VARCHAR(20),
     Correo VARCHAR(255) NOT NULL UNIQUE,
     Contrasena VARCHAR(255) NOT NULL,
-    Rol ENUM('Cliente', 'Admin', 'Organizador') NOT NULL,
+    Rol ENUM('USER', 'ADMIN', 'GESTOR') NOT NULL,
     Estado ENUM('Activo', 'Inactivo') NOT NULL
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE Evento (
     Fecha_Fin DATETIME NOT NULL,
     Fecha_Evento DATETIME NOT NULL,
     Aforo_Evento INT NOT NULL,
-    Estado ENUM('Activo', 'Cancelado', 'Finalizado') NOT NULL,
+    Estado ENUM('ACTIVO', 'CANCELADO', 'FINALIZADO') NOT NULL,
     FOREIGN KEY (Usuario_id) REFERENCES Usuarios(id),
     FOREIGN KEY (Lugar_id) REFERENCES Lugar(id)
 );
