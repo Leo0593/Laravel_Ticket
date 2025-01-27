@@ -24,11 +24,32 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        // Intentar autenticar al usuario con las credenciales proporcionadas
+        $credentials = $request->validated();
 
-        $request->session()->regenerate();
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user(); // Obtiene el usuario autenticado
 
-        return redirect()->intended(route('dashboard', absolute: false));
+            // Verificar si el estado del usuario es 1 (activo)
+            if ($user->estado !== 1) {
+                // Si no está activo, cerrar la sesión y redirigir al login con un mensaje de error
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Tu cuenta está inactiva. Contacta con un administrador.',
+                ]);
+            }
+
+            // Si el estado es activo, regenerar la sesión
+            $request->session()->regenerate();
+
+            // Redirigir al dashboard o la página solicitada
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
+
+        // Si las credenciales no son correctas
+        return back()->withErrors([
+            'email' => 'Las credenciales no coinciden con nuestros registros.',
+        ]);
     }
 
     /**
