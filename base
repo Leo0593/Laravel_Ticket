@@ -1,0 +1,81 @@
+-- Crear la base de datos
+CREATE DATABASE EventosDB;
+USE EventosDB;
+
+-- Tabla Usuarios
+CREATE TABLE Usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL,
+    Apellido VARCHAR(255) NOT NULL,
+    Telefono VARCHAR(20),
+    Correo VARCHAR(255) NOT NULL UNIQUE,
+    Contrasena VARCHAR(255) NOT NULL,
+    Rol ENUM('Cliente', 'Admin', 'Organizador') NOT NULL,
+    Estado ENUM('Activo', 'Inactivo') NOT NULL
+);
+
+-- Tabla Lugar
+CREATE TABLE Lugar (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL,
+    Descripcion TEXT,
+    Direccion VARCHAR(255) NOT NULL,
+    Telefono VARCHAR(20),
+    Aforo INT NOT NULL,
+    Tiene_Asientos BOOLEAN NOT NULL
+);
+
+-- Tabla Evento
+CREATE TABLE Evento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Usuario_id INT NOT NULL,
+    Lugar_id INT NOT NULL,
+    Nombre VARCHAR(255) NOT NULL,
+    Descripcion TEXT,
+    Fecha_Inicio DATETIME NOT NULL,
+    Fecha_Fin DATETIME NOT NULL,
+    Fecha_Evento DATETIME NOT NULL,
+    Aforo_Evento INT NOT NULL,
+    Estado ENUM('Activo', 'Cancelado', 'Finalizado') NOT NULL,
+    FOREIGN KEY (Usuario_id) REFERENCES Usuarios(id),
+    FOREIGN KEY (Lugar_id) REFERENCES Lugar(id)
+);
+
+-- Tabla Plan
+CREATE TABLE Plan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Evento_id INT NOT NULL,
+    Tipo ENUM('General', 'VIP') NOT NULL,
+    Precio DECIMAL(10, 2) NOT NULL,
+    Descripcion TEXT,
+    FOREIGN KEY (Evento_id) REFERENCES Evento(id)
+);
+
+-- Tabla Asiento
+CREATE TABLE Asiento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Lugar_id INT NOT NULL,
+    Evento_id INT NOT NULL,
+    Plan_id INT NOT NULL,
+    Tipo VARCHAR(255) NOT NULL,
+    Numero_Asiento INT NOT NULL,
+    Estado ENUM('Disponible', 'Ocupado') NOT NULL,
+    FOREIGN KEY (Lugar_id) REFERENCES Lugar(id),
+    FOREIGN KEY (Evento_id) REFERENCES Evento(id),
+    FOREIGN KEY (Plan_id) REFERENCES Plan(id)
+);
+
+-- Tabla Ticket
+CREATE TABLE Ticket (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Usuario_id INT NOT NULL,
+    Asiento_id INT NOT NULL,
+    Plan_id INT NOT NULL,
+    Pagado BOOLEAN NOT NULL,
+    Fecha_Pago DATETIME,
+    QR VARCHAR(255) NOT NULL UNIQUE,
+    QR_Valido BOOLEAN NOT NULL,
+    FOREIGN KEY (Usuario_id) REFERENCES Usuarios(id),
+    FOREIGN KEY (Asiento_id) REFERENCES Asiento(id),
+    FOREIGN KEY (Plan_id) REFERENCES Plan(id)
+);
