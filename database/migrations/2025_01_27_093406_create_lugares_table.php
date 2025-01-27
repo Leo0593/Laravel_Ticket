@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->string('Direccion', 255);
             $table->string('Telefono', 20)->nullable();
             $table->integer('Aforo');
-            $table->boolean('Tiene_Asientos');
+            $table->boolean('Tiene_Asientos')->default(0);
+            $table->string('Foto')->nullable();  // Columna para la foto
             $table->timestamps(); // Campos created_at y updated_at
         });
     }

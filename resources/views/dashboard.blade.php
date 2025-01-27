@@ -10,6 +10,50 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
+
+                    <h1 style="margin: 30px 0 0 0; font-size: 1.5em">{{ __("Locales") }} </h1>
+
+                    <div class="mt-4">
+                        <a style="color: green" href="{{ route('locales.index') }}">
+                            {{ __('Ver') }}
+                        </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <a style="color: #2563eb" href="{{ route('locales.create') }}">
+                            {{ __('Agregar') }}
+                        </a>
+                    </div>
+
+                    
+                    <h1 style="margin: 30px 0 0 0; font-size: 1.5em">{{ __("Planes") }} </h1>
+
+                    <div class="mt-4">
+                        <a style="color: green" href="{{ route('planes.index') }}">
+                            {{ __('Ver') }}
+                        </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <a style="color: #2563eb" href="{{ route('planes.create') }}">
+                            {{ __('Agregar') }}
+                        </a>
+                    </div>
+
+
+                    <h1 style="margin: 30px 0 0 0; font-size: 1.5em">{{ __("Eventos") }} </h1>
+
+                    <div class="mt-4">
+                        <a style="color: green" href="{{ route('eventos.index') }}">
+                            {{ __('Ver') }}
+                        </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <a style="color: #2563eb" href="{{ route('eventos.create') }}">
+                            {{ __('Agregar') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

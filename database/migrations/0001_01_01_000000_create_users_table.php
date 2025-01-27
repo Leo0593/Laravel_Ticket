@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('role', ['GESTOR', 'ADMIN', 'USER'])->default('USER'); // Rol del usuario, con valor por defecto 'USER'
             $table->boolean('estado')->default(1); // Estado: 1 (Activo), 0 (Inactivo)
             $table->string('password'); // Contraseña
+            $table->string('Foto')->nullable(); // Foto de perfil, opcional
             $table->rememberToken(); // Token para recordar la sesión
             $table->timestamps(); // Timestamps: created_at y updated_at
         });
