@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\M_Eventos;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
+use App\Models\User;
+use App\Models\M_Locales;
 
 class C_Eventos extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $eventos = M_Eventos::all();
         $noEventos = $eventos->isEmpty();
@@ -15,9 +20,12 @@ class C_Eventos extends Controller
         return view('layouts.eventos.V_todoseventos', compact('eventos', 'noEventos'));
     }
 
-    public function create()
+    public function create(): View
     {
-        return view('layouts.eventos.V_agregarevento');
+        $users = User::all();
+        $locales = M_Locales::all();
+
+        return view('layouts.eventos.V_agregarevento', compact('users', 'locales'));
     }
 
     public function store(Request $request)

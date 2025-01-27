@@ -3,8 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -19,7 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
 
 
 use App\Http\Controllers\C_Locales;
@@ -56,12 +54,35 @@ Route::post('/planes', [C_Plan::class, 'store'])->name('planes.store');
 
 
 use App\Http\Controllers\C_Eventos;
+Route::prefix('eventos')->name('eventos.')->group(function () {
+    Route::get('/', [C_Eventos::class, 'index'])->name('index');
+    Route::get('/create', [C_Eventos::class, 'create'])->name('create');
+    Route::post('/', [C_Eventos::class, 'store'])->name('store');
+});
 
-// Ruta para mostrar todos los eventos
-Route::get('/eventos', [C_Eventos::class, 'index'])->name('eventos.index');
+use App\Http\Controllers\C_Asientos;
+Route::prefix('asientos')->name('asientos.')->group(function () {
+    Route::get('/', [C_Asientos::class, 'index'])->name('index');
+    Route::get('/create', [C_Asientos::class, 'create'])->name('create');
+    Route::post('/', [C_Asientos::class, 'store'])->name('store');
+});
 
-// Ruta para mostrar el formulario de agregar un nuevo evento
-Route::get('/eventos/create', [C_Eventos::class, 'create'])->name('eventos.create');
+use App\Http\Controllers\C_Tickets;
+Route::prefix('tickets')->name('tickets.')->group(function () {
+    Route::get('/', [C_Tickets::class, 'index'])->name('index');
+    Route::get('/create', [C_Tickets::class, 'create'])->name('create');
+    Route::post('/', [C_Tickets::class, 'store'])->name('store');
+});
 
-// Ruta para almacenar el nuevo evento
-Route::post('/eventos', [C_Eventos::class, 'store'])->name('eventos.store');
+
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('index');
+    Route::get('/create', [ProfileController::class, 'create'])->name('create');
+    Route::post('/', [ProfileController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [ProfileController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [ProfileController::class, 'update'])->name('update');
+    Route::delete('/{id}', [ProfileController::class, 'destroy'])->name('destroy');
+});
+
+// Incluye las rutas de autenticación generadas automáticamente
+require __DIR__.'/auth.php';

@@ -9,7 +9,7 @@ class M_Locales extends Model
 {
     protected $table = 'locales';  // Especifica la tabla si es necesario
 
-    Use HasFactory;
+    use HasFactory;
 
     // Especificamos los campos que pueden ser asignados masivamente
     protected $fillable = [

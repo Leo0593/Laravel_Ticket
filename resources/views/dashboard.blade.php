@@ -54,6 +54,45 @@
                             {{ __('Agregar') }}
                         </a>
                     </div>
+
+
+                    <h1 style="margin: 30px 0 0 0; font-size: 1.5em">{{ __("Tickets") }} </h1>
+
+                    <div class="mt-4">
+                        <a style="color: green" href="{{ route('tickets.index') }}">
+                            {{ __('Ver') }}
+                        </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <a style="color: #2563eb" href="{{ route('tickets.create') }}">
+                            {{ __('Agregar') }}
+                        </a>
+                    </div>
+
+
+                    <h1 style="margin: 30px 0 0 0; font-size: 1.5em">{{ __("Asientos") }} </h1>
+
+                    <div class="mt-4">
+                        <a style="color: green" href="{{ route('asientos.index') }}">
+                            {{ __('Ver') }}
+                        </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <a style="color: #2563eb" href="{{ route('asientos.create') }}">
+                            {{ __('Agregar') }}
+                        </a>
+                    </div>
+
+                    
+                    <h1 style="margin: 30px 0 0 0; font-size: 1.5em">{{ __("Usuarios") }} </h1>
+
+                    <div class="mt-4">
+                        <a style="color: green" href="{{ route('users.index') }}">
+                            {{ __('Ver') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
