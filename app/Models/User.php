@@ -19,8 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name', // Nuevo campo
+        'phone', // Nuevo campo
         'email',
         'password',
+        'role', // Nuevo campo
+        'estado', // Nuevo campo
     ];
 
     /**
@@ -44,5 +48,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Establecer el valor por defecto del role cuando no se proporciona uno.
+     */
+    protected $attributes = [
+        'role' => 'USER',
+    ];
+
+    /**
+     * Para cambiar el valor de 'estado' de un usuario.
+     * Se asegura de que 'estado' tenga el valor por defecto de 1 (Activo).
+     */
+    public function setEstadoAttribute($value)
+    {
+        $this->attributes['estado'] = $value ?? 1;
     }
 }
