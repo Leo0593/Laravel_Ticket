@@ -14,10 +14,12 @@ class C_Usuarios extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        $users = User::all();
-        return view('users.index', compact('users'));
+        $users = User::paginate(10);
+        $noUser = $users->isEmpty();
+
+        return view('layouts.users.V_todosusuarios', compact('users', 'noUser'));
     }
 
     /**

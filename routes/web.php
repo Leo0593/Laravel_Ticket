@@ -76,12 +76,12 @@ Route::prefix('tickets')->name('tickets.')->group(function () {
 
 
 Route::prefix('users')->name('users.')->group(function () {
-    Route::get('/', [ProfileController::class, 'index'])->name('index');
-    Route::get('/create', [ProfileController::class, 'create'])->name('create');
-    Route::post('/', [ProfileController::class, 'store'])->name('store');
-    Route::get('/{id}/edit', [ProfileController::class, 'edit'])->name('edit');
-    Route::put('/{id}', [ProfileController::class, 'update'])->name('update');
-    Route::delete('/{id}', [ProfileController::class, 'destroy'])->name('destroy');
+    Route::get('/', [C_Usuarios::class, 'index'])->name('index');
+    Route::get('/create', [C_Usuarios::class, 'create'])->name('create');
+    Route::post('/', [C_Usuarios::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [C_Usuarios::class, 'edit'])->name('edit');
+    Route::put('/{id}', [C_Usuarios::class, 'update'])->name('update');
+    Route::delete('/{id}', [C_Usuarios::class, 'destroy'])->name('destroy');
 });
 
 // Incluye las rutas de autenticación generadas automáticamente
