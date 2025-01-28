@@ -9,8 +9,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+use App\Models\User;
+
 class ProfileController extends Controller
 {
+    public function index(): View
+    {
+        $users = User::paginate(10);
+        $noUser = $users->isEmpty();
+
+        return view('layouts.users.V_todosusuarios', compact('users', 'noUser'));
+    }
+
     /**
      * Display the user's profile form.
      */
