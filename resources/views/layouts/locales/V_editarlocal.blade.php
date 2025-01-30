@@ -10,7 +10,18 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    <form action="{{ route('locales.update', $local->id) }}" method="POST">
+                    <!-- Mensaje de error para los campos -->
+                    @if ($errors->any())
+                        <div>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('locales.update', $local->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -23,7 +34,9 @@
                         <!-- Otros campos -->
                         <div>
                             <label for="Descripcion">{{ __('Descripción') }}</label>
-                            <textarea id="Descripcion" name="Descripcion">{{ $local->Descripcion }}</textarea>
+                            <textarea id="Descripcion" name="Descripcion">
+                                {{ $local->Descripcion }}
+                            </textarea>
                         </div>
 
                         <div>
@@ -54,7 +67,10 @@
                             <label for="Foto">{{ __('Foto del Local') }}</label>
                             <input type="file" id="Foto" name="Foto">
                             @if ($local->Foto)
-                                <img src="{{ asset('storage/'.$local->Foto) }}" alt="Foto del local" width="100">
+                                <div class="mt-2">
+                                    <img src="{{ asset('storage/'.$local->Foto) }}" alt="Foto del local" width="100">
+                                    <p class="text-sm text-gray-500">{{ __('Si no deseas cambiar la foto, deja el campo vacío.') }}</p>
+                                </div>
                             @endif
                         </div>
                         

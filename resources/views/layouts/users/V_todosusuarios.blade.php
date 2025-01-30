@@ -31,6 +31,8 @@
                                     <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Email') }}</th>
                                     <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Rol') }}</th>
                                     <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Estado') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Foto') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Acciones') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,6 +45,34 @@
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $user->email }}</td>
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $user->role }}</td>
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $user->estado }}</td>
+
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                                            @if($user->Foto)
+                                                <img src="{{ asset('storage/' . $user->Foto) }}" alt="Foto" class="w-20 h-20 object-cover rounded-md">
+                                            @else
+                                                {{ __('No disponible') }}
+                                            @endif
+                                        </td>
+
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+
+                                            <!-- Botón de Editar -->
+                                            <a href="{{ route('users.edit', $user->id) }}" 
+                                                class="text-blue-500 hover:text-blue-700" 
+                                                style="margin-right: 10px;">
+                                                {{ __('Editar') }}
+                                            </a>
+
+                                            <!-- Botón de Eliminar -->
+                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-4" 
+                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este local?')">
+                                                    {{ __('Eliminar') }}
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

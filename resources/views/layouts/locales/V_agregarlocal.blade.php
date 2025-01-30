@@ -46,6 +46,7 @@
                         </div>
 
                         <!-- Aforo -->
+                        <!-- Afoto menor al 100% -->
                         <div class="mb-4">
                             <label for="Aforo" class="block text-sm font-medium text-gray-700">{{ __('Aforo') }}</label>
                             <input type="number" name="Aforo" id="Aforo" 
@@ -64,7 +65,7 @@
                         <!-- Foto -->
                         <div>
                             <label style="margin-right: 10px"
-                            for="Foto">{{ __('Foto del Local:') }}</label>
+                                for="Foto">{{ __('Foto del Local:') }}</label>
                             <input type="file" id="Foto" name="Foto">
                         </div>
 

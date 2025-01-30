@@ -34,31 +34,31 @@
                             <tbody>
                                 @foreach($planes as $plan)
                                     <tr>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->evento_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->tipo }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->precio }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->direccion }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->id }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->evento_id }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->tipo }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->precio }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->descripcion }}</td>
 
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
                                             @if($plan->Foto)
-                                                <img src="{{ asset('storage/' . $local->Foto) }}" alt="Foto del local" class="w-20 h-20 object-cover rounded-md">
+                                                <img src="{{ asset('storage/' . $plan->Foto) }}" alt="Foto del plan" class="w-20 h-20 object-cover rounded-md">
                                             @else
                                                 {{ __('No disponible') }}
                                             @endif
                                         </td>
 
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                                            
+
                                             <!-- Botón de Editar -->
-                                            <a href="{{ route('locales.edit', $local->id) }}" 
+                                            <a href="{{ route('planes.edit', $plan->id) }}" 
                                                 class="text-blue-500 hover:text-blue-700" 
                                                 style="margin-right: 10px;">
                                                 {{ __('Editar') }}
                                             </a>
 
                                             <!-- Botón de Eliminar -->
-                                            <form action="{{ route('locales.destroy', $local->id) }}" method="POST" class="inline-block">
+                                            <form action="{{ route('planes.destroy', $plan->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:text-red-700 ml-4" 
@@ -66,7 +66,6 @@
                                                     {{ __('Eliminar') }}
                                                 </button>
                                             </form>
-
                                         </td>
 
                                     </tr>

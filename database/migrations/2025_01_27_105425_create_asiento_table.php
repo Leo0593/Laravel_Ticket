@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id(); // ID autoincremental
             $table->foreignId('local_id')->constrained('locales')->onDelete('cascade'); // Relación con la tabla 'Lugar'
             $table->foreignId('evento_id')->constrained('eventos')->onDelete('cascade'); // Relación con la tabla 'Evento'
-            $table->foreignId('plan_id')->constrained('plans')->onDelete('cascade'); // Relación con la tabla 'Plan'
-            $table->string('tipo'); // Tipo de asiento
+            $table->foreignId('plan_id')->nullable()->constrained('plans')->onDelete('cascade'); // Relación con la tabla 'Plan'
+            $table->enum('tipo', ['General', 'VIP'])->default('General'); // Tipo de asiento
             $table->integer('numero_asiento'); // Número del asiento
             $table->enum('estado', ['Disponible', 'Ocupado']); // Estado del asiento
             $table->timestamps(); // Timestamps: created_at y updated_at

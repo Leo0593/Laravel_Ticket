@@ -19,5 +19,6 @@ class M_Locales extends Model
         'Telefono',
         'Aforo',
         'Tiene_Asientos',
+        'Foto',
     ];
 }

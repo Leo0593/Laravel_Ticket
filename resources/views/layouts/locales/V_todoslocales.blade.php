@@ -65,6 +65,8 @@
                                                 {{ __('Editar') }}
                                             </a>
 
+                                            <br>
+
                                             <!-- Botón de Eliminar -->
                                             <form action="{{ route('locales.destroy', $local->id) }}" method="POST" class="inline-block">
                                                 @csrf
@@ -82,23 +84,6 @@
                             </tbody>
                         </table>
                     @endif
-                    <!--
-                    @if($noLocales)
-                        <p>{{ __('No hay locales') }}</p>
-                    @else
-                        <ul>
-                            @foreach($locales as $local)
-                                <li>
-                                    <strong>{{ $local->Nombre }}</strong><br>
-                                    {{ $local->Descripcion }}<br>
-                                    {{ $local->Direccion }}<br>
-                                    {{ $local->Telefono }}<br>
-                                    {{ $local->Aforo }}<br>
-                                    {{ $local->Tiene_Asientos ? 'Tiene Asientos' : 'No tiene Asientos' }}<br>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif -->
                 </div>
             </div>
         </div>

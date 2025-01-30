@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'role', // Nuevo campo
         'estado', // Nuevo campo
+        'Foto', // Nuevo campo
     ];
 
     /**

@@ -56,9 +56,8 @@
                             <select name="tipo" id="tipo" 
                             class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                             required>
-                                <option value="Individual">{{ __('Individual') }}</option>
-                                <option value="Doble">{{ __('Doble') }}</option>
-                                <option value="VIP">{{ __('VIP') }}</option>
+                                <option value="General" {{ old('tipo') == 'General' ? 'selected' : '' }}>General</option>
+                                <option value="VIP" {{ old('tipo') == 'VIP' ? 'selected' : '' }}>VIP</option>
                             </select>
                         </div>
 

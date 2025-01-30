@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id(); // ID autoincremental
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Relación con la tabla 'Usuarios'
+            $table->foreignId('evento_id')->constrained('eventos')->onDelete('cascade'); // Relación con la tabla 'Evento'
             $table->foreignId('asiento_id')->constrained('asientos')->onDelete('cascade'); // Relación con la tabla 'Asiento'
             $table->foreignId('plan_id')->constrained('plans')->onDelete('cascade'); // Relación con la tabla 'Plan'
             $table->boolean('pagado'); // Indica si el ticket ha sido pagado

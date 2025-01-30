@@ -10,6 +10,7 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\M_Asientos;
 use App\Models\M_Plan;
+use App\Models\M_Eventos;
 
 class C_Tickets extends Controller
 {
@@ -26,8 +27,9 @@ class C_Tickets extends Controller
         $users = User::all();
         $asientos = M_Asientos::all();
         $planes = M_Plan::all();
+        $eventos = M_Eventos::all();
 
-        return view('layouts.tickets.V_agregarticket', compact('users', 'asientos', 'planes'));
+        return view('layouts.tickets.V_agregarticket', compact('users', 'asientos', 'planes', 'eventos'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -50,4 +52,27 @@ class C_Tickets extends Controller
             return redirect()->back()->withErrors(['error' => 'Hubo un problema al crear el ticket.']);
         }
     }
+
+    public function getAsientosByEvento($eventoId)
+    {
+        $asientos = M_Asientos::where('Evento_id', $eventoId)
+            ->where('Estado', 'Disponible')
+            ->get();
+    
+        if ($asientos->isEmpty()) {
+            return response()->json(['message' => 'No hay asientos disponibles'], 404);
+        }
+    
+        return response()->json(['asientos' => $asientos]);
+    }    
+
+    public function getPlanesByEvento($eventoId)
+    {
+        $planes = M_Plan::where('Evento_id', $eventoId)->get();
+    
+        return response()->json([
+            'planes' => $planes,
+            'message' => $planes->isEmpty() ? 'No hay planes disponibles' : 'Planes encontrados'
+        ]);
+    }    
 }

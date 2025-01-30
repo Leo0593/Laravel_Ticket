@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\M_Locales;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
+use Illuminate\Support\Facades\Log;
 
 class C_Locales extends Controller
 {
     // Mostrar todos los locales
-    public function index()
+    public function index(): View
     {
         // Obtener todos los locales
         $locales = M_Locales::all(); // Asegúrate de usar M_Locales
@@ -20,55 +24,50 @@ class C_Locales extends Controller
         return view('layouts.locales.V_todoslocales', compact('locales', 'noLocales'));
     }
 
-    public function create()
+    public function create(): View
     {
         // Retornar la vista con el formulario de agregar local
         return view('layouts.locales.V_agregarlocal'); // Apunta a la ruta correcta de la vista
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        // Validar los datos del formulario
-        $validated = $request->validate([
-            'Nombre' => 'required|string|max:255',
-            'Descripcion' => 'nullable|string',
-            'Direccion' => 'required|string|max:255',
-            'Telefono' => 'nullable|string|max:15',
-            'Aforo' => 'required|integer',
-            'Tiene_Asientos' => 'nullable|boolean', // Asegúrate de que esté validado correctamente
-            'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048', // Validar que sea una imagen
-        ]);
+        try {
+            $validated = $request->validate([
+                'Nombre' => 'required|string|max:255',
+                'Descripcion' => 'nullable|string',
+                'Direccion' => 'required|string|max:255',
+                'Telefono' => 'nullable|string|max:15',
+                'Aforo' => 'required|integer',
+                'Tiene_Asientos' => 'nullable|boolean', // Asegúrate de que esté validado correctamente
+                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048', // Validar que sea una imagen
+            ]);
 
-        // Asignar un valor de 0 si el checkbox no está marcado
-        $request->merge([
-            'Tiene_Asientos' => $request->has('Tiene_Asientos') ? 1 : 0
-        ]);
+            $request->merge([
+                'Tiene_Asientos' => $request->has('Tiene_Asientos') ? 1 : 0
+            ]);
 
-        // Subir la foto si existe
-        if ($request->hasFile('Foto')) {
-            // Subir la imagen y obtener su ruta
-            $path = $request->file('Foto')->store('locales', 'public');  // Guardar en la carpeta 'locales' dentro de 'storage/app/public'
-        } else {
-            $path = null;  // Si no se sube una foto, mantener el valor en null
+            if ($request->hasFile('Foto')) {
+                $path = $request->file('Foto')->store('locales', 'public');
+                //dd($path);
+            } else {
+                $path = null;
+            }
+            
+            //dd($validated);
+
+            $validated['Foto'] = $path;
+
+            M_Locales::create($validated);
+
+            return redirect()->route('locales.index')->with('success', 'Local agregado con éxito');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
         }
-
-        // Crear el nuevo local con los datos validados
-        M_Locales::create([
-            'Nombre' => $request->Nombre,
-            'Descripcion' => $request->Descripcion,
-            'Direccion' => $request->Direccion,
-            'Telefono' => $request->Telefono,
-            'Aforo' => $request->Aforo,
-            'Tiene_Asientos' => $request->Tiene_Asientos,
-            'Foto' => $path,  // Guardar la ruta de la foto
-        ]);
-
-        // Redirigir a la vista de todos los locales con un mensaje de éxito
-        return redirect()->route('locales.index')->with('success', 'Local agregado con éxito');
     }
 
     // Mostrar el formulario para editar un local
-    public function edit($id)
+    public function edit($id): View
     {
         // Buscar el local por su ID
         $local = M_Locales::findOrFail($id);
@@ -78,49 +77,53 @@ class C_Locales extends Controller
     }
 
     // Actualizar los datos del local
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
-        // Validar los datos del formulario
-        $validated = $request->validate([
-            'Nombre' => 'required|string|max:255',
-            'Descripcion' => 'nullable|string',
-            'Direccion' => 'required|string|max:255',
-            'Telefono' => 'nullable|string|max:15',
-            'Aforo' => 'required|integer',
-            'Tiene_Asientos' => 'nullable|boolean',
-            'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048', // Validar que sea una imagen
-        ]);
+        try {
+            $validated = $request->validate([
+                'Nombre' => 'required|string|max:255',
+                'Descripcion' => 'nullable|string',
+                'Direccion' => 'required|string|max:255',
+                'Telefono' => 'nullable|string|max:15',
+                'Aforo' => 'required|integer',
+                'Tiene_Asientos' => 'nullable|boolean',
+                'Foto' => $request->hasFile('Foto') ? 'image|mimes:jpg,jpeg,png,gif,svg|max:2048' : 'nullable', // Validación condicional
+            ]);
 
-        // Buscar el local por su ID
-        $local = M_Locales::findOrFail($id);
+            //dd($request->all()); 
+            //dd('Datos validados:', $validated);
+            //dd($request->file('Foto')); 
+            //Log::debug('Datos validados:', $validated);
 
-        // Subir la foto si existe
-        if ($request->hasFile('Foto')) {
-            // Eliminar la foto anterior si existe
-            if ($local->Foto && Storage::exists('public/' . $local->Foto)) {
-                Storage::delete('public/' . $local->Foto);
+            $local = M_Locales::findOrFail($id);
+
+            // Si se sube una nueva foto
+            if ($request->hasFile('Foto')) {
+                Log::debug('Tipo MIME de la foto: ' . $request->file('Foto')->getClientMimeType());  // Verifica el tipo MIME
+                // Subir la foto y obtener la ruta
+                $path = $request->file('Foto')->store('locales', 'public');
+                Log::debug('Ruta de la foto subida: ' . $path);  // Verifica la ruta de la foto subida
+            } else {
+                // Mantener la foto actual si no se sube una nueva
+                $path = $local->Foto;
+                Log::debug('Manteniendo la foto actual: ' . $path);
             }
 
-            // Subir la nueva foto
-            $path = $request->file('Foto')->store('locales', 'public');  // Guardar en la carpeta 'locales' dentro de 'storage/app/public'
-        } else {
-            // Mantener la foto actual si no se subió una nueva
-            $path = $local->Foto;
+            $local->update([
+                'Nombre' => $request->Nombre,
+                'Descripcion' => $request->Descripcion,
+                'Direccion' => $request->Direccion,
+                'Telefono' => $request->Telefono,
+                'Aforo' => $request->Aforo,
+                'Tiene_Asientos' => $request->Tiene_Asientos ? 1 : 0,  // Esto maneja el valor correctamente
+                'Foto' => $path,  // Guardar la ruta de la foto
+            ]);
+    
+            return redirect()->route('locales.index')->with('success', 'Local actualizado con éxito');
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar el local: ' . $e->getMessage());
+            return back()->with('error', 'Hubo un problema al actualizar el local: ' . $e->getMessage());
         }
-
-        // Actualizar los datos del local
-        $local->update([
-            'Nombre' => $request->Nombre,
-            'Descripcion' => $request->Descripcion,
-            'Direccion' => $request->Direccion,
-            'Telefono' => $request->Telefono,
-            'Aforo' => $request->Aforo,
-            'Tiene_Asientos' => $request->Tiene_Asientos ? 1 : 0,  // Esto maneja el valor correctamente
-            'Foto' => $path,  // Guardar la ruta de la foto
-        ]);
-
-        // Redirigir a la vista de todos los locales con un mensaje de éxito
-        return redirect()->route('locales.index')->with('success', 'Local actualizado con éxito');
     }
 
     // Eliminar un local
