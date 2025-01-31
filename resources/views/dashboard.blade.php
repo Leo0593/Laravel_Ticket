@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
 
-                    <h1 style="margin: 30px 0 0 0; font-size: 1.5em">{{ __("Locales") }} </h1>
+                    <h1 style="margin: 30px 0 0 0; fosnt-size: 1.5em">{{ __("Locales") }} </h1>
 
                     <div class="mt-4">
                         <a style="color: green" href="{{ route('locales.index') }}">
@@ -93,6 +93,16 @@
                             {{ __('Ver') }}
                         </a>
                     </div>
+
+                    <!--
+                                    {!! QrCode::generate('Hola Mundo'); !!}
+
+                                    -- Tamaño del Qr --
+                                    {!! QrCode::size(300)->generate('Hola Mundo'); !!}
+
+                                    -- Color del Qr --
+                                    {!! QrCode::color(255,0,0)->generate('Hola Mundo'); !!}
+-->
                 </div>
             </div>
         </div>

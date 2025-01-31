@@ -23,25 +23,28 @@
                             <thead>
                                 <tr>
                                     <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('ID') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Local_id') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('USER') }}</th>
                                     <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Evento_id') }}</th>
                                     <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Plan_id') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Tipo') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Número Asiento') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Estado') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Pagado') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Fecha de pago') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('qr') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('qr Valido') }}</th>
+                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Acciones') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($tickets as $ticket)
                                     <tr>
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->local_id }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->user_id }}</td>
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->evento_id }}</td>
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->plan_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->tipo }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->numero_asiento }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->estado }}</td>
-                                    å</tr>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->pagado }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->fecha_pago }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->qr }}</td>
+                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->qr_valido }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>

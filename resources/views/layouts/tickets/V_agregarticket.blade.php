@@ -13,7 +13,7 @@
                     
                     <form method="POST" action="{{ route('tickets.store') }}">
                         @csrf
-
+                        
                         <!-- Usuario -->
                         <div class="mb-4">
                             <label for="user_id" class="block text-sm font-medium text-gray-700">{{ __('Usuario') }}</label>
@@ -51,17 +51,6 @@
                                     -->
                             </select>
                         </div>
-<!--
-                        <div class="mb-4">
-                            <label for="asiento_id" class="block text-sm font-medium text-gray-700">{{ __('Asiento') }}</label>
-                            <select name="asiento_id" id="asiento_id" 
-                            class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                            required>
-                                @foreach($asientos as $asiento)
-                                    <option value="{{ $asiento->id }}">{{ $asiento->numero_asiento }}</option>
-                                @endforeach
-                            </select>
-                        </div> -->
 
                         <!-- Plan -->
                         <div class="mb-4">
@@ -77,7 +66,7 @@
                             </select>
                         </div>
 
-                        <!-- Estado de pago -->
+                        <!-- Estado de pago --
                         <div class="mb-4">
                             <label for="pagado" class="block text-sm font-medium text-gray-700">{{ __('Estado de pago') }}</label>
                             <select name="pagado" id="pagado" 
@@ -88,7 +77,7 @@
                             </select>
                         </div>
 
-                        <!-- Fecha de pago -->
+                        <!-- Fecha de pago --
                         <div class="mb-4">
                             <label for="fecha_pago" class="block text-sm font-medium text-gray-700">{{ __('Fecha de pago') }}</label>
                             <input type="date" name="fecha_pago" id="fecha_pago" 
@@ -96,7 +85,7 @@
                             required>
                         </div>
 
-                        <!-- QR -->
+                        <!-- QR --
                         <div class="mb-4">
                             <label for="qr" class="block text-sm font-medium text-gray-700">{{ __('Código QR') }}</label>
                             <input type="text" name="qr" id="qr" 
@@ -104,7 +93,7 @@
                             required>
                         </div>
 
-                        <!-- QR válido -->
+                        <!-- QR válido --
                         <div class="mb-4">
                             <label for="qr_valido" class="block text-sm font-medium text-gray-700">{{ __('QR Válido') }}</label>
                             <select name="qr_valido" id="qr_valido" 
@@ -113,10 +102,10 @@
                                 <option value="1">{{ __('Válido') }}</option>
                                 <option value="0">{{ __('No Válido') }}</option>
                             </select>
-                        </div>
+                        </div> -->
 
                         <div class="mt-6">
-                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                            <button type="submit" id="btn_agregar">
                                 {{ __('Agregar') }}
                             </button>
                         </div>

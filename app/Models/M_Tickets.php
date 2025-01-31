@@ -15,6 +15,7 @@ class M_Tickets extends Model
         'user_id',
         'asiento_id',
         'plan_id',
+        'evento_id',
         'pagado',
         'fecha_pago',
         'qr',

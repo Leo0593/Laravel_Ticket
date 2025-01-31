@@ -85,5 +85,8 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::delete('/{id}', [C_Usuarios::class, 'destroy'])->name('destroy');
 });
 
+//Route::get('/',[App\Http\Controllers\C_Qr::class, 'qr']);
+//Route::get('/generar-qr/{id}', [C_Qr::class, 'qr']);
+
 // Incluye las rutas de autenticación generadas automáticamente
 require __DIR__.'/auth.php';
