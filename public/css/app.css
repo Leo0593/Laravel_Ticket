@@ -1,0 +1,145 @@
+:root {
+    --color: rgba(2, 77, 223, 1);
+}
+
+
+body {
+    background-color: white;
+    width: 100%;
+    height: calc(100vh - 100px);
+}
+
+.wrapped {
+    background-color: var(--color);
+
+    width: 100%;
+    height: 100px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wrapped_logo {
+    color: white;
+
+    width: auto;
+    height: 100%;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+}
+
+.wrapped_logo img {
+    width: auto;
+    height: 100%;
+}
+
+.wrapped_logo a {
+    font-size: 2em;
+    margin-left: 20px;
+}
+
+.wrapped_sesion {
+}
+
+.btn-1{
+    background-color: transparent;
+    color: white;
+    border: white 2px solid;
+
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    transition: all 0.3s ease; /* Añadido para la transición suave */
+}
+
+.btn-1:hover{
+    border: white 2px solid;
+
+    transform: scale(1.1); /* Usar transform en lugar de scale directamente */
+}
+
+.btn-1:active{
+    border: white 2px solid;
+
+    transform: scale(1); /* Usar transform también aquí */
+}
+
+.btn-1:focus{
+    border: white 2px solid;
+    outline: none;
+}
+
+.btn-1 i {
+    margin-right: 5px;
+}
+
+.main {
+    width: 100%;
+}
+
+.main_banner_1 {
+    color: white;
+    width: 100%;
+    height: 600px;
+
+    overflow: hidden; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background-image: 
+        linear-gradient(to top, rgba(2, 77, 223, 0.7), rgba(0, 0, 0, 0.3) 80%), /* Degradado hacia arriba */
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%), /* Degradado hacia abajo */
+        url("../../images/login/tl-1.jpg"); 
+    background-size: cover; /* Asegura que la imagen cubra el espacio */
+    background-position: center; /* Centra la imagen */
+}
+
+.main_banner_1 img {
+    width: 100%;
+    height: autoß;
+
+    object-fit: cover;
+    object-position: center; /* Centra la imagen dentro del contenedor */
+}
+
+.main_banner_1 h1 {
+    font-size: 4em;
+    font-weight: 700;
+    text-align: center;
+}
+
+.main_banner_1 button {
+    margin-top: 20px;
+}
+
+.main_banner_1 button:hover {
+    background-color: var(--color);
+    border: var(--color) 2px solid;
+}
+
+.main h1 {
+    font-size: 4em;
+    font-weight: 500;
+    text-align: center;
+}
+
+.main_contenedor {
+    width: 100%;
+    height: auto;
+    
+    display: flex;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 30px;
+}
