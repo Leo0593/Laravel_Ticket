@@ -2,13 +2,127 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     @include('layouts.head')
     
-    <body>
+    <body style="background-color:rgb(255, 255, 255) !important;">
         @include('layouts.header')
 
         <div class="main">
             <h1 class="mt-4">LOCALIDADES</h1>
 
             <div class="main_contenedor">
+                <div class="container mt-5">
+                    <!-- Botón para abrir el modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-whatever="@mdo">
+                    Launch demo modal
+                    </button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #ffc107; align-items: center;>
+                                <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Editar</strong></h5>
+                                <i class="fa-solid fa-pen" style="margin-left: 10px"></i>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <!-- Nombre -->
+                                    <div class="cont_input_1">
+                                        <label for="Nombre">{{ __('Nombre') }}</label>
+                                        <input class="input_1" type="text" id="Nombre" name="Nombre" value="Nobre" required>
+                                    </div>
+
+                                    <!-- Descripcion -->
+                                    <div class="cont_input_1">
+                                    <label for="Descripcion">Descripcion</label>
+                                        <textarea id="Descripcion" name="Descripcion">
+                                            Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion
+                                        </textarea>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label">Message:</label>
+                                        <textarea class="form-control" id="message-text"></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="Direccion">{{ __('Dirección') }}</label>
+                                        <input type="text" id="Direccion" name="Direccion" value="Dirrecion" required>
+                                    </div>
+
+                                    <div>
+                                        <label for="Telefono">{{ __('Teléfono') }}</label>
+                                        <input type="text" id="Telefono" name="Telefono" value="Telefono">
+                                    </div>
+
+                                    <div>
+                                        <label for="Aforo">{{ __('Aforo') }}</label>
+                                        <input type="number" id="Aforo" name="Aforo" value="10" required>
+                                    </div>
+
+                                    <!-- Campo oculto para manejar el caso desmarcado -->
+                                    <input type="hidden" name="Tiene_Asientos" value="0">
+
+                                    <div>
+                                        <label for="Tiene_Asientos">{{ __('Tiene Asientos') }}</label>
+                                        <input type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
+                                    </div>
+
+                                    <!-- Foto -->
+                                    <div>
+                                        <label for="Foto">{{ __('Foto del Local') }}</label>
+                                        <input type="file" id="Foto" name="Foto">
+                                        
+                                    </div>
+
+                                    <!--
+                                    <div class="mb-3">
+                                        <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                        <input type="text" class="form-control" id="recipient-name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label">Message:</label>
+                                        <textarea class="form-control" id="message-text"></textarea>
+                                    </div> -->
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bootstrap 5 JS (Necesario para los modales) -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+                <script>
+                    // Manejo dinámico del modal sin jQuery
+                    document.getElementById('exampleModalCenter').addEventListener('show.bs.modal', function (event) {
+                        var button = event.relatedTarget; // Botón que activó el modal
+                        var recipient = button.getAttribute('data-whatever'); // Extrae el valor de data-whatever
+                    });
+                </script>
+                <script>
+                    // Manejo dinámico del modal sin jQuery
+                    document.getElementById('exampleModal').addEventListener('show.bs.modal', function (event) {
+                        var button = event.relatedTarget; // Botón que activó el modal
+                        var recipient = button.getAttribute('data-whatever'); // Extrae el valor de data-whatever
+
+                        var modalTitle = this.querySelector('.modal-title');
+                        var modalInput = this.querySelector('#recipient-name');
+
+                        modalTitle.textContent = 'New message to ' + recipient;
+                        modalInput.value = recipient;
+                    });
+                </script>
+                
                 @if($noLocales)
                     <p>{{ __('No hay locales') }}</p>
                 @else
@@ -65,53 +179,42 @@
                         <a href="#" class="btn btn-danger">
                             <i class="fa-solid fa-trash"></i>
                         </a>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
-                    </div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
+                        </div>
                 </div>
 
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                <input type="text" class="form-control" id="recipient-name">
                             </div>
-                            <div class="modal-body">
-                                <form>
-                                <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                    <input type="text" class="form-control" id="recipient-name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Message:</label>
-                                    <textarea class="form-control" id="message-text"></textarea>
-                                </div>
-                                </form>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Message:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
                             </div>
-                            
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Send message</button>
-                            </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Send message</button>
+                        </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
-
-        <script>
-            $('#exampleModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget); // El botón que activó el modal
-                var recipient = button.data('whatever'); // Extraer el valor de data-whatever
-
-                var modal = $(this);
-                modal.find('.modal-title').text('New message to ' + recipient);
-                modal.find('.modal-body input').val(recipient);
-            });
-        </script>
     </body>
 </html>
 
