@@ -32,45 +32,65 @@
 
                                     <!-- Nombre -->
                                     <div class="cont_input_1">
-                                        <label for="Nombre">{{ __('Nombre') }}</label>
-                                        <input class="input_1" type="text" id="Nombre" name="Nombre" value="Nobre" required>
+                                        <label for="Nombre">Nombre</label>
+                                        <div class="input-container">
+                                            <i class="fas fa-building"></i> 
+                                            <input class="input_1" type="text" id="Nombre" name="Nombre" value="Nombre" required>
+                                        </div>
                                     </div>
 
                                     <!-- Descripcion -->
                                     <div class="cont_input_1">
-                                    <label for="Descripcion">Descripcion</label>
-                                        <textarea id="Descripcion" name="Descripcion">
-                                            Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion
-                                        </textarea>
+                                        <label for="Descripcion">Descripcion</label>
+                                        <div class="textarea-container">
+                                            <i class="fas fa-pencil-alt"></i> 
+                                            <textarea class="input_1" id="Descripcion" name="Descripcion" required>Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion</textarea>
+                                        </div>
                                     </div>
 
-
-                                    <div class="mb-3">
-                                        <label for="message-text" class="col-form-label">Message:</label>
-                                        <textarea class="form-control" id="message-text"></textarea>
+                                    <!-- Direccion -->
+                                    <div class="cont_input_1">
+                                        <label for="Nombre">Dirección</label>
+                                        <div class="input-container">
+                                            <i class="fas fa-building"></i> 
+                                            <input class="input_1" type="text" id="Direccion" name="Direccion" value="Dirrecion" required>
+                                        </div>
                                     </div>
 
-                                    <div>
-                                        <label for="Direccion">{{ __('Dirección') }}</label>
-                                        <input type="text" id="Direccion" name="Direccion" value="Dirrecion" required>
+                                    <!-- Telefono -->
+                                    <div class="cont_input_1">
+                                        <label for="Telefono">Teléfono</label>
+                                        <div class="input-container">
+                                            <i class="fas fa-phone"></i> 
+                                            <input class="input_1" type="text" id="Telefono" name="Telefono" value="Telefono" required>
+                                        </div>
                                     </div>
 
-                                    <div>
-                                        <label for="Telefono">{{ __('Teléfono') }}</label>
-                                        <input type="text" id="Telefono" name="Telefono" value="Telefono">
-                                    </div>
-
-                                    <div>
-                                        <label for="Aforo">{{ __('Aforo') }}</label>
-                                        <input type="number" id="Aforo" name="Aforo" value="10" required>
+                                    <!-- Aforo -->
+                                    <div class="cont_input_1">
+                                        <label for="Aforo">Aforo</label>
+                                        <div class="input-container">
+                                            <i class="fas fa-users"></i> 
+                                            <input class="input_1" type="number" id="Aforo" name="Aforo" value="10" required>
+                                        </div>
                                     </div>
 
                                     <!-- Campo oculto para manejar el caso desmarcado -->
                                     <input type="hidden" name="Tiene_Asientos" value="0">
 
+                                    <!-- Tiene Asientos -->
+                                    <div class="cont_input_1">
+                                        <label for="Tiene_Asientos">Tiene Asientos</label>
+                                        <div class="input-container">
+                                            <i class="fas fa-chair"></i> 
+                                            <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
+                                        </div>
+                                    </div>
+
+                                    <!-- Foto -->
                                     <div>
-                                        <label for="Tiene_Asientos">{{ __('Tiene Asientos') }}</label>
-                                        <input type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
+                                        <label for="Foto">Foto del Local</label>
+                                        <input type="file" id="Foto" name="Foto">
                                     </div>
 
                                     <!-- Foto -->
