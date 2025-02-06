@@ -1,6 +1,151 @@
-<!-- TODOS EVENTOS -->
- <!-- aca -->
-<x-app-layout>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    @include('layouts.head')
+    
+    <body style="background-color:rgb(255, 255, 255) !important;">
+        @include('layouts.header')
+
+        <div class="main">
+            <h1 class="mt-4">EVENTOS</h1>
+
+            <div class="main_contenedor">
+                <div class="container mt-5">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">
+                        Crear Evento
+                    </button>
+                </div>
+
+                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #ffc107; align-items: center;">
+                                <h5 class="modal-title" id="eventModalLabel"><strong>Crear Evento</strong></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('eventos.store') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                  
+                                    <div class="cont_input_1">
+                                        <label for="Nombre">Nombre</label>
+                                        <input class="input_1" type="text" id="Nombre" name="Nombre" required>
+                                    </div>
+
+                                    <div class="cont_input_1">
+                                        <label for="Descripcion">Descripción</label>
+                                        <input class="input_1" type="text" id="Descripcion" name="Descripcion" required>
+                                    </div>
+
+                                    <div class="cont_input_1">
+                                        <label for="Imagen">Imagen</label>
+                                        <input class="input_1" type="file" id="Imagen" name="Imagen" required>
+                                    </div>
+
+                                    <div class="cont_input_1">
+                                        <label for="Compra">Inicio Compra</label>
+                                        <input class="input_1" type="date" id="Compra" name="Compra" required>
+                                    </div>
+
+                                    <div class="cont_input_1">
+                                        <label for="Fin_Compra">Fin Compra</label>
+                                        <input class="input_1" type="date" id="Fin_Compra" name="Fin_Compra" required>
+                                    </div>
+
+                                    <div class="cont_input_1">
+                                        <label for="Fecha_evento">Fecha Evento</label>
+                                        <input class="input_1" type="date" id="Fecha_evento" name="Fecha_evento" required>
+                                    </div>
+
+                                    <div class="cont_input_1">
+                                        <label for="Aforo">Aforo</label>
+                                        <input class="input_1" type="number" id="Aforo" name="Aforo" required>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @foreach($eventos as $evento)
+                    <div class="card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                        <img class="card-img-top" 
+                                src="{{ $evento->Imagen ? asset('storage/' . $evento->Imagen) : 'https://placehold.co/600x400' }}"  
+                                alt="Imagen del evento">
+                        <div class="card-body">
+                            <h5 class="card-title"><strong>{{ $evento->Nombre }}</strong></h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Descripción: </strong>{{ $evento->descripcion }}</li>
+                                <li class="list-group-item"><strong>Inicio Compra: </strong>{{ \Carbon\Carbon::parse($evento->inicio)->format('d/m/Y') }}</li>
+                                <li class="list-group-item"><strong>Fin Compra: </strong>{{ \Carbon\Carbon::parse($evento->fecha_fin)->format('d/m/Y') }}</li>
+                                <li class="list-group-item"><strong>Fecha Evento: </strong>{{ \Carbon\Carbon::parse($evento->fecha_evento)->format('d/m/Y') }}</li>
+                                <li class="list-group-item"><strong>Aforo: </strong>{{ $evento->aforo_evento }}</li>
+                            </ul>
+                        </div>
+                        <div class="card-body d-flex justify-content-around">
+                            <a href="{{ route('eventos.edit', $evento->id) }}" class="btn btn-warning">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                            <button type="button" class="btn estado-btn {{ $evento->activo ? 'btn-success' : 'btn-danger' }}" data-id="{{ $evento->id }}" data-estado="{{ $evento->activo ? '1' : '0' }}">
+                                {{ $evento->activo ? 'Activo' : 'Inactivo' }}
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <script>
+            document.querySelectorAll('.estado-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    let eventId = this.getAttribute('data-id');
+                    let currentEstado = this.getAttribute('data-estado') === '1' ? true : false;
+
+                    fetch(`/eventos/${eventId}/toggle`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ id: eventId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Cambiar el botón a activo o inactivo
+                            this.classList.toggle('btn-success', data.estado);
+                            this.classList.toggle('btn-danger', !data.estado);
+                            this.textContent = data.estado ? 'Activo' : 'Inactivo';
+                            this.setAttribute('data-estado', data.estado ? '1' : '0');
+                        } else {
+                            alert('No se pudo cambiar el estado');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+        </script>
+    </body>
+</html>
+
+
+ 
+
+
+
+ <!--
+ <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Eventos') }}
@@ -61,7 +206,7 @@
 
                                         <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
 
-                                            <!-- Botón de Editar -->
+                                            //Botón de Editar
                                             <a href="{{ route('eventos.edit', $evento->id) }}" 
                                                 class="text-blue-500 hover:text-blue-700" 
                                                 style="margin-right: 10px;">
@@ -70,7 +215,7 @@
 
                                             <br>
 
-                                            <!-- Botón de Eliminar -->
+                                            //Botón de Eliminar
                                             <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
@@ -90,4 +235,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-layout> -->
