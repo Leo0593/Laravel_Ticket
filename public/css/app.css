@@ -100,6 +100,25 @@ body {
     background-position: center; /* Centra la imagen */
 }
 
+.main_banner_2 {
+    color: white;
+    width: 100%;
+    height: 400px;
+
+    overflow: hidden; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background-image: 
+        linear-gradient(to top, rgba(2, 77, 223, 0.7), rgba(0, 0, 0, 0.3) 80%), /* Degradado hacia arriba */
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%), /* Degradado hacia abajo */
+        var(--banner-image); 
+    background-size: cover; /* Asegura que la imagen cubra el espacio */
+    background-position: center; /* Centra la imagen */
+}
+
 .main_banner_1 img {
     width: 100%;
     height: autoß;
@@ -167,10 +186,11 @@ body {
 
     padding-left: 40px !important; /* Espacio para el ícono */
 
-    border: 1px solid #ccc;
     border-radius: 10px !important;
 
     resize: none;
+
+    border: 2px solid #bfbfbf !important;
 }
 
 .input-container i {
@@ -187,10 +207,10 @@ body {
     color: black; /* Cambia el color del ícono a negro */
 }
 
-.input_1:focus {
+.input_1:focus,
+.input_1[type="file"]:focus {
     outline: 2px solid transparent;
     outline-offset: 2px ;
-    --tw-ring-inset: var(--tw-empty);
     --tw-ring-offset-width: 0px !important;
     --tw-ring-offset-color: #fff !important;
     --tw-ring-color: #ffc107 !important; /* Amarillo */
@@ -199,4 +219,52 @@ body {
     box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
 
     border-color:#ffc107 !important;
+}
+
+/* Contenedor del input */
+.input-container-2 {
+    display: flex;
+    align-items: center;
+    background-color: #ffc107; /* Amarillo */
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Ícono dentro del contenedor */
+.input-container-2 i {
+    margin-right: 8px;
+    color: white; /* Color del ícono */
+    font-size: 18px;
+}
+
+/* Estilos para el checkbox */
+.input_1[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid white !important;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Estado cuando el checkbox está marcado */
+.input_1[type="checkbox"]:checked {
+    background-color: #ffca2c !important; /* Color de fondo cuando está marcado */
+    border-color: white !important;
+}
+
+/* Efecto hover */
+.input-container-2:hover {
+    background-color: #e0a800; /* Amarillo más oscuro al pasar el ratón */
+}
+
+/* Efecto cuando el checkbox está enfocado */
+.input_1[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); /* Resplandor amarillo cuando está enfocado */
 }

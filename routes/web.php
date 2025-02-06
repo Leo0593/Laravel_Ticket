@@ -30,7 +30,6 @@ Route::prefix('/locales')->name('locales.')->group(function () {
     Route::get('/{id}/edit', [C_Locales::class, 'edit'])->name('edit');
     Route::put('/{id}', [C_Locales::class, 'update'])->name('update');
     Route::delete('/{id}', [C_Locales::class, 'destroy'])->name('destroy');
-
 });
 
 use App\Http\Controllers\C_Plan;

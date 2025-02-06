@@ -6,143 +6,12 @@
         @include('layouts.header')
 
         <div class="main">
-            <h1 class="mt-4">LOCALIDADES</h1>
+            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/estadio-1.webp');">
+                <h1>Lugares para Tu Evento</h1>
+                <h2>Encuentra Tu Lugar Perfecto</h2>
+            </div>
 
             <div class="main_contenedor">
-                <div class="container mt-5">
-                    <!-- Botón para abrir el modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" data-whatever="@mdo">
-                    Launch demo modal
-                    </button>
-                </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color: #ffc107; align-items: center;>
-                                <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Editar</strong></h5>
-                                <i class="fa-solid fa-pen" style="margin-left: 10px"></i>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-
-                                    <!-- Nombre -->
-                                    <div class="cont_input_1">
-                                        <label for="Nombre">Nombre</label>
-                                        <div class="input-container">
-                                            <i class="fas fa-building"></i> 
-                                            <input class="input_1" type="text" id="Nombre" name="Nombre" value="Nombre" required>
-                                        </div>
-                                    </div>
-
-                                    <!-- Descripcion -->
-                                    <div class="cont_input_1">
-                                        <label for="Descripcion">Descripcion</label>
-                                        <div class="textarea-container">
-                                            <i class="fas fa-pencil-alt"></i> 
-                                            <textarea class="input_1" id="Descripcion" name="Descripcion" required>Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion Descripcion</textarea>
-                                        </div>
-                                    </div>
-
-                                    <!-- Direccion -->
-                                    <div class="cont_input_1">
-                                        <label for="Nombre">Dirección</label>
-                                        <div class="input-container">
-                                            <i class="fas fa-building"></i> 
-                                            <input class="input_1" type="text" id="Direccion" name="Direccion" value="Dirrecion" required>
-                                        </div>
-                                    </div>
-
-                                    <!-- Telefono -->
-                                    <div class="cont_input_1">
-                                        <label for="Telefono">Teléfono</label>
-                                        <div class="input-container">
-                                            <i class="fas fa-phone"></i> 
-                                            <input class="input_1" type="text" id="Telefono" name="Telefono" value="Telefono" required>
-                                        </div>
-                                    </div>
-
-                                    <!-- Aforo -->
-                                    <div class="cont_input_1">
-                                        <label for="Aforo">Aforo</label>
-                                        <div class="input-container">
-                                            <i class="fas fa-users"></i> 
-                                            <input class="input_1" type="number" id="Aforo" name="Aforo" value="10" required>
-                                        </div>
-                                    </div>
-
-                                    <!-- Campo oculto para manejar el caso desmarcado -->
-                                    <input type="hidden" name="Tiene_Asientos" value="0">
-
-                                    <!-- Tiene Asientos -->
-                                    <div class="cont_input_1">
-                                        <label for="Tiene_Asientos">Tiene Asientos</label>
-                                        <div class="input-container">
-                                            <i class="fas fa-chair"></i> 
-                                            <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
-                                        </div>
-                                    </div>
-
-                                    <!-- Foto -->
-                                    <div>
-                                        <label for="Foto">Foto del Local</label>
-                                        <input type="file" id="Foto" name="Foto">
-                                    </div>
-
-                                    <!-- Foto -->
-                                    <div>
-                                        <label for="Foto">{{ __('Foto del Local') }}</label>
-                                        <input type="file" id="Foto" name="Foto">
-                                        
-                                    </div>
-
-                                    <!--
-                                    <div class="mb-3">
-                                        <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                        <input type="text" class="form-control" id="recipient-name">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="message-text" class="col-form-label">Message:</label>
-                                        <textarea class="form-control" id="message-text"></textarea>
-                                    </div> -->
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-primary">Guardar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bootstrap 5 JS (Necesario para los modales) -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-                <script>
-                    // Manejo dinámico del modal sin jQuery
-                    document.getElementById('exampleModalCenter').addEventListener('show.bs.modal', function (event) {
-                        var button = event.relatedTarget; // Botón que activó el modal
-                        var recipient = button.getAttribute('data-whatever'); // Extrae el valor de data-whatever
-                    });
-                </script>
-                <script>
-                    // Manejo dinámico del modal sin jQuery
-                    document.getElementById('exampleModal').addEventListener('show.bs.modal', function (event) {
-                        var button = event.relatedTarget; // Botón que activó el modal
-                        var recipient = button.getAttribute('data-whatever'); // Extrae el valor de data-whatever
-
-                        var modalTitle = this.querySelector('.modal-title');
-                        var modalInput = this.querySelector('#recipient-name');
-
-                        modalTitle.textContent = 'New message to ' + recipient;
-                        modalInput.value = recipient;
-                    });
-                </script>
-                
                 @if($noLocales)
                     <p>{{ __('No hay locales') }}</p>
                 @else
@@ -153,13 +22,13 @@
                                 alt="Foto del local">
 
                             <div class="card-body">
-                                <h5 class="card-title"><strong>NOMBRE: </strong>{{ $local->Nombre }}</h5>
-                                <p class="card-text"><strong>DESCRIPCIÓN: </strong>{{ $local->Descripcion }}</p>
+                                <h5 class="card-title">{{ $local->Nombre }}</h5> <!-- <strong>NOMBRE: </strong> -->
+                                <p class="card-text">{{ $local->Descripcion }}</p>
                                 <p class="card-text">{{ $local->Descripción }}</p>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>UBICACIÓN: </strong>{{ $local->Direccion }}</li>
-                                <li class="list-group-item"><strong>TELÉFONO: </strong>{{ $local->Teléfono }}</li>
+                                <li class="list-group-item"><strong>TELÉFONO: </strong>{{ $local->Telefono }}</li>
                                 <li class="list-group-item"><strong>AFORO: </strong>{{ $local->Aforo }}</li>
                                 <li class="list-group-item"><strong>ASIENTOS: </strong>{{ $local->Tiene_Asientos ? 'Tiene Asientos' : 'No tiene Asientos' }}</li>
                             </ul>
@@ -167,166 +36,214 @@
                                 <a href="#" class="btn btn-primary">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="{{ route('locales.edit', $local->id) }} " class="btn btn-warning">
+                                <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal" 
+                                    data-id="{{ $local->id }}"
+                                    data-nombre="{{ $local->Nombre }}"
+                                    data-descripcion="{{ $local->Descripcion }}"
+                                    data-direccion="{{ $local->Direccion }}"
+                                    data-telefono="{{ $local->Telefono }}"
+                                    data-aforo="{{ $local->Aforo }}"
+                                    data-tiene_asientos="{{ $local->Tiene_Asientos }}"
+                                    data-foto="{{ $local->Foto }}">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <a href="#" class="btn btn-danger">
+                                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $local->id }}">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             </div>
                         </div>
                     @endforeach
                 @endif
-
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://placehold.co/600x400"  alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Nombre</h5>
-                        <p class="card-text">Descripcion Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Ubicacion: </li>
-                        <li class="list-group-item">Aforo: </li>
-                        <li class="list-group-item">Asientos:</li>
-                    </ul>
-                    <div class="card-body d-flex justify-content-around">
-                        <a href="#" class="btn btn-primary">
-                            <i class="fa-solid fa-eye"></i>
-                        </a>
-                        <a href="{{ route('locales.edit', $local->id) }}" class="btn btn-warning">
-                            <i class="fa-solid fa-pen"></i>
-                        </a>
-                        <a href="#" class="btn btn-danger">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
-                        </div>
-                </div>
-
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                            <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                <input type="text" class="form-control" id="recipient-name">
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Message:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                            </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Send message</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-
         </div>
+
+        <!-- Modal Editar -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #ffc107; align-items: center;">
+                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Editar</strong></h5>
+                        <i class="fa-solid fa-pen" style="margin-left: 10px"></i>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="editForm" action="{{ url('/locales/' . $local->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+
+                            <!-- Nombre -->
+                            <div class="cont_input_1">
+                                <label for="Nombre">Nombre</label>
+                                <div class="input-container">
+                                    <i class="fas fa-building"></i> 
+                                    <input class="input_1" type="text" id="Nombre" name="Nombre" value="" required>
+                                </div>
+                            </div>
+
+                            <!-- Descripcion -->
+                            <div class="cont_input_1">
+                                <label for="Descripcion">Descripcion</label>
+                                <div class="textarea-container">
+                                    <i class="fas fa-pencil-alt"></i> 
+                                    <textarea class="input_1" id="Descripcion" name="Descripcion" required></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Direccion -->
+                            <div class="cont_input_1">
+                                <label for="Nombre">Dirección</label>
+                                <div class="input-container">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <input class="input_1" type="text" id="Direccion" name="Direccion" value="" required>
+                                </div>
+                            </div>
+
+                            <!-- Telefono -->
+                            <div class="cont_input_1">
+                                <label for="Telefono">Teléfono</label>
+                                 <div class="input-container">
+                                    <i class="fas fa-phone"></i> 
+                                    <input class="input_1" type="number" id="Telefono" name="Telefono" value="" required>
+                                </div>
+                            </div>
+
+                            <!-- Aforo -->
+                            <div class="cont_input_1">
+                                    <label for="Aforo">Aforo</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-users"></i> 
+                                        <input class="input_1" type="number" id="Aforo" name="Aforo" value="" required>
+                                    </div>
+                            </div>
+
+                            <!-- Campo oculto para manejar el caso desmarcado -->
+                            <input type="hidden" name="Tiene_Asientos" value="0">
+
+                            <!-- Tiene Asientos -->
+                            <div class="cont_input_1" style="width: 100px;">
+                                <label for="Tiene_Asientos">Tiene Asientos</label>
+                                <div class="input-container-2">
+                                    <i class="fas fa-chair"></i> 
+                                    <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
+                                </div>
+                            </div>
+
+                            <!-- Foto -->
+                            <div class="cont_input_1">
+                                <label for="Foto">Foto del Local</label>
+                                <div class="input-container">
+                                    <i class="fas fa-camera"></i>
+                                    <input class="input_1" type="file" id="Foto" name="Foto" accept="image/*">
+                                </div>
+                                <div id="existingPhotoContainer"></div> <!-- Contenedor para la foto previa -->
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: center !important;">
+                        <button type="button" class="btn btn-primary" id="saveButton">
+                            <i class="fas fa-save"></i>
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #dc3545; align-items: center; color: white;">
+                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Eliminar</strong></h5>
+                        <i class="fa-solid fa-trash" style="margin-left: 10px"></i>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar este local?
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: center !important;">
+                        <form id="deleteForm" method="POST" action="{{ route('locales.destroy', ':id') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>`
+
+        <!-- Bootstrap 5 JS (Necesario para los modales) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- ELIMINAR: Script para manejar el modal de eliminación -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var deleteModal = document.getElementById('deleteModal');
+
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    var link = event.relatedTarget; // El enlace que activó el modal
+                    var localId = link.getAttribute('data-id'); // Obtener el ID del local
+
+                    // Actualizar la acción del formulario de eliminación
+                    var formAction = document.getElementById('deleteForm').action;
+                    document.getElementById('deleteForm').action = formAction.replace(':id', localId);
+                });
+            });
+        </script>
+
+        <!-- EDITAR: Script para manejar el modal de edición -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var editModal = document.getElementById('editModal');
+
+                editModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget; // Botón que activó el modal
+
+                    // Extraer la información del botón
+                    var id = button.getAttribute('data-id');
+                    var nombre = button.getAttribute('data-nombre');
+                    var descripcion = button.getAttribute('data-descripcion');
+                    var direccion = button.getAttribute('data-direccion');
+                    var telefono = button.getAttribute('data-telefono');
+                    var aforo = button.getAttribute('data-aforo');
+                    var tieneAsientos = button.getAttribute('data-tiene_asientos') == "1";
+                    var foto = button.getAttribute('data-foto');
+
+                    // Llenar los campos del formulario en el modal
+                    document.getElementById('Nombre').value = nombre;
+                    document.getElementById('Descripcion').value = descripcion;
+                    document.getElementById('Direccion').value = direccion;
+                    document.getElementById('Telefono').value = telefono;
+                    document.getElementById('Aforo').value = aforo;
+                    document.getElementById('Tiene_Asientos').checked = tieneAsientos;
+
+                    // Manejo de imagen previa (solo si existe una imagen)
+                    var fotoInput = document.getElementById('Foto');
+                    var existingPhotoContainer = document.getElementById('existingPhotoContainer');
+                    if (foto && foto !== "null") {
+                        existingPhotoContainer.innerHTML = `<img src="/storage/${foto}" alt="Imagen previa" width="100">`;
+                    }
+
+                    // Asignar la acción del formulario dinámicamente
+                    var form = modal.querySelector('form');
+                    console.log(id, nombre, descripcion, direccion, telefono, aforo, tieneAsientos, foto);
+                    form.action = `/locales/${id}`; // Ajusta según tu ruta en Laravel
+                });
+
+                // Guardar el formulario
+                document.getElementById('saveButton').addEventListener('click', function () {
+                    var form = document.getElementById('editForm');
+                    if (form) {
+                        form.submit(); // Envía el formulario cuando el usuario hace clic en "Guardar"
+                    } else {
+                        console.error("Formulario no encontrado.");
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
-
-<!--
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Locales') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    
-                    @if(session('success'))
-                        <div class="bg-green-500 text-white p-3 rounded-md mb-4">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-
-                    @if($noLocales)
-                        <p>{{ __('No hay locales') }}</p>
-                    @else
-                        <table class="min-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('id') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Nombre') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Descripción') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Dirección') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Teléfono') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Aforo') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Asientos') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Foto') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Acciones') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($locales as $local)
-                                    <tr>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->Nombre }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->Descripcion }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->Direccion }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->Telefono }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $local->Aforo }}</td>
-
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                                            {{ $local->Tiene_Asientos ? 'Tiene Asientos' : 'No tiene Asientos' }}
-                                        </td>
-
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                                            @if($local->Foto)
-                                                <img src="{{ asset('storage/' . $local->Foto) }}" alt="Foto del local" class="w-20 h-20 object-cover rounded-md">
-                                            @else
-                                                {{ __('No disponible') }}
-                                            @endif
-                                        </td>
-
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                                            
-                                            -- Botón de Editar --
-                                            <a href="{{ route('locales.edit', $local->id) }}" 
-                                                class="text-blue-500 hover:text-blue-700" 
-                                                style="margin-right: 10px;">
-                                                {{ __('Editar') }}
-                                            </a>
-
-                                            <br>
-
-                                            -- Botón de Eliminar --
-                                            <form action="{{ route('locales.destroy', $local->id) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-4" 
-                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este local?')">
-                                                    {{ __('Eliminar') }}
-                                                </button>
-                                            </form>
-
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> -->
