@@ -12,8 +12,37 @@ use Illuminate\Support\Facades\Log;
 class C_Locales extends Controller
 {
     // Mostrar todos los locales
-    public function index(): View
+    public function index(Request $request): View
     {
+        // Obtener el valor de 'orderBy' desde la solicitud, con valor por defecto 'nombre'
+        $orderBy = $request->input('orderBy', 'nombre');
+
+        // Ordenar los locales según el parámetro 'orderBy'
+        switch ($orderBy) {
+            case 'nombre':
+                $locales = M_Locales::orderBy('Nombre')->get();
+                break;
+            case 'aforo':
+                $locales = M_Locales::orderBy('Aforo')->get();
+                break;
+            case 'ubicacion':
+                $locales = M_Locales::orderBy('Direccion')->get();
+                break;
+            case 'asientos':
+                $locales = M_Locales::orderBy('Tiene_Asientos')->get();
+                break;
+            default:
+                $locales = M_Locales::orderBy('Nombre')->get(); // Orden por defecto
+                break;
+        }
+
+        // Verificar si no hay locales
+        $noLocales = $locales->isEmpty();
+
+        // Pasar los locales y la variable 'noLocales' a la vista
+        return view('layouts.locales.V_todoslocales', compact('locales', 'noLocales'));
+
+        /*
         // Obtener todos los locales
         $locales = M_Locales::all(); // Asegúrate de usar M_Locales
         
@@ -21,7 +50,7 @@ class C_Locales extends Controller
         $noLocales = $locales->isEmpty();
 
         // Pasar los locales y la variable 'noLocales' a la vista
-        return view('layouts.locales.V_todoslocales', compact('locales', 'noLocales'));
+        return view('layouts.locales.V_todoslocales', compact('locales', 'noLocales'));*/
     }
 
     public function create(): View

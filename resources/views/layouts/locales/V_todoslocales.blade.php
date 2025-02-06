@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     @include('layouts.head')
     
-    <body style="background-color:rgb(255, 255, 255) !important;">
+    <body>
         @include('layouts.header')
 
         <div class="main">
@@ -12,6 +12,28 @@
                 <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">
                     Agregar
                 </button>
+            </div>
+
+            <div class="main_organizar">
+                <form method="GET" action="">
+                    <h4>Ordenar por:</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <button type="submit" name="orderBy" value="nombre" class="btn btn-outline-primary {{ request('orderBy') == 'nombre' ? 'active' : '' }}">
+                                Nombre
+                            </button>
+                            <button type="submit" name="orderBy" value="aforo" class="btn btn-outline-primary {{ request('orderBy') == 'aforo' ? 'active' : '' }}">
+                                Aforo
+                            </button>
+                            <button type="submit" name="orderBy" value="ubicacion" class="btn btn-outline-primary {{ request('orderBy') == 'ubicacion' ? 'active' : '' }}">
+                                Ubicación
+                            </button>
+                            <button type="submit" name="orderBy" value="asientos" class="btn btn-outline-primary {{ request('orderBy') == 'asientos' ? 'active' : '' }}">
+                                Asientos
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <div class="main_contenedor">

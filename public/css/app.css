@@ -282,3 +282,16 @@ body {
     outline: none;
     box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); /* Resplandor amarillo cuando está enfocado */
 }
+
+.main_organizar {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    margin: 20px 0;
+    padding: 10px;  
+}
