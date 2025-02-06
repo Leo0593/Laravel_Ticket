@@ -97,52 +97,14 @@
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
-                            <button type="button" class="btn estado-btn {{ $evento->activo ? 'btn-success' : 'btn-danger' }}" data-id="{{ $evento->id }}" data-estado="{{ $evento->activo ? '1' : '0' }}">
-                                {{ $evento->activo ? 'Activo' : 'Inactivo' }}
-                            </button>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
 
-        <script>
-            document.querySelectorAll('.estado-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    let eventId = this.getAttribute('data-id');
-                    let currentEstado = this.getAttribute('data-estado') === '1' ? true : false;
-
-                    fetch(`/eventos/${eventId}/toggle`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ id: eventId })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Cambiar el botón a activo o inactivo
-                            this.classList.toggle('btn-success', data.estado);
-                            this.classList.toggle('btn-danger', !data.estado);
-                            this.textContent = data.estado ? 'Activo' : 'Inactivo';
-                            this.setAttribute('data-estado', data.estado ? '1' : '0');
-                        } else {
-                            alert('No se pudo cambiar el estado');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-                });
-            });
-        </script>
     </body>
 </html>
-
-
- 
-
-
 
  <!--
  <x-app-layout>
