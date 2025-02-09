@@ -23,4 +23,9 @@ class M_Eventos extends Model
         'estado',
         'Foto',
     ];
+    
+    public function local()
+    {
+        return $this->belongsTo(M_Locales::class, 'local_id'); // Asegúrate de que 'local_id' es el campo que conecta ambos modelos
+    }
 }

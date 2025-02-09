@@ -16,10 +16,11 @@ class C_Plan extends Controller
 {
     public function index(): View
     {
-        $planes = M_Plan::all();
+        $eventos = M_Eventos::all();
+        $planes = M_Plan::with('evento')->get();
         $noPlanes = $planes->isEmpty();
 
-        return view('layouts.planes.V_todosplans', compact('planes', 'noPlanes'));
+        return view('layouts.planes.V_todosplans', compact('eventos', 'planes', 'noPlanes'));
     }
 
     public function create(): View

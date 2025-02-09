@@ -1,80 +1,89 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Planes') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    @include('layouts.head')
+    
+    <body>
+        @include('layouts.header')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if(session('success'))
-                        <div class="bg-green-500 text-white p-3 rounded-md mb-4">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+        <div class="main">
+            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/plans.png');">
+                <h1><strong>Planes</strong> para Todos</h1>
+                <h2>Combos Generales o VIP, ¡Tú Decides!</h2>
+                
+                <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">
+                    Agregar
+                </button> 
+            </div>
 
-
+            <div class="main_contenedor">
+                <div class="container-fluid main_contenedor">
                     @if($noPlanes)
-                        <p>{{ __('No hay planes') }}</p>
+                        <div class="alert alert-warning text-center" role="alert">
+                            <p class="mb-0">{{ __('No hay planes disponibles') }}</p>
+                        </div>
                     @else
-                        <table class="min-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('id') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('evento_id') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Tipo') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Precio') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Descripción') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Foto') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Acciones') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($planes as $plan)
-                                    <tr>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->evento_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->tipo }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->precio }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $plan->descripcion }}</td>
-
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                                            @if($plan->Foto)
-                                                <img src="{{ asset('storage/' . $plan->Foto) }}" alt="Foto del plan" class="w-20 h-20 object-cover rounded-md">
+                        <div class="row">
+                            @foreach($eventos as $evento)
+                                <div class="col-lg-6 col-md-12 mb-4""> <!-- 2 eventos por fila en pantallas grandes -->
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white text-center">
+                                            <h5 class="mb-0">{{ $evento->nombre }}</h5>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            @if($planes->where('evento_id', $evento->id)->isEmpty())
+                                                <p class="text-center text-muted">No hay planes para este evento.</p>
                                             @else
-                                                {{ __('No disponible') }}
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-hover m-0">
+                                                        <thead class="table-dark">
+                                                            <tr>
+                                                                <th class="text-center">{{ __('Tipo') }}</th>
+                                                                <th class="text-center">{{ __('Precio') }}</th>
+                                                                <th class="text-center">{{ __('Descripción') }}</th>
+                                                                <th class="text-center">{{ __('Foto') }}</th>
+                                                                <th class="text-center">{{ __('Acciones') }}</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($planes->where('evento_id', $evento->id) as $plan)
+                                                                <tr>
+                                                                    <td class="text-center">{{ $plan->tipo }}</td>
+                                                                    <td class="text-center">{{ $plan->precio }}</td>
+                                                                    <td class="text-center">{{ $plan->descripcion }}</td>
+                                                                    <td class="text-center">
+                                                                        @if($plan->Foto)
+                                                                            <img src="{{ asset('storage/' . $plan->Foto) }}" alt="Foto del plan" class="w-20 h-20 object-cover rounded-md">
+                                                                        @else
+                                                                            {{ __('No Disponible') }}
+                                                                        @endif
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <a href="{{ route('planes.edit', $plan->id) }}" class="btn btn-sm btn-warning" style="color: white;">
+                                                                            <i class="fa-solid fa-pen"></i>
+                                                                        </a>
+
+                                                                        <form action="{{ route('planes.destroy', $plan->id) }}" method="POST" class="d-inline-block">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este plan?')">
+                                                                                <i class="fa-solid fa-trash"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             @endif
-                                        </td>
-
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-
-                                            <!-- Botón de Editar -->
-                                            <a href="{{ route('planes.edit', $plan->id) }}" 
-                                                class="text-blue-500 hover:text-blue-700" 
-                                                style="margin-right: 10px;">
-                                                {{ __('Editar') }}
-                                            </a>
-
-                                            <!-- Botón de Eliminar -->
-                                            <form action="{{ route('planes.destroy', $plan->id) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-4" 
-                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este local?')">
-                                                    {{ __('Eliminar') }}
-                                                </button>
-                                            </form>
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout>
+    </body>
+</html>

@@ -15,10 +15,11 @@ class C_Asientos extends Controller
 {
     public function index(): View
     {
+        $eventos = M_Eventos::with('local')->get();
         $asientos = M_Asientos::all();
         $noAsientos = $asientos->isEmpty();
 
-        return view('layouts.asientos.V_todosasientos', compact('asientos', 'noAsientos'));
+        return view('layouts.asientos.V_todosasientos', compact('eventos', 'asientos', 'noAsientos'));
     }
 
     public function create(): View

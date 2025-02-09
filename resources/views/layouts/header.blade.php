@@ -2,7 +2,7 @@
     <!-- Logo y nombre de la aplicación -->
     <div class="wrapped_logo">
         <img src="{{ asset('../../images/login/ticketslogo-wh.png') }}" alt="logo">
-        <a>TICKETS</a>
+        <a href="{{ url('/') }}"> TICKETS </a>
     </div>
 
     <!-- Botón de acceso -->

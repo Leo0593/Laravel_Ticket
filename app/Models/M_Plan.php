@@ -18,4 +18,9 @@ class M_Plan extends Model
         'descripcion',
         'Foto',
     ];
+
+    public function evento()
+    {
+        return $this->belongsTo(M_Eventos::class, 'evento_id');
+    }
 }

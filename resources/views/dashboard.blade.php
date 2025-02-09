@@ -21,7 +21,9 @@
                         </p>
 
                         <div style="display:flex; justify-content: center;">
-                            <a  href="{{ route('locales.index') }}" class="btn btn-primary mt-4">Ver</a>
+                            <a  href="{{ route('locales.index') }}" class="btn btn-primary mt-4">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
                         </div>  
                     </div>
                 </div>
@@ -39,22 +41,26 @@
                 </div>
 
                 <div class="card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
-                    <img class="card-img-top" src="https://placehold.co/600x400" alt="Card image cap" 
+                    <img class="card-img-top" src="../../images/dashboard/asientos.png" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
                         <h5 class="card-title"><strong>ASIENTOS</strong></h5>
                         <p class="card-text">
                             Some quick example text to build on the card title and make up the bulk of the card's content.
                         </p>
-                        <a  href="{{ route('asientos.index') }}" class="btn btn-primary mt-4">Ver</a>
+                        <div style="display:flex; justify-content: center;">
+                            <a  href="{{ route('asientos.index') }}" class="btn btn-primary mt-4">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                        </div>  
                     </div>
                 </div>
 
                 <div class="card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
-                    <img class="card-img-top" src="https://placehold.co/600x400" alt="Card image cap" 
+                    <img class="card-img-top" src="../../images/dashboard/plans.png" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
-                        <h5 class="card-title"><strong>PLANES</strong></h5>
+                        <h5 class="card-title"><strong>PLANS & COMBOS</strong></h5>
                         <p class="card-text">
                             Some quick example text to build on the card title and make up the bulk of the card's content.
                         </p>
@@ -63,7 +69,7 @@
                 </div>
    
                 <div class="card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
-                    <img class="card-img-top" src="https://placehold.co/600x400" alt="Card image cap" 
+                    <img class="card-img-top" src="../../images/dashboard/tickets.jpg" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
                         <h5 class="card-title"><strong>TICKETS</strong></h5>
