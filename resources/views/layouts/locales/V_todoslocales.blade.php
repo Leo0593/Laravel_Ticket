@@ -41,7 +41,7 @@
                     <p>{{ __('No hay locales') }}</p>
                 @else
                     @foreach($locales as $local)
-                        <div class="card" style="width: 18rem;box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                        <div class="card" style="width: 18rem;box-shadow: 0 0 10px rgba(2, 77, 223, 0.4);"> <!-- rgba(0, 0, 0, 0.4) -->
                             <img class="card-img-top" 
                                 src="{{ $local->Foto ? asset('storage/' . $local->Foto) : 'https://placehold.co/600x400' }}"  
                                 alt="Foto del local">
@@ -57,9 +57,10 @@
                                 <li class="list-group-item"><strong>ASIENTOS: </strong>{{ $local->Tiene_Asientos ? 'Tiene Asientos' : 'No tiene Asientos' }}</li>
                             </ul>
                             <div class="card-body d-flex justify-content-around" style="max-height: 70px;">
+                                <!--
                                 <a href="#" class="btn btn-primary">
                                     <i class="fa-solid fa-eye"></i>
-                                </a>
+                                </a>-->
                                 <a href="#" class="btn btn-warning" style="color: white;" data-bs-toggle="modal" data-bs-target="#editModal" 
                                     data-id="{{ $local->id }}"
                                     data-nombre="{{ $local->Nombre }}"

@@ -1,56 +1,75 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tickets') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    @include('layouts.head')
+    
+    <body>
+        @include('layouts.header')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    
-                    @if(session('success'))
-                        <div class="bg-green-500 text-white p-3 rounded-md mb-4">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+        <div class="main">
+            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/tickets.jpg');">
+                <h1><strong>Planes</strong> para Todos</h1>
+                <h2>Combos Generales o VIP, ¡Tú Decides!</h2>
+            </div>
 
+            <div class="main_contenedor">
+                <div class="container-fluid main_contenedor">
                     @if($noTickets)
-                        <p>{{ __('No hay tickets') }}</p>
+                        <div class="alert alert-warning text-center" role="alert">
+                            <p class="mb-0">{{ __('No hay tickets aun comprados') }}</p>
+                        </div>
                     @else
-                        <table class="min-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('ID') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('USER') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Evento_id') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Plan_id') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Pagado') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Fecha de pago') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('qr') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('qr Valido') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Acciones') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($tickets as $ticket)
-                                    <tr>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->user_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->evento_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->plan_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->pagado }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->fecha_pago }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->qr }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $ticket->qr_valido }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="row">
+                        @foreach($eventos as $evento)
+                            <div class="col-lg-6 col-md-12 mb-4"> <!-- 2 eventos por fila en pantallas grandes -->
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-primary text-white text-center">
+                                        <h5 class="mb-0">{{ $evento->nombre }}</h5>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover m-0">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th class="text-center">{{ __('Usuario') }}</th>
+                                                    <th class="text-center">{{ __('Asiento') }}</th>
+                                                    <th class="text-center">{{ __('Plan') }}</th>
+                                                    <th class="text-center">{{ __('Pagado') }}</th>
+                                                    <th class="text-center">{{ __('Fecha Pago') }}</th>
+                                                    <th class="text-center">{{ __('QR') }}</th>
+                                                    <th class="text-center">{{ __('QR Válido') }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($tickets->where('evento_id', $evento->id) as $ticket)
+                                                    <tr>
+                                                        <!-- Nombre del Usuario -->
+                                                        <td class="text-center">{{ $ticket->user->name }}</td> 
+                                                        <!-- Numero_Asiento con ese id -->
+                                                        <td class="text-center">{{ optional($ticket->asiento)->numero_asiento }}</td>
+                                                        <!-- Tipo de Plan con ese id - precio -->
+                                                        <td class="text-center">{{ optional($ticket->plan)->tipo}} - {{ optional($ticket->plan)->precio }}</td>
+                                                        <td class="text-center">{{ $ticket->pagado ? 'Sí' : 'No' }}</td>
+                                                        <td class="text-center">{{ $ticket->fecha_pago }}</td>
+                                                        <td class="text-center">
+                                                            @if($ticket->qr)
+                                                                {{ $ticket->qr }}
+                                                            @else
+                                                                {{ __('No Disponible') }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="text-center">{{ $ticket->qr_valido ? 'Sí' : 'No' }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        </div>
                     @endif
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout>
+    </body>
+</html>

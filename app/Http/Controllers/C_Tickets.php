@@ -18,10 +18,11 @@ class C_Tickets extends Controller
 {
     public function index(): View
     {
-        $tickets = M_Tickets::all();
+        $eventos = M_Eventos::all();
+        $tickets = M_Tickets::with('evento', 'plan')->get();
         $noTickets = $tickets->isEmpty();
 
-        return view('layouts.tickets.V_todoslostickets', compact('tickets', 'noTickets'));
+        return view('layouts.tickets.V_todoslostickets', compact('eventos', 'tickets', 'noTickets'));
     }
 
     public function create(): View

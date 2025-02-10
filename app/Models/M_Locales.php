@@ -21,4 +21,9 @@ class M_Locales extends Model
         'Tiene_Asientos',
         'Foto',
     ];
+
+    public function eventos()
+    {
+        return $this->hasMany(M_Eventos::class, 'local_id');
+    }
 }

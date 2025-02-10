@@ -10,7 +10,91 @@
                 <h1>TICKETS</h1>
                 <button class="btn-1">Ver</button>
             </div>
+
+            <div class="mt-4 d-flex align-items-center justify-content-center" style="width: 100%; height: 280px; position: relative;">
+                <!-- Botón Anterior -->
+                <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#carouselEventos" data-bs-slide="prev"
+                    style="width: 5% !important">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+
+                <!-- Carrusel -->
+                <div id="carouselEventos" class="carousel slide" data-bs-ride="carousel" 
+                    style="width: 90%; height: 100%;"">
+
+                    <div class="carousel-inner d-flex" style="height: 100%; overflow: visible !important;">
+                        <!-- Loop para crear los slides dinámicamente -->
+                        @foreach($eventos->chunk(2) as $eventoChunk)  <!-- Divide los eventos en grupos de 2 para cada slide -->
+                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}" style="height: 100%;">
+                                <div class="d-flex gap-3" style="height: 100%;">
+                                    @foreach($eventoChunk as $evento)
+                                        <div class="card p-3 flex-fill" style="background-image: url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}'); 
+                                            height: 100%; background-size: cover; color: white;
+                                            border-radius: 10px; overflow: hidden;
+                                            box-shadow: 0px 5px 15px rgba(2, 77, 223, 0.7);">
+                                            <h5>{{ $evento->nombre }}</h5>  <!-- Aquí asumiendo que el evento tiene un campo 'Nombre' -->
+                                            <p>{{ $evento->descripcion }}</p>  <!-- Asumiendo que el evento tiene un campo 'Descripcion' -->
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                        <!--
+                        <div class="carousel-item active" style="height: 100%;">
+                            <div class="d-flex gap-3" style="height: 100%;">
+                                <div class="card p-3 flex-fill" style="background-image: url('../../images/dashboard/estadio-1.webp');
+                                    height: 100%; background-size: cover; color: white;
+                                    border-radius: 10px; overflow: hidden;
+                                    box-shadow: 0px 5px 15px rgba(2, 77, 223, 0.7);">
+                                    <h5>Evento 1</h5>
+                                    <p>Descripción del evento 1</p>
+                                </div>
+                                <div class="card p-3 flex-fill" style="background-image: url('../../images/dashboard/estadio-2.webp');
+                                    height: 100%; background-size: cover; color: white;
+                                    border-radius: 10px; overflow: hidden;
+                                    box-shadow: 0px 5px 15px rgba(2, 77, 223, 0.7);">
+                                    <h5>Evento 2</h5>
+                                    <p>Descripción del evento 2</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item" style="height: 100%;">
+                            <div class="d-flex gap-3" style="height: 100%;">
+                                <div class="card p-3 flex-fill" style="background-image: url('../../images/dashboard/estadio-3.webp');
+                                    height: 100%; background-size: cover; color: white;
+                                    border-radius: 10px; overflow: hidden;
+                                    box-shadow: 0px 5px 15px rgba(2, 77, 223, 0.7);">
+                                    <h5>Evento 3</h5>
+                                    <p>Descripción del evento 3</p>
+                                </div>
+                                <div class="card p-3 flex-fill" style="background-image: url('../../images/dashboard/estadio-4.webp');
+                                    height: 100%; background-size: cover; color: white;
+                                    border-radius: 10px; overflow: hidden;
+                                    box-shadow: 0px 5px 15px rgba(2, 77, 223, 0.7);">
+                                    <h5>Evento 4</h5>
+                                    <p>Descripción del evento 4</p>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- Botón Siguiente -->
+                <button class="carousel-control-next custom-carousel-btn" type="button" data-bs-target="#carouselEventos" data-bs-slide="next"
+                    style="width: 5% !important;">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+
+            </div>
         </div>
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+
     </body>
 </html>
 

@@ -17,7 +17,7 @@ class C_Eventos extends Controller
 {
     public function index(): View
     {
-        $eventos = M_Eventos::all();
+        $eventos =  M_Eventos::with('local')->get();
         $noEventos = $eventos->isEmpty();
 
         return view('layouts.eventos.V_todoseventos', compact('eventos', 'noEventos'));
@@ -44,7 +44,7 @@ class C_Eventos extends Controller
                 'fecha_evento' => 'required|date|after_or_equal:fecha_fin',
                 'aforo_evento' => 'required|integer', // Dependiendo del aforo del local, el aforo_evento debe ser menor o igual
                 'estado' => 'required|in:ACTIVO,CANCELADO,FINALIZADO',
-                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,webp,avif|max:2048',
             ]);
 
             // Si la foto fue subida, guardarla
@@ -114,7 +114,7 @@ class C_Eventos extends Controller
                 'fecha_evento' => 'required|date|after_or_equal:fecha_fin',
                 'aforo_evento' => 'required|integer',
                 'estado' => 'required|in:ACTIVO,CANCELADO,FINALIZADO',
-                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,avif|max:2048',
             ]);
 
             //dd($request->all());

@@ -40,6 +40,11 @@ class M_Tickets extends Model
 
     public function plan()
     {
-        return $this->belongsTo(Plan::class);
+        return $this->belongsTo(M_Plan::class, 'plan_id');
+    }
+
+    public function evento()
+    {
+        return $this->belongsTo(M_Eventos::class, 'evento_id');
     }
 }

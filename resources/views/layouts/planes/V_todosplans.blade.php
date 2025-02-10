@@ -24,7 +24,7 @@
                     @else
                         <div class="row">
                             @foreach($eventos as $evento)
-                                <div class="col-lg-6 col-md-12 mb-4""> <!-- 2 eventos por fila en pantallas grandes -->
+                                <div class="col-lg-6 col-md-12 mb-4"> <!-- 2 eventos por fila en pantallas grandes -->
                                     <div class="card shadow-sm">
                                         <div class="card-header bg-primary text-white text-center">
                                             <h5 class="mb-0">{{ $evento->nombre }}</h5>

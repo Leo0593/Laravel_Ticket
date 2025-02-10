@@ -9,10 +9,6 @@
             <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/asientos.png');">
                 <h1><strong>Asientos</strong> para Cada Ocasión</h1>
                 <h2>Disfruta de la Comodidad en Tu Evento</h2>
-                
-                <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">
-                    Agregar
-                </button> 
             </div>
 
             <div class="main_contenedor">
