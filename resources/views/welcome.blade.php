@@ -38,9 +38,21 @@
                                             color: white;
                                             border-radius: 10px; 
                                             overflow: hidden;
-                                            box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.7);">
-                                            <h5>{{ $evento->nombre }}</h5>  <!-- Aquí asumiendo que el evento tiene un campo 'Nombre' -->
-                                            <p>{{ $evento->descripcion }}</p>  <!-- Asumiendo que el evento tiene un campo 'Descripcion' -->
+                                            box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.7);
+                                            display: flex;
+                                            flex-direction: row;
+                                            justify-content: flex-end;
+                                            ali
+                                            ">
+                                            <div style="background-color: black; color: white; width: auto; display: flex;"> 
+                                                <h5>{{ $evento->nombre }}</h5>
+                                            </div>
+
+                                            <div style="background-color: red; color: white; width: auto; display: flex;"> 
+                                                <h5>Ver mas</h5>
+                                            </div>
+
+                                              <!--<p>{{ $evento->descripcion }}</p> Asumiendo que el evento tiene un campo 'Descripcion' -->
                                         </div>
                                     @endforeach
                                 </div>

@@ -6,7 +6,8 @@
         @include('layouts.header')
 
         <div class="main">
-            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/dashboard.jpg'); height: 300px;">
+            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/dashboard.jpg'); 
+            height: 500px;">
                 <h1><strong>DASHBOARD</strong></h1>
             </div>
 
