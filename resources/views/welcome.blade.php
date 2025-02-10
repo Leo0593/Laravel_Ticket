@@ -11,7 +11,7 @@
                 <button class="btn-1">Ver</button>
             </div>
 
-            <div class="mt-4 d-flex align-items-center justify-content-center" style="width: 100%; height: 280px; position: relative;">
+            <div class="p-5 d-flex align-items-center justify-content-center" style="width: 100%; flex-grow: 1; height: 280px; position: relative;">
                 <!-- Botón Anterior -->
                 <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#carouselEventos" data-bs-slide="prev"
                     style="width: 5% !important">
@@ -28,10 +28,17 @@
                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}" style="height: 100%;">
                                 <div class="d-flex gap-3" style="height: 100%;">
                                     @foreach($eventoChunk as $evento)
-                                        <div class="card p-3 flex-fill" style="background-image: url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}'); 
-                                            height: 100%; background-size: cover; color: white;
-                                            border-radius: 10px; overflow: hidden;
-                                            box-shadow: 0px 5px 15px rgba(2, 77, 223, 0.7);">
+                                        <div class="card p-3 flex-fill evento-card" 
+                                            data-img="{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}"
+                                            style="background-image: url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}'); 
+                                            height: 100%; 
+                                            background-size: cover; 
+                                            background-position: center;
+                                            background-repeat: no-repeat;
+                                            color: white;
+                                            border-radius: 10px; 
+                                            overflow: hidden;
+                                            box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.7);">
                                             <h5>{{ $evento->nombre }}</h5>  <!-- Aquí asumiendo que el evento tiene un campo 'Nombre' -->
                                             <p>{{ $evento->descripcion }}</p>  <!-- Asumiendo que el evento tiene un campo 'Descripcion' -->
                                         </div>
@@ -95,6 +102,44 @@
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const cards = document.querySelectorAll(".evento-card");
+
+                cards.forEach(card => {
+                    const imgUrl = card.getAttribute("data-img");
+
+                    if (imgUrl) {
+                        const img = new Image();
+                        img.crossOrigin = "Anonymous"; // Permite cargar imágenes externas sin problemas
+                        img.src = imgUrl;
+
+                        img.onload = function () {
+                            const canvas = document.createElement("canvas");
+                            const ctx = canvas.getContext("2d");
+
+                            canvas.width = 10;
+                            canvas.height = 10;
+                            ctx.drawImage(img, 0, 0, 10, 10);
+
+                            const imageData = ctx.getImageData(5, 5, 1, 1).data; // Obtiene color central
+
+                            let r = imageData[0], g = imageData[1], b = imageData[2];
+
+                            // ✨ 1. Aumentar el brillo (subimos 40, sin pasar de 255)
+                            r = Math.min(r + 40, 255);
+                            g = Math.min(g + 40, 255);
+                            b = Math.min(b + 40, 255);
+
+
+                            const color = `rgba(${r}, ${g}, ${b}, 0.9)`; // Más vibrante y claro
+
+                            card.style.boxShadow = `2px 5px 15px ${color}`;
+                        };
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
 

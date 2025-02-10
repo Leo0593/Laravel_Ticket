@@ -14,7 +14,7 @@
                     <a href="{{ route('eventos.create') }}">
                         Agregar
                     </a>
-                    <!--Agregar-->
+                    
                 </button> 
             </div>
 
