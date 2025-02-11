@@ -38,18 +38,8 @@
                                 <li class="list-group-item"><strong>ESTADO: </strong>{{ $evento->estado }}</li>
                             </ul>
                             <div class="card-body d-flex justify-content-around" style="max-height: 70px;">
-                                <a href="#" class="btn btn-warning" style="color: white;" data-bs-toggle="modal" data-bs-target="#editModal" 
-                                data-id="{{ $evento->id }}"
-                                data-nombre="{{ $evento->nombre }}"
-                                data-descripcion="{{ $evento->descripcion }}"
-                                data-local_id="{{ $evento->local_id }}"
-                                data-aforo_evento="{{ $evento->aforo_evento }}"
-                                data-fecha_evento="{{ $evento->fecha_evento }}"
-                                data-fecha_inicio="{{ $evento->fecha_inicio }}"
-                                data-fecha_fin="{{ $evento->fecha_fin }}"
-                                data-estado="{{ $evento->estado }}"
-                                data-foto="{{ $evento->Foto }}">
-                                <i class="fa-solid fa-pen"></i>
+                                <a href="{{ route('eventos.edit', $evento->id) }}" class="text-indigo-500 hover:text-indigo-700">
+                                    <i class="fa-solid fa-edit"></i> 
                                 </a>   
 
                                 <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST" class="inline-block">

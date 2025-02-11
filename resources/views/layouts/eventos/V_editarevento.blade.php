@@ -72,24 +72,24 @@
                         <!-- Fecha Inicio -->
                         <div>
                             <label for="fecha_inicio">Fecha de Inicio de Venta</label>
-                            <input type="date" id="fecha_inicio" name="fecha_inicio"
-                                value="{{ old('fecha_inicio', $evento->fecha_inicio ? \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d') : '') }}"
+                            <input type="datetime-local" id="fecha_inicio" name="fecha_inicio"
+                                value="{{ old('fecha_inicio', $evento->fecha_inicio ? \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d\TH:i') : '') }}"
                                 required>
                         </div>
 
                         <!-- Fecha Fin -->
                         <div>
                             <label for="fecha_fin">Fecha de Fin de Venta</label>
-                            <input type="date" id="fecha_fin" name="fecha_fin"
-                                value="{{ old('fecha_fin', $evento->fecha_fin ? \Carbon\Carbon::parse($evento->fecha_fin)->format('Y-m-d') : '') }}"
+                            <input type="datetime-local" id="fecha_fin" name="fecha_fin"
+                                value="{{ old('fecha_fin', $evento->fecha_fin ? \Carbon\Carbon::parse($evento->fecha_fin)->format('Y-m-d\TH:i') : '') }}"
                                 required>
                         </div>
 
                         <!-- Fecha Evento -->
                         <div>
                             <label for="fecha_evento">Fecha del Evento</label>
-                            <input type="date" id="fecha_evento" name="fecha_evento"
-                                value="{{ old('fecha_evento', $evento->fecha_evento ? \Carbon\Carbon::parse($evento->fecha_evento)->format('Y-m-d') : '') }}"
+                            <input type="datetime-local" id="fecha_evento" name="fecha_evento"
+                                value="{{ old('fecha_evento', $evento->fecha_evento ? \Carbon\Carbon::parse($evento->fecha_evento)->format('Y-m-d\TH:i') : '') }}"
                                 required>                      
                         </div>
 
