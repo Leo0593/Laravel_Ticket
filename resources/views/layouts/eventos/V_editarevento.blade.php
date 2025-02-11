@@ -89,7 +89,7 @@
                         <div>
                             <label for="fecha_evento">Fecha del Evento</label>
                             <input type="date" id="fecha_evento" name="fecha_evento"
-                                value="{{ old('fecha_evento', $evento->fecha_evento ? \Carbon\Carbon::parse($evento->fecha_evento)->format('Y-m-d') : '') }}"
+                                value="{{ $evento->fecha_evento->format('d/m/Y') }} a las {{ $evento->hora_evento }}"
                                 required>                      
                         </div>
 

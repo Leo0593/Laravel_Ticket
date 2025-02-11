@@ -45,6 +45,7 @@ class C_Eventos extends Controller
                 'aforo_evento' => 'required|integer', // Dependiendo del aforo del local, el aforo_evento debe ser menor o igual
                 'estado' => 'required|in:ACTIVO,CANCELADO,FINALIZADO',
                 'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,webp,avif|max:2048',
+                'hora_evento' => 'nullable|date_format:H:i',
             ]);
 
             // Si la foto fue subida, guardarla
@@ -58,8 +59,6 @@ class C_Eventos extends Controller
             // Añadir la ruta de la foto a los datos validados (si fue subida)
             $validated['Foto'] = $path;
 
-            dd($request->all());
-            
             // Comprobar si el evento ya existe con la misma combinación de datos (como nombre, fecha, etc.)
             $existingEvent = M_Eventos::where('nombre', $validated['nombre'])
             ->where('fecha_inicio', $validated['fecha_inicio'])
@@ -146,11 +145,25 @@ class C_Eventos extends Controller
                 }
             }
 
+            $evento = M_Eventos::create([
+                'user_id' => $validated['user_id'],
+                'local_id' => $validated['local_id'],
+                'nombre' => $validated['nombre'],
+                'descripcion' => $validated['descripcion'],
+                'fecha_inicio' => $validated['fecha_inicio'],
+                'fecha_fin' => $validated['fecha_fin'],
+                'fecha_evento' => $validated['fecha_evento'],
+                'aforo_evento' => $validated['aforo_evento'],
+                'estado' => $validated['estado'],
+                'Foto' => $validated['Foto'], // Si se ha subido una foto
+                'hora_evento' => $validated['hora_evento'], // Asegúrate de incluir la hora
+            ]);
+
             // Si el aforo ha aumentado, agregar los nuevos asientos
             for ($i = $asientosExistentesCount + 1; $i <= $nuevoAforo; $i++) {
                 M_Asientos::create([
                     'local_id' => $evento->local_id, // El local será el mismo que el evento
-                    'evento_id' => $evento->id, // ID del evento actualizado
+                    'evento_id' => $evento->id, // ID del evento creado
                     'plan_id' => null, // Si el plan es null, se asigna null
                     'numero_asiento' => $i, // Número de asiento
                     'estado' => 'disponible', // Estado inicial del asiento
