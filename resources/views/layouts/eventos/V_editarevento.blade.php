@@ -72,7 +72,7 @@
                         <!-- Fecha Inicio -->
                         <div>
                             <label for="fecha_inicio">Fecha de Inicio de Venta</label>
-                            <input type="date" id="fecha_inicio" name="fecha_inicio"
+                            <input type="datetime_local" id="fecha_inicio" name="fecha_inicio"
                                 value="{{ old('fecha_inicio', $evento->fecha_inicio ? \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d') : '') }}"
                                 required>
                         </div>
@@ -88,7 +88,7 @@
                         <!-- Fecha Evento -->
                         <div>
                             <label for="fecha_evento">Fecha del Evento</label>
-                            <input type="date" id="fecha_evento" name="fecha_evento"
+                            <input type="datetime_local" id="fecha_evento" name="fecha_evento"
                                 value="{{ $evento->fecha_evento->format('d/m/Y') }} a las {{ $evento->hora_evento }}"
                                 required>                      
                         </div>
