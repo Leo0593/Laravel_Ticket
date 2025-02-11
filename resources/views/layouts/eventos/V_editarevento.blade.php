@@ -77,7 +77,7 @@
                                 required>
                         </div>
 
-                        <!-- Fecha Fin -->
+                        <!-- Fecha Fin  2--> 
                         <div>
                             <label for="fecha_fin">Fecha de Fin de Venta</label>
                             <input type="datetime-local" id="fecha_fin" name="fecha_fin"
