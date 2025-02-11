@@ -14,7 +14,7 @@
                     <a href="{{ route('eventos.create') }}">
                         Agregar
                     </a>
-                    
+                    <!--Agregar-->
                 </button> 
             </div>
 
@@ -42,10 +42,18 @@
                                     <li class="list-group-item"><strong>ESTADO: </strong>{{ $evento->estado }}</li>
                                 </ul>
                                 <div class="card-body d-flex justify-content-around" style="max-height: 70px;">
-                                    <a href="{{ route('eventos.edit', $evento->id) }}" 
-                                        class="text-blue-500 hover:text-blue-700" 
-                                        style="margin-right: 10px;">
-                                        <i class="fa-solid fa-pen"></i>
+                                    <a href="#" class="btn btn-warning" style="color: white;" data-bs-toggle="modal" data-bs-target="#editModal" 
+                                    data-id="{{ $evento->id }}"
+                                    data-nombre="{{ $evento->nombre }}"
+                                    data-descripcion="{{ $evento->descripcion }}"
+                                    data-local_id="{{ $evento->local_id }}"
+                                    data-aforo_evento="{{ $evento->aforo_evento }}"
+                                    data-fecha_evento="{{ $evento->fecha_evento }}"
+                                    data-fecha_inicio="{{ $evento->fecha_inicio }}"
+                                    data-fecha_fin="{{ $evento->fecha_fin }}"
+                                    data-estado="{{ $evento->estado }}"
+                                    data-foto="{{ $evento->Foto }}">
+                                    <i class="fa-solid fa-pen"></i>
                                     </a>   
 
                                     <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST" class="inline-block">
@@ -62,7 +70,147 @@
                     @endif
                 </div>
 
-                <!--
+                <!-- Modal Agregar -->
+                @php
+                    $color_add = 'var(--color)';
+                @endphp
+
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="color: white;">
+                            <div class="modal-header" style="background-color: {{ $color_add }}; align-items: center;">
+                                <h5 class="modal-title" id="addModalLabel"><strong>Agregar</strong></h5>
+                                <i class="fa-solid fa-plus-circle" style="margin-left: 10px"></i>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!-- ERROR -->
+                            <form method="POST" action="{{ route('eventos.store') }}" enctype="multipart/form-data">
+                                @csrf
+
+                                <!-- Usuario -->
+                                <div class="mb-4">
+                                    <label for="user_id" class="block text-sm font-medium text-gray-700">{{ __('Usuario') }}</label>
+                                    <select name="user_id" id="user_id" 
+                                    class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                    required>
+                                        @foreach($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Local -->
+                                <div class="mb-4">
+                                    <label for="local_id" class="block text-sm font-medium text-gray-700">{{ __('Local') }}</label>
+                                    <select name="local_id" id="local_id" 
+                                        class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                        required>
+                                        @foreach($locales as $local)
+                                            <option value="{{ $local->id }}" 
+                                                    data-aforo="{{ $local->Aforo }}">
+                                                {{ $local->Nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Nombre -->
+                                <div class="mb-4">
+                                    <label for="nombre" class="block text-sm font-medium text-gray-700">{{ __('Nombre') }}</label>
+                                    <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" 
+                                        class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                        required>
+                                </div>
+
+                                <!-- Descripcion -->
+                                <div class="mb-4">
+                                    <label for="descripcion" class="block text-sm font-medium text-gray-700">{{ __('Descripción') }}</label>
+                                    <textarea name="descripcion" id="descripcion" 
+                                        class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                        ></textarea>
+                                </div>
+
+                                <!-- Fecha_inicio -->
+                                <div class="mb-4">
+                                    <label for="fecha_inicio" class="block text-sm font-medium text-gray-700">{{ __('Fecha de inicio') }}</label>
+                                    <input type="date" name="fecha_inicio" id="fecha_inicio"
+                                        class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                        required>
+                                </div>
+
+                                <!-- Fecha_fin -->
+                                <div class="mb-4">
+                                    <label for="fecha_fin" class="block text-sm font-medium text-gray-700">{{ __('Fecha de fin') }}</label>
+                                    <input type="date" name="fecha_fin" id="fecha_fin" 
+                                        class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                        required>
+                                </div>
+
+                                <!-- Fecha_limite -->
+                                <div class="mb-4">
+                                    <label for="fecha_evento" class="block text-sm font-medium text-gray-700">{{ __('Fecha límite') }}</label>
+                                    <input type="date" name="fecha_evento" id="fecha_evento" 
+                                        class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                        required>
+                                </div>
+
+                                <!-- Aforo -->
+                                <div class="mb-4">
+                                    <label for="aforo_evento" class="block text-sm font-medium text-gray-700">{{ __('Aforo') }}</label>
+                                    <input type="number" name="aforo_evento" id="aforo_evento" 
+                                        class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                        required value="{{ old('aforo_evento', 0) }}" max="0">
+                                </div>
+
+                                <!-- Estado -->
+                                <select name="estado" id="estado" 
+                                    class="mt-1 block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                                    required>
+                                    <option value="ACTIVO" {{ old('estado') == 'ACTIVO' ? 'selected' : '' }}>{{ __('Activo') }}</option>
+                                    <option value="CANCELADO" {{ old('estado') == 'CANCELADO' ? 'selected' : '' }}>{{ __('Cancelado') }}</option>
+                                    <option value="FINALIZADO" {{ old('estado') == 'FINALIZADO' ? 'selected' : '' }}>{{ __('Finalizado') }}</option>
+                                </select>
+
+                                <br>
+                                
+                                <!-- Foto -->
+                                <div>
+                                    <label  style="margin-right: 10px"
+                                        for="Foto">{{ __('Foto del Evento:') }}</label>
+                                    <input type="file" id="Foto" name="Foto">
+                                </div>
+
+                                <div class="mt-6">
+                                    <button type="submit" id="btn_agregar">
+                                        {{ __('Agregar') }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGREGAR: Script para manejar el modal de agregar -->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        document.getElementById('saveAddButton').addEventListener('click', function () {
+                            var form = document.getElementById('addForm');
+                            if (form) {
+                                form.submit(); // Enviar el formulario para agregar el nuevo local
+                            } else {
+                                console.error("Formulario no encontrado.");
+                            }
+                        });
+                    });
+                </script>  
+            </div>
+        </div>
+
+    </body>
+</html> 
+
+<!--
                 <div class="container mt-5">
 
                 </div>
@@ -152,8 +300,3 @@
                         </div>
                     </div>
                 @endforeach-->
-            </div>
-        </div>
-
-    </body>
-</html>
