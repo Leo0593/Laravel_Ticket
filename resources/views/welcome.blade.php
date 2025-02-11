@@ -9,7 +9,6 @@
             <div class="main_banner_1">
                 <h1>TICKETS</h1>
                 <button class="btn-1" onclick="window.location.href='{{ route('evento.all') }}'">Ver</button>
-                <a href="{{ route('evento.all') }}" class="btn-1">Ver</a>
             </div>
 
             <div 

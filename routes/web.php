@@ -10,7 +10,7 @@ Route::get('', function () {
 use App\Http\Controllers\C_Welcome;
 Route::get('/', [C_Welcome::class, 'index']);
 Route::get('/evento/{id}', [C_Welcome::class, 'show'])->name('evento.show');
-Route::get('/eventos', [C_Welcome::class, 'all'])->name('evento.all');
+Route::get('/all', [C_Welcome::class, 'all'])->name('evento.all');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -58,6 +58,7 @@ Route::prefix('eventos')->name('eventos.')->group(function () {
     Route::get('/{id}/edit', [C_Eventos::class, 'edit'])->name('edit');
     Route::put('/{id}', [C_Eventos::class, 'update'])->name('update');
     Route::delete('/{id}', [C_Eventos::class, 'destroy'])->name('destroy');
+    Route::get('/show', [C_Eventos::class, 'show'])->name('show');
 });
 
 use App\Http\Controllers\C_Asientos;
