@@ -72,13 +72,8 @@
                         <!-- Fecha Inicio -->
                         <div>
                             <label for="fecha_inicio">Fecha de Inicio de Venta</label>
-<<<<<<< HEAD
-                            <input type="datetime_local" id="fecha_inicio" name="fecha_inicio"
-                                value="{{ old('fecha_inicio', $evento->fecha_inicio ? \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d') : '') }}"
-=======
                             <input type="datetime-local" id="fecha_inicio" name="fecha_inicio"
                                 value="{{ old('fecha_inicio', $evento->fecha_inicio ? \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d\TH:i') : '') }}"
->>>>>>> c032a656688ec0dbd4806b1764d33776dcf9ffce
                                 required>
                         </div>
 
@@ -93,13 +88,8 @@
                         <!-- Fecha Evento -->
                         <div>
                             <label for="fecha_evento">Fecha del Evento</label>
-<<<<<<< HEAD
-                            <input type="datetime_local" id="fecha_evento" name="fecha_evento"
-                                value="{{ $evento->fecha_evento->format('d/m/Y') }} a las {{ $evento->hora_evento }}"
-=======
                             <input type="datetime-local" id="fecha_evento" name="fecha_evento"
                                 value="{{ old('fecha_evento', $evento->fecha_evento ? \Carbon\Carbon::parse($evento->fecha_evento)->format('Y-m-d\TH:i') : '') }}"
->>>>>>> c032a656688ec0dbd4806b1764d33776dcf9ffce
                                 required>                      
                         </div>
 
@@ -128,7 +118,7 @@
                                 <label for="Foto">Foto del Local</label>
                                 <div class="input-container">
                                     <i class="fas fa-camera"></i>
-                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="file" id="Foto" name="Foto" accept="image/*">
+                                    <input class="input_1" style="--borderColor: {{ $color_add ?? '#000' }}" type="file" id="Foto" name="Foto" accept="image/*">
                                 </div>
                             </div>
 

@@ -48,11 +48,7 @@ class C_Eventos extends Controller
                 'aforo_evento' => 'required|integer', // Dependiendo del aforo del local, el aforo_evento debe ser menor o igual
                 'estado' => 'required|in:ACTIVO,CANCELADO,FINALIZADO',
                 'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,webp,avif|max:2048',
-<<<<<<< HEAD
-                'hora_evento' => 'nullable|date_format:H:i',
-=======
                 'ArtistaGrupo' => 'nullable|string|max:255',
->>>>>>> c032a656688ec0dbd4806b1764d33776dcf9ffce
             ]);
 
             // Si la foto fue subida, guardarla
@@ -65,11 +61,7 @@ class C_Eventos extends Controller
         
             // Añadir la ruta de la foto a los datos validados (si fue subida)
             $validated['Foto'] = $path;
-<<<<<<< HEAD
-
-=======
             
->>>>>>> c032a656688ec0dbd4806b1764d33776dcf9ffce
             // Comprobar si el evento ya existe con la misma combinación de datos (como nombre, fecha, etc.)
             $existingEvent = M_Eventos::where('nombre', $validated['nombre'])
             ->where('fecha_inicio', $validated['fecha_inicio'])
@@ -109,9 +101,11 @@ class C_Eventos extends Controller
         $evento = M_Eventos::findOrFail($id);
         $users = User::all();
         $locales = M_Locales::all();
+        $color_add = "#000";
 
         return view('layouts.eventos.V_editarevento', compact('evento', 'users', 'locales'));
     }
+    
 
     public function update(Request $request, $id): RedirectResponse
     {
@@ -164,7 +158,7 @@ class C_Eventos extends Controller
                 'fecha_evento' => $validated['fecha_evento'],
                 'aforo_evento' => $validated['aforo_evento'],
                 'estado' => $validated['estado'],
-                'Foto' => $validated['Foto'], // Si se ha subido una foto
+                'Foto' => $imagePath, // Si se ha subido una foto
                 'hora_evento' => $validated['hora_evento'], // Asegúrate de incluir la hora
             ]);
 
