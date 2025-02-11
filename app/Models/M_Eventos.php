@@ -22,6 +22,7 @@ class M_Eventos extends Model
         'aforo_evento',
         'estado',
         'Foto',
+        'ArtistaGrupo',
     ];
     
     public function local()
