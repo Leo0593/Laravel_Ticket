@@ -75,7 +75,10 @@
                         <form id="addForm" action="{{ route('eventos.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
-                            <!-- Usuario -->
+                            <!-- Usuario (oculto) -->
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+
+                            <!-- Usuario 
                             <div class="cont_input_1">
                                 <label for="user_id">Usuario</label>
                                 <div class="input-container">
@@ -86,7 +89,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
 
                             <!-- Local -->
                             <div class="cont_input_1">

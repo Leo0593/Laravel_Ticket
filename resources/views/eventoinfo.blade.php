@@ -2,11 +2,13 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     @include('layouts.head')
     
-    <body>
+    <body style="background-color: rgb(246, 246, 246);">
         @include('layouts.header')
 
         <div class="main">
-            <div class="main_banner_2 evento-card" 
+            <div
+                id="banner" 
+                class="main_banner_2 evento-card" 
                 style="
                     background-image: 
                     linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 100%),
@@ -25,7 +27,7 @@
                 <h1><strong>{{ $evento->nombre }}</strong></h1>
             </div>
 
-            <div style="background-color: rgb(246, 246, 246); 
+            <div style="
                 width: 100%;
                 display: flex;
                 flex-direction: column;
@@ -35,23 +37,34 @@
 
                 <div style=" 
                 width: 100%;
-                padding: 5px 150px; 
+                display: flex;
+                justify-content: center; 
+                padding: 10px;
                 background-color: white;
                 box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+
+                position: sticky;
+                top: 0;
+                z-index: 1000;
                 ">
                     <nav class="nav">
-                        <a class="nav-link" href="#">FECHA</a>
-                        <a class="nav-link" href="#">INFO</a>
-                        <a class="nav-link" href="#">ENTRADAS</a>
+                        <a class="nav-link" href="#banner">BANNER</a>
+                        <a class="nav-link" href="#fecha">FECHA</a>
+                        <a class="nav-link" href="#info">INFO</a>
+                        <a class="nav-link" href="#entradas">ENTRADAS</a>
                     </nav>
                 </div>
 
-                <div class="m-5"
+                <div
+                    id="fecha" 
+                    class="m-5"
                     style="
                     width: 70%;
                     background-color: white;
                     padding: 20px 50px;
                     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+
+                    scroll-margin-top: 110px;
                     ">
 
                     <div class="eventos-title-container">
@@ -79,20 +92,25 @@
 
                         <!-- Botón de "Entradas" -->
                         <div style="margin-left: auto;">
-                            <button class="btn-1" style="border: 2px solid #000; color: #000;">
+                            <a href="#entradas" class="btn-1" style="border: 2px solid #000; color: #000; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center;">
                                 <i class="fa-solid fa-cart-plus" style="margin-right: 8px"></i>
                                 Entradas
-                            </button>
+                            </a>
                         </div>
+
                     </div>
                 </div>
 
-                <div class="m-5"
+                <div 
+                    id="info"
+                    class="m-5"
                     style="
                     width: 70%;
                     background-color: white;
                     padding: 20px 50px;
                     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+
+                    scroll-margin-top: 110px;
                     ">
 
                     <div class="eventos-title-container">
@@ -102,19 +120,23 @@
                     <p><?= htmlspecialchars_decode($evento->descripcion) ?></p>
                 </div>
 
-                <div class="m-5"
+                <div 
+                    id="entradas"
+                    class="m-5"
                     style="
                     width: 70%;
                     background-color: white;
                     padding: 20px 50px;
                     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+
+                    scroll-margin-top: 110px;
                     ">
 
                     <div class="eventos-title-container">
                         <h2 class="eventos-title">ENTRADAS</h2>
                     </div>
 
-                        @foreach($evento->planes as $plan)
+                        @foreach($evento->planes as $index => $plan)
                             <div 
                                 style="
                                 display: flex;
@@ -137,14 +159,21 @@
 
                                     <!-- Header -->
                                     <div 
+                                        id="header-{{ $index }}"
+                                        class="header"
                                         style="background-color: rgb(246, 246, 246);
                                         width: 100%;
                                         height: auto;
-                                        padding: 5px 10px;
-                                        border-bottom: 1px solid rgba(0, 0, 0, 0.175);
+                                        padding: 10px;
+                                        border-bottom: 1px solid rgba(0, 0, 0, 0.17);
                                         text-align: center;
-                                        ">
-                                        <h4">{{ $plan->tipo }}</h4>
+                                        font-weight: bold;
+                                        font-size: 25px;
+                                        display: flex;
+                                        align-text: center;
+                                        justify-content: center;
+                                        "> <!-- rgb(246, 246, 246) -->
+                                        <h4 id="headerText-{{ $index }}" style="margin: 0;">{{ $plan->tipo }}</h4>
                                     </div>
 
                                     <!-- Descripcion -->
@@ -157,7 +186,14 @@
                                         flex-grow: 1;
                                         ">
                                         <h2 style="margin: 10px; font-weight: bold">{{ $plan->precio }} €</h2>
-                                        <p>{{ $plan->descripcion }}</p>
+                                        <p><?= htmlspecialchars_decode($plan->descripcion) ?></p>
+
+                                        <div style="display: flex; justify-content: center; margin: 20px;">
+                                            <a href="#entradas" class="btn-1" style="border: 2px solid #000; color: #000; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center;">
+                                                <i class="fa-solid fa-ticket" style="margin-right: 8px"></i>
+                                                Comprar
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -171,6 +207,9 @@
                                     background-position: center;
                                     background-repeat: no-repeat;
                                     ">
+                                    <img id="hiddenImage-{{ $index }}" 
+                                    src="{{ $plan->Foto ? asset('storage/' . $plan->Foto) : 'https://placehold.co/600x400' }}" 
+                                    style="display: none;">
                                 </div>
                             </div>
                         @endforeach
@@ -231,6 +270,53 @@
                     }
                 }
             });
+        </script>
+
+        <script>
+            window.onload = function () {
+                document.querySelectorAll("[id^='hiddenImage-']").forEach((img) => {
+                    const index = img.id.replace("hiddenImage-", ""); // Extrae el índice del ID
+                    const header = document.getElementById(`header-${index}`);
+                    const headerText = document.getElementById(`headerText-${index}`);
+
+                    img.onload = function () {
+                        const color = getDominantColor(img);
+                        header.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+
+                        // Determinar si el color es claro u oscuro
+                        const brightness = (color.r * 0.299 + color.g * 0.587 + color.b * 0.114);
+                        headerText.style.color = brightness > 128 ? "black" : "white";
+                    };
+
+                    if (img.complete) {
+                        img.onload(); // Si la imagen ya se cargó, ejecutamos la función manualmente
+                    }
+                });
+
+                function getDominantColor(image) {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = image.naturalWidth;
+                    canvas.height = image.naturalHeight;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    let r = 0, g = 0, b = 0, count = 0;
+
+                    for (let i = 0; i < imageData.data.length; i += 4) {
+                        r += imageData.data[i];     // Rojo
+                        g += imageData.data[i + 1]; // Verde
+                        b += imageData.data[i + 2]; // Azul
+                        count++;
+                    }
+
+                    return { 
+                        r: Math.floor(r / count), 
+                        g: Math.floor(g / count), 
+                        b: Math.floor(b / count) 
+                    };
+                }
+            };
         </script>
     </body>
 </html>

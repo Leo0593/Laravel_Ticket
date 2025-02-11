@@ -7,7 +7,7 @@
 
         <div class="main">
             <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/plans.png');">
-                <h1><strong>Planes</strong> para Todos</h1>
+                <h1><strong>Planes para Todos</strong></h1>
                 <h2>Combos Generales o VIP, ¡Tú Decides!</h2>
                 
                 <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">

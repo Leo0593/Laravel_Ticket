@@ -8,7 +8,8 @@
         <div class="main">
             <div class="main_banner_1">
                 <h1>TICKETS</h1>
-                <button class="btn-1">Ver</button>
+                <button class="btn-1" onclick="window.location.href='{{ route('evento.all') }}'">Ver</button>
+                <a href="{{ route('evento.all') }}" class="btn-1">Ver</a>
             </div>
 
             <div 
@@ -37,22 +38,23 @@
                                             style="background-image: 
                                                 linear-gradient(to top, rgba(2, 77, 223, 0.9), rgba(0, 0, 0, 0.2) 60%),
                                                 url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}'); 
-                                            height: 100%; 
-                                            background-size: cover; 
-                                            background-position: center;
-                                            background-repeat: no-repeat;
-                                            color: white;
-                                            border: none;
-                                            border-radius: 10px; 
-                                            overflow: hidden;
-                                            box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.7);
-                                            display: flex;
-                                            flex-direction: row;
-                                            justify-content: space-between;
-                                            align-items: flex-end;
-                                            padding: 40px !important;
-                                            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
-                                            ">
+                                                width: 100%;
+                                                height: 100%; 
+                                                background-size: cover; 
+                                                background-position: center;
+                                                background-repeat: no-repeat;
+                                                color: white;
+                                                border: none;
+                                                border-radius: 10px; 
+                                                overflow: hidden;
+                                                box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.7);
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: space-between;
+                                                align-items: flex-end;
+                                                padding: 40px !important;
+                                                text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+                                                ">
                                             <div style="color: white; width: auto; display: flex; max-width: 45%;"> 
                                                 <h5 style="font-size: 2.5rem;">{{ $evento->nombre }}</h5>
                                             </div>

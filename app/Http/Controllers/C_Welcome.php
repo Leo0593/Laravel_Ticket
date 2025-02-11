@@ -25,4 +25,12 @@ class C_Welcome extends Controller
 
         return view('eventoinfo', compact('evento'));
     }
+
+    public function all(): View
+    {
+        $eventos = M_Eventos::with('local')->get();
+        $noEventos = $eventos->isEmpty();
+
+        return view('eventos', compact('eventos', 'noEventos'));
+    }
 }

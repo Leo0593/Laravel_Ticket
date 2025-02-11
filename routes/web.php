@@ -10,6 +10,7 @@ Route::get('', function () {
 use App\Http\Controllers\C_Welcome;
 Route::get('/', [C_Welcome::class, 'index']);
 Route::get('/evento/{id}', [C_Welcome::class, 'show'])->name('evento.show');
+Route::get('/eventos', [C_Welcome::class, 'all'])->name('evento.all');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
