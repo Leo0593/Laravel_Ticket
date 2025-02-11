@@ -20,7 +20,10 @@ class C_Eventos extends Controller
         $eventos =  M_Eventos::with('local')->get();
         $noEventos = $eventos->isEmpty();
 
-        return view('layouts.eventos.V_todoseventos', compact('eventos', 'noEventos'));
+        $users = User::all(); 
+        $locales = M_Locales::all();
+
+        return view('layouts.eventos.V_todoseventos', compact('eventos', 'noEventos', 'users', 'locales'));
     }
 
     public function create(): View
@@ -45,7 +48,11 @@ class C_Eventos extends Controller
                 'aforo_evento' => 'required|integer', // Dependiendo del aforo del local, el aforo_evento debe ser menor o igual
                 'estado' => 'required|in:ACTIVO,CANCELADO,FINALIZADO',
                 'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,webp,avif|max:2048',
+<<<<<<< HEAD
                 'hora_evento' => 'nullable|date_format:H:i',
+=======
+                'ArtistaGrupo' => 'nullable|string|max:255',
+>>>>>>> c032a656688ec0dbd4806b1764d33776dcf9ffce
             ]);
 
             // Si la foto fue subida, guardarla
@@ -58,7 +65,11 @@ class C_Eventos extends Controller
         
             // Añadir la ruta de la foto a los datos validados (si fue subida)
             $validated['Foto'] = $path;
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> c032a656688ec0dbd4806b1764d33776dcf9ffce
             // Comprobar si el evento ya existe con la misma combinación de datos (como nombre, fecha, etc.)
             $existingEvent = M_Eventos::where('nombre', $validated['nombre'])
             ->where('fecha_inicio', $validated['fecha_inicio'])
@@ -69,7 +80,6 @@ class C_Eventos extends Controller
             if ($existingEvent) {
                 return redirect()->route('eventos.index')->with('error', 'El evento ya existe.');
             }
-
             
             // Guardar el evento en la base de datos
             $evento = M_Eventos::create($validated);
@@ -91,7 +101,6 @@ class C_Eventos extends Controller
         } catch (\Exception $e) {
             Log::error('Error al guardar el evento: ' . $e->getMessage());
             dd($e->getMessage());  // Mostrar mensaje de error
-        
         }
     }
 
