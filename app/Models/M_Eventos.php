@@ -28,4 +28,9 @@ class M_Eventos extends Model
     {
         return $this->belongsTo(M_Locales::class, 'local_id'); // Asegúrate de que 'local_id' es el campo que conecta ambos modelos
     }
+
+    public function planes()
+    {
+        return $this->hasMany(M_Plan::class, 'evento_id');
+    }
 }
