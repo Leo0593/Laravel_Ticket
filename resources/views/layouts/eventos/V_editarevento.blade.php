@@ -112,18 +112,15 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <!-- Foto -->                        
-                        <div>
-                            <label for="Foto">{{ __('Foto del Evento') }}</label>
-                            <input type="file" id="Foto" name="Foto">
-                            @if ($evento->Foto)
-                                <div class="mt-2">
-                                    <img src="{{ asset('storage/'.$evento->Foto) }}" alt="Foto del evento" width="100">
-                                    <p class="text-sm text-gray-500">{{ __('Si no deseas cambiar la foto, deja el campo vacío.') }}</p>
+                      
+                        <!-- Foto -->
+                        <div class="cont_input_1">
+                                <label for="Foto">Foto del Local</label>
+                                <div class="input-container">
+                                    <i class="fas fa-camera"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="file" id="Foto" name="Foto" accept="image/*">
                                 </div>
-                            @endif
-                        </div>
+                            </div>
 
                         <div>
                             <button id="btn_agregar" type="submit">Actualizar Evento</button>
