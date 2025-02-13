@@ -402,7 +402,7 @@
 
                     // Llenar los campos del formulario en el modal con los datos correspondientes
                     document.getElementById('user_id').value = userId || ''; // Si userId no está definido, asignar ''
-º                   document.getElementById('local_id').value = localId || ''; // Lo mismo para localId
+                    document.getElementById('local_id').value = localId || ''; // Lo mismo para localId
                     document.getElementById('nombre').value = nombre || ''; 
                     document.getElementById('descripcion').value = descripcion || ''; 
                     document.getElementById('fecha_inicio').value = fechaInicio || ''; 
@@ -445,5 +445,50 @@
                 });
             });
         </script> 
+
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #dc3545; align-items: center; color: white;">
+                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Eliminar</strong></h5>
+                        <i class="fa-solid fa-trash" style="margin-left: 10px"></i>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar: <strong id="deleteLocalName"></strong>?
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: center !important;">
+                        <form id="deleteForm" method="POST" action="{{ route('locales.destroy', ':id') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ELIMINAR: Script para manejar el modal de eliminación -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var deleteModal = document.getElementById('deleteModal');
+
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    var link = event.relatedTarget; // El enlace que activó el modal
+                    var localId = link.getAttribute('data-id'); // Obtener el ID del local
+                    var localName = link.getAttribute('data-nombre'); // Obtener el nombre del local
+
+                    // Actualizar el texto dentro del modal
+                    document.getElementById('deleteLocalName').textContent = localName;
+
+                    // Actualizar la acción del formulario de eliminación
+                    var formAction = document.getElementById('deleteForm').action;
+                    document.getElementById('deleteForm').action = formAction.replace(':id', localId);
+                });
+            });
+        </script>
     </body>
 </html>
