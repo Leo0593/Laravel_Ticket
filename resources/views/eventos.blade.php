@@ -159,12 +159,13 @@
                             b = Math.min(255, b * factor);
 
                             // Crear un color de sombra dinámica
-                            const color = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.9)`;
+                            const color = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.1)`;
 
                             // Aplicar la sombra y el fondo con el gradiente dinámico
                             card.style.boxShadow = `3px 5px 15px ${color}`;
                             card.style.backgroundImage = `
                                 linear-gradient(to top, ${color}, rgba(0, 0, 0, 0.2) 60%),
+                                linear-gradient(to bottom, ${color}, rgba(0, 0, 0, 0.2) 40%),
                                 url('${imgUrl}')
                             `;
                         };
