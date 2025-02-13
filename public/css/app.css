@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Orbitron:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
     --color: rgba(2, 77, 223, 1);
@@ -14,7 +15,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Work Sans', sans-serif;
 }
 
 body {
@@ -71,6 +72,25 @@ body {
     cursor: pointer;
 
     transition: all 0.3s ease; /* Añadido para la transición suave */
+}
+
+.btn-2{
+    border: white 2px solid;
+
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    transition: all 0.3s ease; /* Añadido para la transición suave */
+}
+
+.btn-2:hover, .btn-2:focus{
+
+    transform: scale(1.1); /* Usar transform en lugar de scale directamente */
+}
+
+.btn-2:active{
+    transform: scale(0.9); /* Usar transform también aquí */
 }
 
 .btn-1:hover{
@@ -210,15 +230,19 @@ body {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .input_1 {
     background-color: transparent;
 
+    position: relative;
+
     width: 100%;
     padding: 10px !important;
 
     padding-left: 40px !important; /* Espacio para el ícono */
+    padding-right: 40px !important;
 
     border-radius: 10px !important;
 
@@ -231,6 +255,13 @@ body {
     position: absolute;
     left: 10px; 
     color: black; 
+}
+
+.input-container i.fas.fa-eye {
+    right: 10px; /* Posición del ícono de ojo */
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .textarea-container i {
@@ -431,4 +462,69 @@ body {
     100% {
         background-position: 0 50%;
     }
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px; /* Tamaño de texto */
+    color: #4a4a4a; /* Color de texto */
+}
+
+/* Estilo del checkbox normal (invisible) */
+.checkbox-input {
+    display: none;
+}
+
+/* Estilo del contorno del checkbox personalizado */
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #aaa;
+    border-radius: 4px;
+    margin-right: 8px;
+    position: relative;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+/* Cambiar el color cuando el checkbox está marcado */
+.checkbox-input:checked + .checkbox-custom {
+    background-color: var(--color);
+    border-color: var(--color);;
+}
+
+/* El "check" dentro del checkbox cuando está marcado */
+.checkbox-input:checked + .checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+/* Estilo del texto */
+.text {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Estilo del texto cuando está en el tema oscuro */
+body.dark .text {
+    color: #ccc;
+}
+
+/* Estilo cuando el checkbox está en foco */
+.checkbox-input:focus + .checkbox-custom {
+    box-shadow: 0 0 3px rgba(72, 133, 237, 0.8);
+}
+
+.checkbox-custom:hover {
+    background-color: #f2f2f2;
+    border: 2px solid var(--color);
 }
