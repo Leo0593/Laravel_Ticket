@@ -7,7 +7,7 @@
 
         <div class="main">
             <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/tickets.jpg');">
-                <h1><strong>Planes</strong> para Todos</h1>
+                <h1><strong>Planes para Todos</strong></h1>
                 <h2>Combos Generales o VIP, ¡Tú Decides!</h2>
             </div>
 

@@ -7,7 +7,7 @@
 
         <div class="main">
             <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/asientos.png');">
-                <h1><strong>Asientos</strong> para Cada Ocasión</h1>
+                <h1><strong>Asientos para Cada Ocasión</strong></h1>
                 <h2>Disfruta de la Comodidad en Tu Evento</h2>
             </div>
 

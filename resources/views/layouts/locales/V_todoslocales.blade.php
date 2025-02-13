@@ -7,7 +7,7 @@
 
         <div class="main">
             <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/estadio-1.webp');">
-                <h1>Lugares para  <strong>Tu Evento</strong></h1>
+                <h1><strong> Lugares para Tú Evento</strong></h1>
                 <h2>Encuentra Tu Lugar Perfecto</h2>
 
                 <!-- -->
