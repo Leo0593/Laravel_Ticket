@@ -393,7 +393,15 @@ body {
 .container-degradado {
     height: 100vh; 
     width: 100%;
-    background: linear-gradient(45deg, #e73a06,#ea1394, #3667cf, #23d541);
+    background: linear-gradient(45deg,  
+        rgba(2, 77, 223, 1),   /* Azul primario */
+        rgba(0, 131, 255, 1),  /* Azul más claro */
+        rgba(0, 91, 187, 1),   /* Azul intermedio */
+        rgba(0, 56, 121, 1),    /* Azul oscuro */
+        #3667cf, 
+        #23d541);
+    );
+
     background-size: 400% 400%;
     animation: color 12s ease-in infinite;
 }

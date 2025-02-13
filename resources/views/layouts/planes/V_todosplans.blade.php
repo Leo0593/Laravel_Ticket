@@ -13,6 +13,10 @@
                 <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">
                     Agregar
                 </button> 
+
+                <a href="{{ route('planes.create') }}" class="btn-1">
+                    agregar
+                </a>
             </div>
 
             <div class="main_contenedor">
