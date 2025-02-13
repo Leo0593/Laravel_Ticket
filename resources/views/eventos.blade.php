@@ -68,7 +68,7 @@
                         ">
                             <!-- Artista/Grupo en el centro arriba -->
                             <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: white;">
-                                <h5 style="font-size: 2.5rem;">{{ $evento->ArtistaGrupo }}</h5>
+                                <h5 style="font-size: 2.5rem; font-family: 'Orbitron', sans-serif; font-weight: 700;">{{ $evento->ArtistaGrupo }}</h5>
                             </div>
 
                             <!-- Nombre en la esquina inferior izquierda -->
