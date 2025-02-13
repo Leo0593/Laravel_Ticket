@@ -37,17 +37,37 @@
                                 <li class="list-group-item"><strong>FECHA FIN VENTA: </strong>{{ $evento->fecha_fin }}</li>
                                 <li class="list-group-item"><strong>ESTADO: </strong>{{ $evento->estado }}</li>
                             </ul>
+                            <!-- Botón de edición dentro del cuerpo de la tarjeta -->
                             <div class="card-body d-flex justify-content-around" style="max-height: 70px;">
-                                <a href="{{ route('eventos.edit', $evento->id) }}" class="text-indigo-500 hover:text-indigo-700">
-                                    <i class="fa-solid fa-edit"></i> 
-                                </a>   
+                                <!-- BOTÓN DE EDITAR CON MODAL -->
+                                <button type="button" class="btn btn-warning btn-edit"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editModal"
+                                    data-id="{{ $evento->id }}"
+                                    data-user_id="{{ $evento->user_id }}"
+                                    data-local_id="{{ $evento->local_id }}"
+                                    data-nombre="{{ $evento->nombre }}"
+                                    data-descripcion="{{ $evento->descripcion }}"
+                                    data-fecha_inicio="{{ $evento->fecha_inicio }}"
+                                    data-fecha_fin="{{ $evento->fecha_fin }}"
+                                    data-fecha_evento="{{ $evento->fecha_evento }}"
+                                    data-aforo_evento="{{ $evento->aforo_evento }}"
+                                    data-estado="{{ $evento->estado }}"
+                                    data-hora_evento="{{ $evento->hora_evento }}"
+                                    data-foto="{{ $evento->foto }}">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
 
+                                <!-- BOTÓN DE ELIMINAR -->
                                 <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-700 ml-4" 
-                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este local?')">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <button type="button" class="btn btn-danger" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#deleteModal"
+                                            data-id="1" 
+                                            data-nombre="Ejemplo Local">
+                                        Eliminar
                                     </button>
                                 </form>
                             </div>
@@ -207,15 +227,13 @@
                 document.getElementById('saveAddButton').addEventListener('click', function () {
                     var form = document.getElementById('addForm');
                     if (form) {
-                        form.submit(); // Enviar el formulario para agregar el nuevo local
+                        form.submit(); // Enviar el formulario para agregar el nuevo evento
                     } else {
                         console.error("Formulario no encontrado.");
                     }
                 });
             });
         </script>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Modal Editar -->
         @php
@@ -232,7 +250,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form id="editForm" action="{{ route('eventos.update', $local->id) }}" method="POST" enctype="multipart/form-data">
+                        <form id="editForm"  action="{{ route('eventos.update', $local->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -372,8 +390,9 @@
         <script>
              document.addEventListener("DOMContentLoaded", function () {
                 var editModal = document.getElementById('editModal');
-                editModal.addEventListener('show.bs.modal', function (event) {   
-                    var button = event.relatedTarget; // Botón que activó el modal
+
+                editModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
                     
                     // Limpiar los campos antes de llenarlos con los nuevos datos
                     document.getElementById('user_id').value = ''; // campo para el ID de usuario
@@ -404,47 +423,28 @@
                     var foto = button.getAttribute('data-foto');
 
                     // Llenar los campos del formulario en el modal con los datos correspondientes
-                    document.getElementById('user_id').value = userId || ''; // Si userId no está definido, asignar ''
-                    document.getElementById('local_id').value = localId || ''; // Lo mismo para localId
-                    document.getElementById('nombre').value = nombre || ''; 
-                    document.getElementById('descripcion').value = descripcion || ''; 
-                    document.getElementById('fecha_inicio').value = fechaInicio || ''; 
-                    document.getElementById('fecha_fin').value = fechaFin || ''; 
-                    document.getElementById('fecha_evento').value = fechaEvento || ''; 
-                    document.getElementById('aforo_evento').value = aforoEvento || ''; 
-                    document.getElementById('estado').value = estado || ''; 
-                    document.getElementById('hora_evento').value = horaEvento || ''; 
+                    document.getElementById('user_id').value = userId || '';
+                    document.getElementById('local_id').value = localId || '';
+                    document.getElementById('nombre').value = nombre || '';
+                    document.getElementById('descripcion').value = descripcion || '';
+                    document.getElementById('fecha_inicio').value = fechaInicio || '';
+                    document.getElementById('fecha_fin').value = fechaFin || '';
+                    document.getElementById('fecha_evento').value = fechaEvento || '';
+                    document.getElementById('aforo_evento').value = aforoEvento || '';
+                    document.getElementById('estado').value = estado || '';
+                    document.getElementById('hora_evento').value = horaEvento || '';
                     
                     // Mostrar la foto si existe
-                    if (foto) {
-                        var img = document.createElement('img');
-                        img.src = foto; // Establecer la fuente de la foto si existe                    
-                        img.style.maxWidth = '200px';                   
-                        document.getElementById('existingPhotoContainer').appendChild(img);                    
-                    }
-                    console.log(id, nombre, descripcion, direccion, telefono, aforo, tieneAsientos, foto);
-                    // Manejo de imagen previa (solo si existe una imagen)
-                    var fotoInput = document.getElementById('Foto');
                     var existingPhotoContainer = document.getElementById('existingPhotoContainer');
-                    if (foto && foto !== "null") {
-                        existingPhotoContainer.innerHTML = `<img src="/storage/${foto}" alt="Imagen previa" width="100">`;
-                    } else {
-                        existingPhotoContainer.innerHTML = '';
-                    }
-            
+                    existingPhotoContainer.innerHTML = foto ? `<img src="/storage/${foto}" alt="Imagen previa" width="100">` : '';
+
                     // Asignar la acción del formulario dinámicamente
-                    var form = editModal.querySelector('form');
-                    console.log(user_id, local_id, nombre, desripcion, fecha_inicio, fecha_fin, fecha_evento, aforo_evento, estado, hora_evento, foto);
-                    form.action = `/eventos/${id}`; // Ajusta según tu ruta en Laravel
+                    var form = document.getElementById('editForm');
+                    form.action = `/eventos/${id}`;
                 });
                 // Guardar el formulario
                 document.getElementById('saveButton').addEventListener('click', function () {
-                    var form = document.getElementById('editForm');
-                    if (form) {
-                        form.submit(); // Envía el formulario cuando el usuario hace clic en "Guardar"
-                    } else {
-                        console.error("Formulario no encontrado.");
-                    }
+                    document.getElementById('editForm').submit();
                 });
             });
         </script> 
@@ -453,28 +453,32 @@
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-header" style="background-color: #dc3545; align-items: center; color: white;">
-                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Eliminar</strong></h5>
-                        <i class="fa-solid fa-trash" style="margin-left: 10px"></i>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- Encabezado del modal -->
+                    <div class="modal-header" style="background-color: #dc3545; color: white;">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">
+                            <strong>Eliminar</strong> <i class="fa-solid fa-trash" style="margin-left: 10px;"></i>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <!-- Cuerpo del modal -->
+                    <div class="modal-body text-center">
                         ¿Estás seguro de que deseas eliminar: <strong id="deleteLocalName"></strong>?
                     </div>
 
-                    <div class="modal-footer" style="justify-content: center !important;">
+                    <!-- Pie del modal -->
+                    <div class="modal-footer" style="justify-content: center;">
                         <form id="deleteForm" method="POST" action="{{ route('locales.destroy', ':id') }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                            <button type="submit" class="btn btn-danger px-4">Eliminar</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ELIMINAR: Script para manejar el modal de eliminación -->
+        <!-- Script para manejar el modal de eliminación -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var deleteModal = document.getElementById('deleteModal');
@@ -493,5 +497,8 @@
                 });
             });
         </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     </body>
 </html>
