@@ -182,7 +182,7 @@
 
                             <!-- Foto -->
                             <div class="cont_input_1">
-                                <label for="Foto">{{ __('Foto del Evento:') }}</label>
+                                <label for="Foto">Foto del Evento</label>
                                 <div class="input-container">
                                     <i class="fas fa-camera"></i>
                                     <input class="input_1" style="--borderColor: {{ $color_add }}" type="file" id="Foto" name="Foto" accept="image/*">
@@ -217,5 +217,236 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+        <!-- Modal Editar -->
+        @php
+            $color_edit = 'var(--Edit)';
+        @endphp
+
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: {{ $color_edit }}; align-items: center; color: white;">
+                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Editar</strong></h5>
+                        <i class="fa-solid fa-pen" style="margin-left: 10px"></i>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="editForm" action="{{ route('eventos.update', $local->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+
+                            <!-- Usuario -->
+                            <div class="cont_input_1">
+                                <label for="user_id">Usuario</label>
+                                <div class="input-container">
+                                    <i class="fas fa-user"></i> 
+                                    <select style="--borderColor: {{ $color_add }}" name="user_id" id="user_id" class="input_1" required>
+                                        @foreach($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Local -->
+                            <div class="cont_input_1">
+                                <label for="local_id">{{ __('Local') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <select name="local_id" id="local_id" class="input_1" style="--borderColor: {{ $color_add }}" required>
+                                        @foreach($locales as $local)
+                                            <option value="{{ $local->id }}" data-aforo="{{ $local->Aforo }}">{{ $local->Nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="cont_input_1">
+                                <label for="nombre">{{ __('Nombre') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="text" id="nombre" name="nombre" value="{{ old('nombre') }}" required>
+                                </div>
+                            </div>
+
+                            <!-- Artista o Grupo -->
+                            <div class="cont_input_1">
+                                <label for="ArtistaGrupo">{{ __('Artista o Grupo') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-microphone-alt"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="text" id="ArtistaGrupo" name="ArtistaGrupo" value="{{ old('ArtistaGrupo') }}" maxlength="255">
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="cont_input_1">
+                                <label for="descripcion">{{ __('Descripción') }}</label>
+                                <div class="textarea-container">
+                                    <i class="fas fa-align-left"></i>
+                                    <textarea class="input_1" style="--borderColor: {{ $color_add }}" name="descripcion" id="descripcion"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Fecha_inicio -->
+                            <div class="cont_input_1">
+                                <label for="fecha_inicio">{{ __('Fecha de inicio') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="datetime-local" name="fecha_inicio" id="fecha_inicio" required>
+                                </div>
+                            </div>
+
+                            <!-- Fecha_fin -->
+                            <div class="cont_input_1">
+                                <label for="fecha_fin">{{ __('Fecha de fin') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="datetime-local" name="fecha_fin" id="fecha_fin" required>
+                                </div>
+                            </div>
+
+                            <!-- Fecha_evento -->
+                            <div class="cont_input_1">
+                                <label for="fecha_evento">{{ __('Fecha límite') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-clock"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="datetime-local" name="fecha_evento" id="fecha_evento" required>
+                                </div>
+                            </div>
+
+                            <!-- Si necesitas el campo hora_evento, agrégalo al formulario -->
+                            <div class="cont_input_1">
+                                <label for="hora_evento">{{ __('Hora del evento') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-clock"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="time" name="hora_evento" id="hora_evento">
+                                </div>
+                            </div>
+
+                            <!-- Aforo -->
+                            <div class="cont_input_1">
+                                <label for="aforo_evento">{{ __('Aforo') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-users"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="number" name="aforo_evento" id="aforo_evento" required value="{{ old('aforo_evento', 0) }}">
+                                </div>
+                            </div>
+
+                            <!-- Estado -->
+                            <div class="cont_input_1">
+                                <label for="estado">{{ __('Estado') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-flag"></i>
+                                    <select name="estado" id="estado" class="input_1" style="--borderColor: {{ $color_add }}" required>
+                                        <option value="ACTIVO" {{ old('estado') == 'ACTIVO' ? 'selected' : '' }}>{{ __('Activo') }}</option>
+                                        <option value="CANCELADO" {{ old('estado') == 'CANCELADO' ? 'selected' : '' }}>{{ __('Cancelado') }}</option>
+                                        <option value="FINALIZADO" {{ old('estado') == 'FINALIZADO' ? 'selected' : '' }}>{{ __('Finalizado') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Foto -->
+                            <div class="cont_input_1">
+                                <label for="Foto">Foto del Local</label>
+                                <div class="input-container">
+                                    <i class="fas fa-camera"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_edit }}" type="file" id="Foto" name="Foto" accept="image/*">
+                                </div>
+                                <div id="existingPhotoContainer"></div> <!-- Contenedor para la foto previa -->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="justify-content: center !important;">
+                        <button type="button" class="btn btn-warning" style="color: white;" id="saveButton">
+                            <i class="fas fa-save"></i>
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EDITAR: Script para manejar el modal de edición -->
+        <script>
+             document.addEventListener("DOMContentLoaded", function () {
+                var editModal = document.getElementById('editModal');
+                editModal.addEventListener('show.bs.modal', function (event) {   
+                    var button = event.relatedTarget; // Botón que activó el modal
+                    
+                    // Limpiar los campos antes de llenarlos con los nuevos datos
+                    document.getElementById('user_id').value = ''; // campo para el ID de usuario
+                    document.getElementById('local_id').value = ''; // campo para el ID del local
+                    document.getElementById('nombre').value = ''; // campo para el nombre del evento
+                    document.getElementById('descripcion').value = ''; // campo para la descripción
+                    document.getElementById('fecha_inicio').value = ''; // campo para la fecha de inicio
+                    document.getElementById('fecha_fin').value = ''; // campo para la fecha de fin
+                    document.getElementById('fecha_evento').value = ''; // campo para la fecha del evento
+                    document.getElementById('aforo_evento').value = ''; // campo para el aforo
+                    document.getElementById('estado').value = ''; // campo para el estado
+                    document.getElementById('hora_evento').value = ''; // campo para la hora del evento
+                    document.getElementById('Foto').value = ''; // campo para la foto
+                    document.getElementById('existingPhotoContainer').innerHTML = ''; // campo para mostrar la foto existente
+                    
+                    // Extraer la información del botón
+                    var id = button.getAttribute('data-id');
+                    var userId = button.getAttribute('data-user_id');
+                    var localId = button.getAttribute('data-local_id');
+                    var nombre = button.getAttribute('data-nombre');
+                    var descripcion = button.getAttribute('data-descripcion');
+                    var fechaInicio = button.getAttribute('data-fecha_inicio');
+                    var fechaFin = button.getAttribute('data-fecha_fin');
+                    var fechaEvento = button.getAttribute('data-fecha_evento');
+                    var aforoEvento = button.getAttribute('data-aforo_evento');
+                    var estado = button.getAttribute('data-estado');
+                    var horaEvento = button.getAttribute('data-hora_evento');
+                    var foto = button.getAttribute('data-foto');
+
+                    // Llenar los campos del formulario en el modal con los datos correspondientes
+                    document.getElementById('user_id').value = userId || ''; // Si userId no está definido, asignar ''
+º                   document.getElementById('local_id').value = localId || ''; // Lo mismo para localId
+                    document.getElementById('nombre').value = nombre || ''; 
+                    document.getElementById('descripcion').value = descripcion || ''; 
+                    document.getElementById('fecha_inicio').value = fechaInicio || ''; 
+                    document.getElementById('fecha_fin').value = fechaFin || ''; 
+                    document.getElementById('fecha_evento').value = fechaEvento || ''; 
+                    document.getElementById('aforo_evento').value = aforoEvento || ''; 
+                    document.getElementById('estado').value = estado || ''; 
+                    document.getElementById('hora_evento').value = horaEvento || ''; 
+                    
+                    // Mostrar la foto si existe
+                    if (foto) {
+                        var img = document.createElement('img');
+                        img.src = foto; // Establecer la fuente de la foto si existe                    
+                        img.style.maxWidth = '200px';                   
+                        document.getElementById('existingPhotoContainer').appendChild(img);                    
+                    }
+                    console.log(id, nombre, descripcion, direccion, telefono, aforo, tieneAsientos, foto);
+                    // Manejo de imagen previa (solo si existe una imagen)
+                    var fotoInput = document.getElementById('Foto');
+                    var existingPhotoContainer = document.getElementById('existingPhotoContainer');
+                    if (foto && foto !== "null") {
+                        existingPhotoContainer.innerHTML = `<img src="/storage/${foto}" alt="Imagen previa" width="100">`;
+                    } else {
+                        existingPhotoContainer.innerHTML = '';
+                    }
+            
+                    // Asignar la acción del formulario dinámicamente
+                    var form = editModal.querySelector('form');
+                    console.log(user_id, local_id, nombre, desripcion, fecha_inicio, fecha_fin, fecha_evento, aforo_evento, estado, hora_evento, foto);
+                    form.action = `/eventos/${id}`; // Ajusta según tu ruta en Laravel
+                });
+                // Guardar el formulario
+                document.getElementById('saveButton').addEventListener('click', function () {
+                    var form = document.getElementById('editForm');
+                    if (form) {
+                        form.submit(); // Envía el formulario cuando el usuario hace clic en "Guardar"
+                    } else {
+                        console.error("Formulario no encontrado.");
+                    }
+                });
+            });
+        </script> 
     </body>
 </html>
