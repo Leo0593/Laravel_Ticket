@@ -30,7 +30,7 @@
                             <label for="evento_id">{{ __('Evento') }}</label>
                             <select id="evento_id" name="evento_id" class="form-control" required>
                                 @foreach($eventos as $evento)
-                                    <option value="{{ $evento->id }}" {{ $evento->id == $plan->evento_id ? 'selected' : '' }}>
+                                    <option value="{{ $evento->id }}" {{ old('evento_id', $plan->evento_id) == $evento->id ? 'selected' : '' }}>
                                         {{ $evento->nombre }}
                                     </option>
                                 @endforeach
@@ -44,8 +44,8 @@
                         <div>
                             <label for="tipo">{{ __('Tipo de Plan') }}</label>
                             <select id="tipo" name="tipo" class="form-control" required>
-                                <option value="General" {{ $plan->tipo == 'General' ? 'selected' : '' }}>General</option>
-                                <option value="VIP" {{ $plan->tipo == 'VIP' ? 'selected' : '' }}>VIP</option>
+                                <option value="General" {{ old('tipo', $plan->tipo) == 'General' ? 'selected' : '' }}>General</option>
+                                <option value="VIP" {{ old('tipo', $plan->tipo) == 'VIP' ? 'selected' : '' }}>VIP</option>
                             </select>
                             @error('tipo')
                                 <div class="text-danger">{{ $message }}</div>
@@ -61,9 +61,7 @@
                         <!-- Descripción -->
                         <div> 
                             <label for="Descripcion">{{ __('Descripción') }}</label>
-                            <textarea id="descripcion" name="descripcion">
-                                {{ $plan->descripcion }}
-                            </textarea>
+                            <textarea id="descripcion" name="descripcion">{{ old('descripcion', $plan->descripcion) }}</textarea>
                         </div>
 
                         <!-- Foto -->

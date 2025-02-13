@@ -76,25 +76,31 @@ class C_Plan extends Controller
                 'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
             ]);
 
-            
-            //dd($request->all());
-
             $plan = M_Plan::findOrFail($id);
 
+            // Si se ha subido una nueva foto, actualizarla
             if ($request->hasFile('Foto')) {
+                // Borra la foto anterior del almacenamiento si es necesario
+                if ($plan->Foto) {
+                    Storage::delete('public/' . $plan->Foto);
+                }
                 $path = $request->file('Foto')->store('plans', 'public');
                 $validated['Foto'] = $path;
+            } else {
+                // Mantener la foto anterior si no se sube una nueva
+                $validated['Foto'] = $plan->Foto;
             }
 
+            // Actualizar los datos del plan con los datos validados
             $plan->update($validated);
-    
+
             return redirect()->route('planes.index')->with('success', 'Plan actualizado exitosamente.');
-        } 
-        catch (\Exception $e) {
-            dd('Error al actualizar el plan:', $e->getMessage());
-            ///Log::error(Error al actualizar el plan: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            // Registrar el error en los logs y mostrar mensaje genérico
+            Log::error('Error al actualizar el plan: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el plan');
-        }        
+
+        }
     }
 
     public function destroy(int $id): RedirectResponse

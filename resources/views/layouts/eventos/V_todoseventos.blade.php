@@ -243,8 +243,8 @@
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header" style="background-color: {{ $color_edit }}; align-items: center; color: white;">
-                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Editar</strong></h5>
+                    <div class="modal-header" style="background-color: #ffcc00; align-items: center; color: white;">
+                        <h5 class="modal-title" id="exampleModalCenterTitle"><strong>Editar</strong></h5>
                         <i class="fa-solid fa-pen" style="margin-left: 10px"></i>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
