@@ -14,7 +14,7 @@
             <div class="main_contenedor">
                 <div class="container-fluid main_contenedor">
                     @if($noTickets)
-                        <div class="alert alert-warning text-center" role="alert">
+                        <div class="alert alert-primary" role="alert">
                             <p class="mb-0">{{ __('No hay tickets aun comprados') }}</p>
                         </div>
                     @else

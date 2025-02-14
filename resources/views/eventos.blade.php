@@ -58,7 +58,7 @@
                         background-repeat: no-repeat;
                         border-radius: 10px;
                         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-                        text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.9);
+                        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 
                         display: flex;
                         flex-direction: column;
@@ -68,7 +68,7 @@
                         ">
                             <!-- Artista/Grupo en el centro arriba -->
                             <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: white;">
-                                <h5 style="font-size: 2.5rem; font-family: 'Orbitron', sans-serif; font-weight: 700;">{{ $evento->ArtistaGrupo }}</h5>
+                                <h5 class="titulo" style="font-size: 2.5rem">{{ $evento->ArtistaGrupo }}</h5>
                             </div>
 
                             <!-- Nombre en la esquina inferior izquierda -->
@@ -105,7 +105,7 @@
                                     </span>
                                 @endif
 
-                                <h5 style="font-size: 2.5rem;">{{ $evento->nombre }}</h5>
+                                <h5 style="font-fmaily: 'Work Sans', sans-serif; font-weight: 400; font-size: 2rem;">{{ $evento->nombre }}</h5>
                             </div>
 
                             <!-- Ver más en la esquina inferior derecha -->
@@ -160,12 +160,12 @@
 
                             // Crear un color de sombra dinámica
                             const color = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.1)`;
-
+                            const colorshadow = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.8)`;
                             // Aplicar la sombra y el fondo con el gradiente dinámico
-                            card.style.boxShadow = `3px 5px 15px ${color}`;
+                            card.style.boxShadow = `3px 5px 15px ${colorshadow}`;
                             card.style.backgroundImage = `
-                                linear-gradient(to top, ${color}, rgba(0, 0, 0, 0.2) 60%),
-                                linear-gradient(to bottom, ${color}, rgba(0, 0, 0, 0.2) 40%),
+                                linear-gradient(to top, ${colorshadow}, rgba(0, 0, 0, 0.2) 60%),
+                                linear-gradient(to bottom, ${color}, rgba(0, 0, 0, 0.1) 40%),
                                 url('${imgUrl}')
                             `;
                         };

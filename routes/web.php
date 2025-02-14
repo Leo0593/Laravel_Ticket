@@ -51,7 +51,7 @@ Route::get('/planes/{eventoId}', [C_Plan::class, 'getPlanesByEvento']);
 
 
 use App\Http\Controllers\C_Eventos;
-Route::prefix('eventos')->name('eventos.')->group(function () {
+Route::prefix('/eventos')->name('eventos.')->group(function () {
     Route::get('/', [C_Eventos::class, 'index'])->name('index');
     Route::get('/create', [C_Eventos::class, 'create'])->name('create');
     Route::post('/', [C_Eventos::class, 'store'])->name('store');

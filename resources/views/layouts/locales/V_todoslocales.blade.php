@@ -63,7 +63,8 @@
                                 <a href="#" class="btn btn-primary">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>-->
-                                <a href="#" class="btn btn-warning" style="color: white;" data-bs-toggle="modal" data-bs-target="#editModal" 
+                                <a href="#" class="btn btn-warning" style="color: white;" 
+                                data-bs-toggle="modal" data-bs-target="#editModal" 
                                     data-id="{{ $local->id }}"
                                     data-nombre="{{ $local->Nombre }}"
                                     data-descripcion="{{ $local->Descripcion }}"
@@ -74,7 +75,9 @@
                                     data-foto="{{ $local->Foto }}">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $local->id }}"data-nombre="{{ $local->Nombre }}">
+                                <a href="#" class="btn btn-danger" 
+                                data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                    data-id="{{ $local->id }}"data-nombre="{{ $local->Nombre }}">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             </div>
@@ -123,7 +126,7 @@
 
                             <!-- Direccion -->
                             <div class="cont_input_1">
-                                <label for="Nombre">Dirección</label>
+                                <label for="Direccion">Dirección</label>
                                 <div class="input-container">
                                     <i class="fas fa-map-marker-alt"></i>
                                     <input class="input_1" style="--borderColor: {{ $color_edit }}" type="text" id="Direccion" name="Direccion" value="" required>
@@ -339,8 +342,6 @@
                     document.getElementById('Telefono').value = telefono;
                     document.getElementById('Aforo').value = aforo;
                     document.getElementById('Tiene_Asientos').checked = tieneAsientos;
-
-                    console.log(id, nombre, descripcion, direccion, telefono, aforo, tieneAsientos, foto);
                     
                     // Manejo de imagen previa (solo si existe una imagen)
                     var fotoInput = document.getElementById('Foto');

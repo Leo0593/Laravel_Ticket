@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     @include('layouts.head')
     
-    <body style="background-color: rgb(246, 246, 246);">
+    <body style="background-color: rgb(240, 240, 240);">
         @include('layouts.header')
 
         <div class="main">
@@ -20,11 +20,13 @@
                     display: flex;
                     align-items: flex-start;
                     justify-content: space-between;
-                    text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.8);
+                    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
                     padding: 40px 100px;
                     ">
-                <h1><strong>{{ $evento->ArtistaGrupo }}</strong></h1>
-                <h1><strong>{{ $evento->nombre }}</strong></h1>
+
+                    <h1 class="titulo" style="font-size: 4.5rem;">
+                    {{ $evento->ArtistaGrupo }}</h1>
+                    <h1 class="sub-titulo" style="font-size: 3.5rem;">{{ $evento->nombre }}</h1>
             </div>
 
             <div style="
@@ -257,13 +259,14 @@
                             g = Math.min(255, g * factor);
                             b = Math.min(255, b * factor);
 
-                            const color = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.3)`;
+                            const color = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.1)`;
+                            const colorbot = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.8)`;
 
                             // Aplicar la sombra y el nuevo gradiente
                             card.style.boxShadow = `3px 5px 15px ${color}`;
                             card.style.backgroundImage = `
-                                linear-gradient(to top, ${color}, rgba(0, 0, 0, 0.2) 60%),
-                                linear-gradient(to bottom, ${color}, rgba(0, 0, 0, 0.2) 60%), 
+                                linear-gradient(to top, ${colorbot}, rgba(0, 0, 0, 0.2) 60%),
+                                linear-gradient(to bottom, ${color}, rgba(0, 0, 0, 0.1) 40%), 
                                 url('${imgUrl}')
                             `;
                         };

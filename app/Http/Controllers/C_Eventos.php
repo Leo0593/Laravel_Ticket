@@ -121,16 +121,22 @@ class C_Eventos extends Controller
                 'aforo_evento' => 'required|integer',
                 'estado' => 'required|in:ACTIVO,CANCELADO,FINALIZADO',
                 'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,avif|max:2048',
+                'ArtistaGrupo' => 'nullable|string|max:255',
             ]);
 
-            //dd($request->all());
+            $validated['user_id'] = auth()->user()->id;
 
             $evento = M_Eventos::findOrFail($id);
 
             if ($request->hasFile('Foto')) {
                 $path = $request->file('Foto')->store('eventos', 'public');
                 $validated['Foto'] = $path;
-            }
+            } else {
+                // Mantener la foto existente si no se ha subido una nueva
+                $validated['Foto'] = $evento->Foto;
+            } 
+
+            //dd($request->all());
 
             $evento->update($validated);
 
@@ -148,6 +154,7 @@ class C_Eventos extends Controller
                 }
             }
 
+            /*
             $evento = M_Eventos::create([
                 'user_id' => $validated['user_id'],
                 'local_id' => $validated['local_id'],
@@ -159,8 +166,7 @@ class C_Eventos extends Controller
                 'aforo_evento' => $validated['aforo_evento'],
                 'estado' => $validated['estado'],
                 'Foto' => $imagePath, // Si se ha subido una foto
-                'hora_evento' => $validated['hora_evento'], // Asegúrate de incluir la hora
-            ]);
+            ]);*/
 
             // Si el aforo ha aumentado, agregar los nuevos asientos
             for ($i = $asientosExistentesCount + 1; $i <= $nuevoAforo; $i++) {
@@ -176,6 +182,8 @@ class C_Eventos extends Controller
             return redirect()->route('eventos.index')->with('success', 'Evento actualizado exitosamente.');
         } catch (\Exception $e) {
             Log::error('Error al actualizar el evento: ' . $e->getMessage());
+            Log::error('Detalles: ' . $e->getTraceAsString());
+            dd($request->all());
             return redirect()->route('eventos.index')->with('error', 'Error al actualizar el evento.');
         }
     }
@@ -192,4 +200,7 @@ class C_Eventos extends Controller
             return redirect()->route('eventos.index')->with('error', 'Error al eliminar el evento.');
         }
     }
+    // viernes 21 examen
+    // lunes 24 entrega
+    // viernes expocision 
 }
