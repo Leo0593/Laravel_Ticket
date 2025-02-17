@@ -6,7 +6,9 @@
         @include('layouts.header')
 
         <div class="main">
-            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/asientos.png');">
+            <div class="main_banner_2"
+            data-aos="fade-down" data-aos-duration="1000" 
+            style="--banner-image: url('../../images/dashboard/asientos.png');">
                 <h1><strong>Asientos para Cada Ocasión</strong></h1>
                 <h2>Disfruta de la Comodidad en Tu Evento</h2>
             </div>
@@ -192,5 +194,10 @@
                     -->
 
         </div>
+
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init();
+        </script>
     </body>
 </html>

@@ -6,7 +6,9 @@
         @include('layouts.header')
 
         <div class="main">
-            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/plans.png');">
+            <div class="main_banner_2" 
+            data-aos="fade-down" data-aos-duration="1000" 
+            style="--banner-image: url('../../images/dashboard/plans.png');">
                 <h1><strong>Planes para Todos</strong></h1>
                 <h2>Combos Generales o VIP, ¡Tú Decides!</h2>
                 
@@ -157,6 +159,134 @@
             </div>
         </div>
 
+        <!-- Modal Agregar -->
+        @php
+            $color_add = 'var(--color)';
+        @endphp
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="color: white;">
+                    <div class="modal-header" style="background-color: {{ $color_add }}; align-items: center;">
+                        <h5 class="modal-title" id="addModalLabel"><strong>Agregar</strong></h5>
+                        <i class="fa-solid fa-plus-circle" style="margin-left: 10px"></i>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="addForm" action="{{ route('planes.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+
+                            <!-- Nombre -->
+                            <div class="cont_input_1">
+                                <label for="nombre">{{ __('Nombre') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-gift"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="text" id="nombre" name="nombre" required>
+                                </div>
+                            </div>
+
+                            <!-- Artista o Grupo -->
+                            <div class="cont_input_1">
+                                <label for="ArtistaGrupo">{{ __('Artista o Grupo') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-microphone-alt"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="text" id="ArtistaGrupo" name="ArtistaGrupo" maxlength="255">
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="cont_input_1">
+                                <label for="descripcion">{{ __('Descripción') }}</label>
+                                <div class="textarea-container">
+                                    <i class="fas fa-align-left"></i>
+                                    <textarea class="input_1" style="--borderColor: {{ $color_add }}" name="descripcion" id="descripcion"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Fecha_inicio -->
+                            <div class="cont_input_1">
+                                <label for="fecha_inicio">{{ __('Fecha de inicio') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="datetime-local" name="fecha_inicio" id="fecha_inicio" required>
+                                </div>
+                            </div>
+
+                            <!-- Fecha_fin -->
+                            <div class="cont_input_1">
+                                <label for="fecha_fin">{{ __('Fecha de fin') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="datetime-local" name="fecha_fin" id="fecha_fin" required>
+                                </div>
+                            </div>
+
+                            <!-- Fecha_evento -->
+                            <div class="cont_input_1">
+                                <label for="fecha_evento">{{ __('Fecha límite') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-clock"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="datetime-local" name="fecha_evento" id="fecha_evento" required>
+                                </div>
+                            </div>
+
+                            <!-- Aforo -->
+                            <div class="cont_input_1">
+                                <label for="aforo_evento">{{ __('Aforo') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-users"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="number" name="aforo_evento" id="aforo_evento" required>
+                                </div>
+                            </div>
+
+                            <!-- Estado -->
+                            <div class="cont_input_1" style="display:none;">
+                                <label for="estado">{{ __('Estado') }}</label>
+                                <div class="input-container">
+                                    <i class="fas fa-flag"></i>
+                                    <select name="estado" id="estado" class="input_1" style="--borderColor: {{ $color_add }}" required>
+                                        <option value="ACTIVO" {{ old('estado', 'ACTIVO') == 'ACTIVO' ? 'selected' : '' }}>{{ __('Activo') }}</option>
+                                        <option value="CANCELADO" {{ old('estado') == 'CANCELADO' ? 'selected' : '' }}>{{ __('Cancelado') }}</option>
+                                        <option value="FINALIZADO" {{ old('estado') == 'FINALIZADO' ? 'selected' : '' }}>{{ __('Finalizado') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Foto -->
+                            <div class="cont_input_1">
+                                <label for="Foto">Foto del Evento</label>
+                                <div class="input-container">
+                                    <i class="fas fa-camera"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_add }}" type="file" id="Foto" name="Foto" accept="image/*">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: center !important;">
+                        <button type="submit" class="btn btn-primary" style="color: white;" id="saveAddButton">
+                            <i class="fas fa-save"></i> 
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AGREGAR: Script para manejar el modal de agregar -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById('saveAddButton').addEventListener('click', function () {
+                    var form = document.getElementById('addForm');
+                    if (form) {
+                        form.submit(); // Enviar el formulario para agregar el nuevo evento
+                    } else {
+                        console.error("Formulario no encontrado.");
+                    }
+                });
+            });
+        </script>
+
         <!-- Modal Eliminar -->
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -248,6 +378,12 @@
                     document.getElementById('deleteForm').action = formAction.replace(':id', planId);
                 });
             });
+        </script>
+
+        <!-- AOS JS -->
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init();
         </script>
     </body>
 </html>

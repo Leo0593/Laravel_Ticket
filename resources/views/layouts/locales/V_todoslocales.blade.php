@@ -6,17 +6,18 @@
         @include('layouts.header')
 
         <div class="main">
-            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/estadio-1.webp');">
+            <div class="main_banner_2" 
+            data-aos="fade-down" data-aos-duration="1000" 
+            style="--banner-image: url('../../images/dashboard/estadio-1.webp');">
                 <h1><strong> Lugares para Tú Evento</strong></h1>
                 <h2>Encuentra Tu Lugar Perfecto</h2>
 
-                <!-- -->
                 <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">
                     Agregar
                 </button>
             </div>
 
-            <div class="main_organizar">
+            <div class="main_organizar" data-aos="zoom-in" data-aos-duration="1000">
                 <form method="GET" action="">
                     <h4>Ordenar por:</h4>
                     <div class="d-flex justify-content-between align-items-center">
@@ -155,12 +156,16 @@
                             <input type="hidden" name="Tiene_Asientos" value="0">
 
                             <!-- Tiene Asientos -->
-                            <div class="cont_input_1" style="width: 100px;">
+                            <div class="cont_input_1" style="width: 100%; display: flex; align-items: center;">
                                 <label for="Tiene_Asientos">Tiene Asientos</label>
+                                <input  style="margin-left: 8px" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
+                                <i class="fas fa-chair" style="margin-left: 8px; color: {{ $color_edit }}; font-size: 20px;"></i> 
+                                
+                                <!--
                                 <div class="input-container-2" style="--borderColor: {{ $color_edit }}">
                                     <i class="fas fa-chair"></i> 
                                     <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
-                                </div>
+                                </div>-->
                             </div>
 
                             <!-- Foto -->
@@ -200,9 +205,8 @@
                     </div>
 
                     <div class="modal-footer" style="justify-content: center !important;">
-                        <form id="deleteForm" method="POST" action="{{ route('locales.destroy', ':id') }}">
+                        <form id="deleteForm" method="POST" action="{{ route('locales.ocultar', ':id') }}">
                             @csrf
-                            @method('DELETE')
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
                     </div>
@@ -275,12 +279,20 @@
                             </div>
 
                             <!-- Tiene Asientos -->
-                            <div class="cont_input_1" style="width: 100px;">
+                            <div class="cont_input_1" style="width: 100%; display: flex; align-items: center;">
                                 <label for="Tiene_Asientos">Tiene Asientos</label>
+                                <input  style="margin-left: 8px" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
+                                <i class="fas fa-chair" style="margin-left: 8px; color: {{ $color_add }}; font-size: 20px;"></i> 
+                                <!--
+                                <div class="input-container-2" style="--borderColor: {{ $color_add }}; width: 100px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-chair" id="icono_silla" style="cursor: pointer; margin-right: 8px;"></i>
+                                    <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1" style="display: none;">
+                                </div>
+                                
                                 <div class="input-container-2" style="--borderColor: {{ $color_add }}">
                                     <i class="fas fa-chair"></i> 
                                     <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
-                                </div>
+                                </div>-->
                             </div>
 
                             <!-- Foto -->
@@ -400,6 +412,11 @@
                     }
                 });
             });
+        </script>
+
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init();
         </script>
     </body>
 </html>

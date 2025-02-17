@@ -6,7 +6,9 @@
         @include('layouts.header')
 
         <div class="main">
-            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/tickets.jpg');">
+            <div class="main_banner_2" 
+            data-aos="fade-down" data-aos-duration="1000" 
+            style="--banner-image: url('../../images/dashboard/tickets.jpg');">
                 <h1><strong>Planes para Todos</strong></h1>
                 <h2>Combos Generales o VIP, ¡Tú Decides!</h2>
             </div>
@@ -71,5 +73,9 @@
                 </div>
             </div>
         </div>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init();
+        </script>
     </body>
 </html>
