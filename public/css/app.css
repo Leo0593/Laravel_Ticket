@@ -144,6 +144,11 @@ body {
 }
 
 .main_banner_2 {
+    background-image: 
+    linear-gradient(to top, rgba(2, 77, 223, 0.7), rgba(0, 0, 0, 0.3) 80%), /* Degradado hacia arriba */
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%), /* Degradado hacia abajo */
+    var(--banner-image); 
+
     color: white;
     width: 100%;
     height: 50%;
@@ -157,10 +162,6 @@ body {
     flex-direction: column;
     text-align: center;
 
-    background-image: 
-        linear-gradient(to top, rgba(2, 77, 223, 0.7), rgba(0, 0, 0, 0.3) 80%), /* Degradado hacia arriba */
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%), /* Degradado hacia abajo */
-        var(--banner-image); 
     background-size: cover; /* Asegura que la imagen cubra el espacio */
     background-position: center; /* Centra la imagen */
 }
@@ -289,53 +290,53 @@ body {
     border-color:var(--borderColor) !important;
 }
 
-/* Contenedor del input */
+/* 
 .input-container-2 {
     display: flex;
     align-items: center;
-    background-color: var(--borderColor); /* Amarillo */
+
+    background-color: transparent;
+    border: 2px solid var(--borderColor);
+
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
     position: relative;
 }
 
-/* Ícono dentro del contenedor */
 .input-container-2 i {
     margin-right: 8px;
-    color: white; /* Color del ícono */
+    color: var(--borderColor);
     font-size: 18px;
 }
 
-/* Estilos para el checkbox */
 .input_1[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid white !important;
-    background-color: white;
+
+    background-color: var(--borderColor) !important;
+    border: 2px solid transparent !important;
+
     cursor: pointer;
     position: relative;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Estado cuando el checkbox está marcado */
 .input_1[type="checkbox"]:checked {
-    background-color: var(--borderColor) !important; /* Color de fondo cuando está marcado */
+    background-color: var(--borderColor) !important;
     border-color: white !important;
 }
 
-/* Efecto hover */
 .input-container-2:hover {
     filter: brightness(85%);
 }
 
-/* Efecto cuando el checkbox está enfocado */
 .input_1[type="checkbox"]:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); /* Resplandor amarillo cuando está enfocado */
-}
+    box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); 
+}*/
 
 .main_organizar {
     width: 100%;

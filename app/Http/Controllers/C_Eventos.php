@@ -188,6 +188,26 @@ class C_Eventos extends Controller
         }
     }
 
+    public function ocultar($id): RedirectResponse
+    {
+        try {
+            // Buscar el evento por su ID
+            $evento = M_Eventos::findOrFail($id);
+        
+            // Cambiar el valor de 'visible' a 0 para ocultar el evento
+            $evento->visible = 0;
+            $evento->save(); // Guardar los cambios
+        
+            // Redirigir con mensaje de éxito
+            return redirect()->route('eventos.index')->with('success', 'Evento ocultado exitosamente.');
+        } catch (\Exception $e) {
+            // Si hay un error, lo registramos y mostramos un mensaje de error
+            Log::error('Error al ocultar el evento: ' . $e->getMessage());
+            return redirect()->route('eventos.index')->with('error', 'Error al ocultar el evento.');
+        }
+    }
+
+
     public function destroy($id): RedirectResponse
     {
         try {

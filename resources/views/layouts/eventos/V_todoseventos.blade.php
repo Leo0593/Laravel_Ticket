@@ -6,7 +6,9 @@
         @include('layouts.header')
 
         <div class="main">
-            <div class="main_banner_2" style="--banner-image: url('../../images/dashboard/eventos.jpg');">
+            <div class="main_banner_2" 
+            data-aos="fade-down" data-aos-duration="1000"
+            style="--banner-image: url('../../images/dashboard/eventos.jpg');">
                 <h1><strong>Diseña la Experiencia Perfecta</strong></h1>
                 <h2>Planifica la Mejor Ubicación para tu Público</h2>
                 
@@ -337,9 +339,8 @@
                     </div>
 
                     <div class="modal-footer" style="justify-content: center !important;">
-                        <form id="deleteForm" method="POST" action="{{ route('eventos.destroy', ':id') }}">
+                        <form id="deleteForm" method="POST" action="{{ route('eventos.ocultar', ':id') }}">
                             @csrf
-                            @method('DELETE')
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
                     </div>
@@ -385,19 +386,6 @@
 
                             <!-- Usuario (oculto) -->
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-
-                            <!-- Usuario 
-                            <div class="cont_input_1">
-                                <label for="user_id">Usuario</label>
-                                <div class="input-container">
-                                    <i class="fas fa-user"></i> 
-                                    <select style="--borderColor: {{ $color_add }}" name="user_id" id="user_id" class="input_1" required>
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>-->
 
                             <!-- Local -->
                             <div class="cont_input_1">
@@ -563,6 +551,11 @@
                     button.textContent = "Ver más";
                 }
             }
+        </script>
+
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init();
         </script>
     </body>
 </html>

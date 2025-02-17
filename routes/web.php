@@ -35,6 +35,7 @@ Route::prefix('/locales')->name('locales.')->group(function () {
     Route::get('/{id}/edit', [C_Locales::class, 'edit'])->name('edit');
     Route::put('/{id}', [C_Locales::class, 'update'])->name('update');
     Route::delete('/{id}', [C_Locales::class, 'destroy'])->name('destroy');
+    Route::post('/{id}/ocultar', [C_Locales::class, 'ocultar'])->name('ocultar');
 });
 
 use App\Http\Controllers\C_Plan;
@@ -59,6 +60,7 @@ Route::prefix('/eventos')->name('eventos.')->group(function () {
     Route::put('/{id}', [C_Eventos::class, 'update'])->name('update');
     Route::delete('/{id}', [C_Eventos::class, 'destroy'])->name('destroy');
     Route::get('/show', [C_Eventos::class, 'show'])->name('show');
+    Route::post('/{id}/ocultar', [C_Eventos::class, 'ocultar'])->name('ocultar');
 });
 
 use App\Http\Controllers\C_Asientos;
