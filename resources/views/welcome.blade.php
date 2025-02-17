@@ -10,7 +10,8 @@
                 <h1 data-aos="zoom-in" data-aos-duration="1200" style="font-size: 80px">TICKETS</h1>
                 <button 
                 data-aos="zoom-in" data-aos-duration="1500"
-                class="btn-1" onclick="window.location.href='{{ route('evento.all') }}'">
+                class="btn-1" onclick="window.location.href='{{ route('evento.all') }}'"
+                >
                 Ver
                 </button>
             </div>

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('aforo_evento'); // Aforo del evento
             $table->enum('estado', ['ACTIVO', 'CANCELADO', 'FINALIZADO']); // Estado del evento
             $table->string('Foto')->nullable();
+            $table->string('ArtistaGrupo', 255)->nullable(); // Artista o grupo del evento
+            $table->boolean('visible')->default(true)->notNull(); // Campo visible con valor predeterminado 'true' y no nulo
             $table->timestamps(); // Timestamps: created_at y updated_at
         });
     }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('fecha_pago')->nullable(); // Fecha de pago (opcional)
             $table->string('qr')->unique(); // Código QR único para el ticket
             $table->boolean('qr_valido'); // Indica si el QR es válido
+            $table->boolean('visible')->default(true)->notNull(); // Campo visible con valor predeterminado 'true' y no nulo
             $table->timestamps(); // Timestamps: created_at y updated_at
         });
     }

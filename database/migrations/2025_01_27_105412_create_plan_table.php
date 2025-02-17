@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('precio', 10, 2); // Precio con hasta 8 dígitos a la izquierda del punto decimal y 2 dígitos a la derecha
             $table->text('descripcion')->nullable(); // Descripción del plan (opcional)
             $table->string('Foto')->nullable();
+            $table->boolean('visible')->default(true)->notNull(); // Campo visible con valor predeterminado 'true' y no nulo
             $table->timestamps(); // Timestamps: created_at y updated_at
         });
     }

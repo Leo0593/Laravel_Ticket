@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->integer('Aforo');
             $table->boolean('Tiene_Asientos')->default(0);
             $table->string('Foto')->nullable();  // Columna para la foto
+            $table->boolean('visible')->default(true)->notNull(); // Campo visible con valor predeterminado 'true' y no nulo
             $table->timestamps(); // Campos created_at y updated_at
         });
     }

@@ -33,5 +33,22 @@
 
     <!-- Icono de la pestaña -->
     <link id="favicon" rel="icon" href="{{ asset('images/login/ticketLogo.png') }}" type="image/png">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function updateFavicon() {
+                let darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                let favicon = document.getElementById("favicon");
+
+                // Laravel asset() no funciona en JS, por lo que usamos rutas absolutas
+                let lightIcon = "{{ asset('images/login/ticketLogo.png') }}";
+                let darkIcon = "{{ asset('images/login/ticketslogo-wh.png') }}";
+
+                favicon.href = darkMode ? darkIcon : lightIcon;
+            }
+
+            updateFavicon(); // Llamar al cargar la página
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateFavicon);
+        });
+    </script>
 </head>
     

@@ -15,7 +15,7 @@
                     linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.05) 70%), 
                     url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');                
                     background-size: cover;
-                    background-position: center;
+                    background-position: center 25%;
                     height: 400px;
                     display: flex;
                     align-items: flex-start;
@@ -225,101 +225,134 @@
             </div>
         </div>
 
+        <!-- Imagen a la cara
         <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
+        <script type="module">
+            import * as faceapi from 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js';
+
+            // Añadir async aquí para que await sea válido
+            document.addEventListener('DOMContentLoaded', async function () {
                 const banner = document.getElementById('banner');
                 const imgUrl = document.getElementById('eventoFotoUrl').value;  // Obtener la URL desde el campo hidden
-                console.log(imgUrl); 
+                console.log(imgUrl);
 
-                 // Verificar si faceapi está definido
-    if (typeof faceapi === 'undefined') {
-        console.error('faceapi no está definido');
-        return;
-    }
+                // Verificar si faceapi está definido
+                if (typeof faceapi === 'undefined') {
+                    console.error('faceapi no está definido');
+                    return;
+                }
 
-                // Cargar la imagen
+                // Cargar el modelo antes de trabajar con la imagen
+                try {
+                    await faceapi.nets.ssdMobilenetv1.loadFromUri('/storage/models');
+                    console.log('Modelo cargado');
+                } catch (error) {
+                    console.error('Error al cargar el modelo:', error);
+                    return;
+                }
+
+                // Cargar la imagen y esperar a que esté lista
                 const image = new Image();
                 image.src = imgUrl;
-                image.onload = async function() {
+                image.onload = async function () {
                     console.log('Imagen cargada');
 
-                    await faceapi.nets.ssdMobilenetv1.loadFromUri('/models').then(() => {
-                        console.log('Modelo cargado');
-                    }).catch(error => {
-                        console.error('Error al cargar el modelo:', error);
-                    }); // Carga el modelo
-
-                    const detections = await faceapi.detectAllFaces(image);  // Detecta todas las caras
+                    // Detectar las caras una vez que la imagen esté lista
+                    const detections = await faceapi.detectAllFaces(image);
                     console.log('Detección de caras:', detections);
 
                     if (detections.length > 0) {
                         const face = detections[0]; // Considera la primera cara detectada
                         const facePosition = face.alignedRect.box;
-                        
+
                         // Ajusta la posición del background según la cara
                         banner.style.backgroundPosition = `${(facePosition.x + facePosition.width / 2) / image.width * 100}% ${((facePosition.y + facePosition.height / 2) / image.height) * 100}%`;
                     }
                 };
             });
-        </script> 
-        <!--
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const card = document.querySelector(".evento-card");
-
-                if (card) {
-                    // Extraer la URL de fondo de `background-image`
-                    let bgImage = card.style.backgroundImage;
-                    let matches = bgImage.match(/url\(["']?(.*?)["']?\)/);
-                    let imgUrl = matches ? matches[1] : null;
-
-                    if (imgUrl) {
-                        const img = new Image();
-                        img.crossOrigin = "Anonymous";
-                        img.src = imgUrl;
-
-                        img.onload = function () {
-                            const canvas = document.createElement("canvas");
-                            const ctx = canvas.getContext("2d");
-
-                            canvas.width = 10;
-                            canvas.height = 10;
-                            ctx.drawImage(img, 0, 0, 10, 10);
-
-                            const imageData = ctx.getImageData(5, 5, 1, 1).data; // Tomar el color central
-                            let r = imageData[0];
-                            let g = imageData[1];
-                            let b = imageData[2];
-
-                            // 🔹 Aumentar la luminosidad
-                            r = Math.min(255, r + 50);
-                            g = Math.min(255, g + 50);
-                            b = Math.min(255, b + 50);
-
-                            // 🔹 Aumentar la saturación
-                            const factor = 1;
-                            r = Math.min(255, r * factor);
-                            g = Math.min(255, g * factor);
-                            b = Math.min(255, b * factor);
-
-                            const color = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.1)`;
-                            const colorbot = `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 0.8)`;
-
-                            // Aplicar la sombra y el nuevo gradiente
-                            card.style.boxShadow = `3px 5px 15px ${color}`;
-                            card.style.backgroundImage = `
-                                linear-gradient(to top, ${colorbot}, rgba(0, 0, 0, 0.2) 60%),
-                                linear-gradient(to bottom, ${color}, rgba(0, 0, 0, 0.1) 40%), 
-                                url('${imgUrl}')
-                            `;
-                        };
-                    }
-                }
-            });
         </script>
         -->
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const eventoBanner = document.getElementById("banner");
+
+                // Obtener la URL de la foto del evento
+                const imgUrl = document.getElementById("eventoFotoUrl").value;
+
+                // Cargar la imagen
+                const img = new Image();
+                img.crossOrigin = "Anonymous"; // Evitar problemas con imágenes externas
+                img.src = imgUrl;
+
+                img.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+
+                    // Establecer dimensiones pequeñas para obtener colores representativos
+                    canvas.width = 10;
+                    canvas.height = 10;
+                    ctx.drawImage(img, 0, 0, 10, 10);
+
+                    // Función para obtener el color en una posición específica de la imagen
+                    function getColorAt(x, y) {
+                        const imageData = ctx.getImageData(x, y, 1, 1).data;
+                        return { r: imageData[0], g: imageData[1], b: imageData[2] };
+                    }
+
+                    let primaryColor = getColorAt(5, 5); // El centro de la imagen
+
+                    // Función para calcular la luminosidad de un color
+                    function getBrightness(color) {
+                        return (color.r * 0.299 + color.g * 0.587 + color.b * 0.114);
+                    }
+
+                    // Función para oscurecer un color
+                    function darkenColor(color, amount) {
+                        let r = Math.max(0, color.r - amount);
+                        let g = Math.max(0, color.g - amount);
+                        let b = Math.max(0, color.b - amount);
+                        return `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 1)`;
+                    }
+
+                    // Función para aclarar un color
+                    function lightenColor(color, amount) {
+                        let r = Math.min(255, color.r + amount);
+                        let g = Math.min(255, color.g + amount);
+                        let b = Math.min(255, color.b + amount);
+                        return `rgba(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)}, 1)`;
+                    }
+
+                    // Ajustamos el color dependiendo de la luminosidad
+                    let finalGradientColor;
+                    const brightness = getBrightness(primaryColor);
+                    if (brightness < 128) {
+                        finalGradientColor = lightenColor(primaryColor, 50); // Aclarar si es oscuro
+                    } else {
+                        finalGradientColor = darkenColor(primaryColor, 50); // Oscurecer si es claro
+                    }
+
+                    // Asegurarte de que finalGradientColor tenga formato rgba
+                    function adjustOpacity(color, opacity) {
+                        // Desglosamos el color para cambiar la opacidad
+                        return color.replace(/rgba\((\d+), (\d+), (\d+), ([\d.]+)\)/, (match, r, g, b) => {
+                            return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+                        });
+                    }
+
+                    let finalGradientColorWithOpacity = adjustOpacity(finalGradientColor, 0.9);
+
+                    // Aplicar el nuevo gradiente al fondo
+                    eventoBanner.style.backgroundImage = `
+                        linear-gradient(to top, ${finalGradientColorWithOpacity}, rgba(0, 0, 0, 0.05) 40%),
+                        linear-gradient(to bottom, ${finalGradientColorWithOpacity}, rgba(0, 0, 0, 0.05) 40%), 
+                        url('${imgUrl}')
+                    `;
+                };
+            });
+        </script>
+
 
         <!-- AOS Library -->
         <script src="https://unpkg.com/aos@next/dist/aos.js"></script>

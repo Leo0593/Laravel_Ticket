@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('tipo', ['General', 'VIP'])->default('General'); // Tipo de asiento
             $table->integer('numero_asiento'); // Número del asiento
             $table->enum('estado', ['Disponible', 'Ocupado']); // Estado del asiento
+            $table->boolean('visible')->default(true)->notNull(); // Campo visible con valor predeterminado 'true' y no nulo
             $table->timestamps(); // Timestamps: created_at y updated_at
         });
     }
