@@ -104,6 +104,22 @@
                     </div>
                 </div>
 
+                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                    <img class="card-img-top" src="../../images/dashboard/tickets.jpg" alt="Card image cap" 
+                    style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>USUARIOS</strong></h5>
+                        <p class="card-text">
+                            Gestiona la venta de boletos de tus eventos. Establece precios, cantidades disponibles y controla el flujo de entradas de manera eficiente para asegurar una experiencia sin problemas para los asistentes.
+                        </p>
+                        <div style="display:flex; justify-content: center;">
+                            <a  href="{{ route('users.index') }}" class="btn btn-primary mt-4">
+                                <i class="fa-solid fa-eye" style="margin-right: 5px"></i>
+                                Ver más
+                            </a>
+                        </div>  
+                    </div>
+                </div>
             </div>
         </div>
 
