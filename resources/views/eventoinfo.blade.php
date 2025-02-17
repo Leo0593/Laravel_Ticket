@@ -196,7 +196,7 @@
                                         <p><?= htmlspecialchars_decode($plan->descripcion) ?></p>
 
                                         <div style="display: flex; justify-content: center; margin: 20px;">
-                                            <a href="#entradas" class="btn-1" style="border: 2px solid #000; color: #000; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center;">
+                                            <a href="{{ route('payment.index') }}" class="btn-1" style="border: 2px solid #000; color: #000; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center;">
                                                 <i class="fa-solid fa-ticket" style="margin-right: 8px"></i>
                                                 Comprar
                                             </a>
