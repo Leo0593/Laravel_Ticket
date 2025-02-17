@@ -11,8 +11,8 @@
                 class="main_banner_2 evento-card" 
                 style="
                     background-image: 
-                    linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 100%),
-                    linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) 100%), 
+                    linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.05) 70%),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.05) 70%), 
                     url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');                
                     background-size: cover;
                     background-position: center;
@@ -22,11 +22,11 @@
                     justify-content: space-between;
                     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
                     padding: 40px 100px;
-                    ">
-
+                    " data-aos="fade-down" data-aos-duration="1000">
                     <h1 class="titulo" style="font-size: 4.5rem;">
                     {{ $evento->ArtistaGrupo }}</h1>
                     <h1 class="sub-titulo" style="font-size: 3.5rem;">{{ $evento->nombre }}</h1>
+                    <input type="hidden" id="eventoFotoUrl" value="{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}">
             </div>
 
             <div style="
@@ -48,7 +48,9 @@
                 position: sticky;
                 top: 0;
                 z-index: 1000;
-                ">
+                "
+                data-aos="fade-down" data-aos-duration="1000"
+                >
                     <nav class="nav">
                         <a class="nav-link" href="#banner">BANNER</a>
                         <a class="nav-link" href="#fecha">FECHA</a>
@@ -60,6 +62,7 @@
                 <div
                     id="fecha" 
                     class="m-5"
+                    data-aos="zoom-in" data-aos-duration="1200"
                     style="
                     width: 70%;
                     background-color: white;
@@ -105,6 +108,7 @@
 
                 <div 
                     id="info"
+                    data-aos="zoom-in" data-aos-duration="1200"
                     class="m-5"
                     style="
                     width: 70%;
@@ -125,6 +129,7 @@
                 <div 
                     id="entradas"
                     class="m-5"
+                    data-aos="zoom-in" data-aos-duration="1200"
                     style="
                     width: 70%;
                     background-color: white;
@@ -220,6 +225,46 @@
             </div>
         </div>
 
+        <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const banner = document.getElementById('banner');
+                const imgUrl = document.getElementById('eventoFotoUrl').value;  // Obtener la URL desde el campo hidden
+                console.log(imgUrl); 
+
+                 // Verificar si faceapi está definido
+    if (typeof faceapi === 'undefined') {
+        console.error('faceapi no está definido');
+        return;
+    }
+
+                // Cargar la imagen
+                const image = new Image();
+                image.src = imgUrl;
+                image.onload = async function() {
+                    console.log('Imagen cargada');
+
+                    await faceapi.nets.ssdMobilenetv1.loadFromUri('/models').then(() => {
+                        console.log('Modelo cargado');
+                    }).catch(error => {
+                        console.error('Error al cargar el modelo:', error);
+                    }); // Carga el modelo
+
+                    const detections = await faceapi.detectAllFaces(image);  // Detecta todas las caras
+                    console.log('Detección de caras:', detections);
+
+                    if (detections.length > 0) {
+                        const face = detections[0]; // Considera la primera cara detectada
+                        const facePosition = face.alignedRect.box;
+                        
+                        // Ajusta la posición del background según la cara
+                        banner.style.backgroundPosition = `${(facePosition.x + facePosition.width / 2) / image.width * 100}% ${((facePosition.y + facePosition.height / 2) / image.height) * 100}%`;
+                    }
+                };
+            });
+        </script> 
+        <!--
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const card = document.querySelector(".evento-card");
@@ -274,52 +319,12 @@
                 }
             });
         </script>
+        -->
 
+        <!-- AOS Library -->
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
         <script>
-            window.onload = function () {
-                document.querySelectorAll("[id^='hiddenImage-']").forEach((img) => {
-                    const index = img.id.replace("hiddenImage-", ""); // Extrae el índice del ID
-                    const header = document.getElementById(`header-${index}`);
-                    const headerText = document.getElementById(`headerText-${index}`);
-
-                    img.onload = function () {
-                        const color = getDominantColor(img);
-                        header.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
-
-                        // Determinar si el color es claro u oscuro
-                        const brightness = (color.r * 0.299 + color.g * 0.587 + color.b * 0.114);
-                        headerText.style.color = brightness > 128 ? "black" : "white";
-                    };
-
-                    if (img.complete) {
-                        img.onload(); // Si la imagen ya se cargó, ejecutamos la función manualmente
-                    }
-                });
-
-                function getDominantColor(image) {
-                    const canvas = document.createElement("canvas");
-                    canvas.width = image.naturalWidth;
-                    canvas.height = image.naturalHeight;
-                    const ctx = canvas.getContext("2d");
-                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    let r = 0, g = 0, b = 0, count = 0;
-
-                    for (let i = 0; i < imageData.data.length; i += 4) {
-                        r += imageData.data[i];     // Rojo
-                        g += imageData.data[i + 1]; // Verde
-                        b += imageData.data[i + 2]; // Azul
-                        count++;
-                    }
-
-                    return { 
-                        r: Math.floor(r / count), 
-                        g: Math.floor(g / count), 
-                        b: Math.floor(b / count) 
-                    };
-                }
-            };
+            AOS.init();
         </script>
     </body>
 </html>

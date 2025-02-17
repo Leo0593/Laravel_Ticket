@@ -38,6 +38,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    z-index: 1000;
 }
 
 .wrapped_logo {
@@ -374,6 +376,13 @@ body {
         max-width: 100%; /* Hace que la imagen ocupe el 100% del ancho de la celda */
         height: auto; /* Mantiene la proporción de la imagen */
     }
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    width: 3rem !important;
+    height: 3rem !important;
+    background-size: 150% 150% !important;
 }
 
 .custom-carousel-btn .carousel-control-next-icon,
@@ -738,4 +747,20 @@ body.dark .text {
     background: none;
     border: none;
     color: var(--color);
+}
+
+.scale {
+    transition: all 0.3s ease;
+}
+
+.scale:hover, .scale:focus {
+    transform: scale(1.1);
+}
+
+.scale:active {
+    transform: scale(1);
+}
+
+.inicio-card-evento {
+ 
 }

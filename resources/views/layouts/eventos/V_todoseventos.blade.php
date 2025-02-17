@@ -142,7 +142,7 @@
                             <div class="cont_input_1">
                                 <label for="nombre">Nombre</label>
                                 <div class="input-container">
-                                    <i class="fas fa-building"></i> 
+                                    <i class="fas fa-sync-alt"></i> 
                                     <input class="input_1" style="--borderColor: {{ $color_edit }}" type="text" id="nombre" name="nombre" required>
                                 </div>
                             </div>

@@ -120,7 +120,7 @@ class C_Eventos extends Controller
                 'fecha_evento' => 'required|date|after_or_equal:fecha_fin',
                 'aforo_evento' => 'required|integer',
                 'estado' => 'required|in:ACTIVO,CANCELADO,FINALIZADO',
-                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,avif|max:2048',
+                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,avif,webp|max:2048',
                 'ArtistaGrupo' => 'nullable|string|max:255',
             ]);
 
