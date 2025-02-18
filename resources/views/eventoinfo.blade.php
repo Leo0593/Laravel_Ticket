@@ -193,14 +193,16 @@
                                         flex-grow: 1;
                                         ">
                                         <h2 style="margin: 10px; font-weight: bold">{{ $plan->precio }} €</h2>
-                                        <p><?= htmlspecialchars_decode($plan->descripcion) ?></p>
+                                            <p><?= htmlspecialchars_decode($plan->descripcion) ?></p>
 
-                                        <div style="display: flex; justify-content: center; margin: 20px;">
-                                            <a href="{{ route('payment.index') }}" class="btn-1" style="border: 2px solid #000; color: #000; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center;">
-                                                <i class="fa-solid fa-ticket" style="margin-right: 8px"></i>
-                                                Comprar
-                                            </a>
-                                        </div>
+                                            <div style="display: flex; justify-content: center; margin: 20px;">
+                                                <!-- Aquí, pasamos el ID del plan a la ruta -->
+                                                <a href="{{ route('payment.index', ['planId' => $plan->id]) }}" class="btn-1" style="border: 2px solid #000; color: #000; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center;">
+                                                    <i class="fa-solid fa-ticket" style="margin-right: 8px"></i>
+                                                    Comprar
+                                                </a>
+                                            </div>
+
                                     </div>
                                 </div>
 

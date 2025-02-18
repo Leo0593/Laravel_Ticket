@@ -47,6 +47,7 @@
                                     data-correo="{{ $user->email }}"
                                     data-foto="{{ $user->Foto }}"
                                     data-id="{{ $user->id }}"
+                                    data-estado="{{ $user->estado }}"
                                    >
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
@@ -118,19 +119,22 @@
                             </div>
 
                             <!--
-                            <div clas="cont_input_1">
-                                <label for="email">{{ __('Estado') }}</label>
-                                <div class="input-container">
-                                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                                    <input type="text" class="input_1" style="--borderColor: {{ $color_edit }}" name="email" id="email" required>
-                                </div>
-                            </div> -->
-
                             <div class="cont_input_1">
                                 <label for="email">{{ __('Correo') }}</label>
                                 <div class="input-container">
                                 <i class="fa fa-envelope" aria-hidden="true"></i>
                                     <input type="text" class="input_1" style="--borderColor: {{ $color_edit }}" name="email" id="email" required>
+                                </div>
+                            </div>-->
+
+                            <div class="cont_input_1">
+                                <label for="estado">{{ __('Estado') }}</label>
+                                <div class="input-container">
+                                    <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                    <select class="input_1" style="--borderColor: {{ $color_edit }}" name="estado" id="estado" required>
+                                        <option value="0" {{ old('estado', $user->estado) == 0 ? 'selected' : '' }}>Inactivo</option>
+                                        <option value="1" {{ old('estado', $user->estado) == 1 ? 'selected' : '' }}>Activo</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -138,18 +142,18 @@
                                 <label for="Foto">{{ __('Foto') }}</label>
                                 <div class="input-container">
                                     <i class="fas fa-camera"></i>
-                                    <input type="file" class="input_1" style="--borderColor: {{ $color_edit }}" name="Foto" id="Foto" required>
+                                    <input type="file" class="input_1" style="--borderColor: {{ $color_edit }}" name="Foto" id="Foto">
                                 </div>
                                 <div id="existingPhotoContainer"></div>
                             </div>
-                            
-                            <div class="modal-footer" style="justify-content: center !important;">
-                                <button type="submit" class="scale btn btn-primary " style="color: white;" id="saveButton">
+                        </form>
+
+                        <div class="modal-footer" style="justify-content: center !important;">
+                                <button type="submit" class="scale btn btn-warning " style="color: white;" id="saveButton">
                                     <i class="fas fa-save"></i> 
                                     Guardar
                                 </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,6 +173,7 @@
                     document.getElementById('role').value = '';
                     document.getElementById('phone').value = '';
                     document.getElementById('email').value = '';
+                    document.getElementById('estado').value = '';
                     document.getElementById('Foto').value = '';
                     document.getElementById('existingPhotoContainer').innerHTML = '';
 
@@ -180,6 +185,7 @@
                     var correo = button.getAttribute('data-correo');
                     var foto = button.getAttribute('data-foto');
                     var id = button.getAttribute('data-id');
+                    var estado = button.getAttribute('data-estado');
 
                     // Llenar los campos del formulario en el modal
                     document.getElementById('name').value = nombre;
@@ -187,8 +193,9 @@
                     document.getElementById('role').value = rol;
                     document.getElementById('phone').value = telefono;
                     document.getElementById('email').value = correo;
+                    document.getElementById('estado').value = estado;
 
-                    console.log(id, nombre, apellido, rol, telefono, correo, foto);
+                    console.log(id, nombre, apellido, rol, telefono, correo, estado, foto);
 
                     // Manejo de imagen previa (solo si existe una imagen)
                     var fotoInput = document.getElementById('Foto');

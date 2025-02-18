@@ -75,43 +75,28 @@ class C_Usuarios extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         try {
-            $user = User::findOrFail($id);  // Asegúrate de que el usuario existe
-
-            $validator = Validator::make($request->all(), [
+            $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
                 'phone' => 'required|string|max:255',
+                'role' => ['required', Rule::in(['USER', 'GESTOR', 'ADMIN'])], // Asegura que el rol sea válidoß
                 'estado' => 'required|in:0,1',                  
-                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+                'Foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg,avif,webp|max:2048',
             ]);
 
-            //dd($request->estado);
-
-            if ($validator->fails()) {
-                return redirect()->route('users.edit', $id)
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-            // Actualiza los campos del usuario
-            $user->name = $request->name;
-            $user->last_name = $request->last_name; // Asegúrate de que este campo está presente en tu formulario
-            $user->email = $request->email;
-            $user->phone = $request->phone; // Asegúrate de que este campo también está en el formulario
-            $user->estado = (int) $request->estado; // Asegúrate de que este campo también está en el formulario
-
-            if ($request->password) {
-                $user->password = Hash::make($request->password);
-            }
+            $user = User::findOrFail($id);  // Asegúrate de que el usuario existe
 
             if ($request->hasFile('Foto')) {
                 $path = $request->file('Foto')->store('users', 'public');
-                $user->Foto = $path;  // Guarda la ruta de la imagen en el campo 'Foto'
+                $validated['Foto'] = $path;
+            } else {
+                $validated['Foto'] = $user->Foto;
             }
 
-            $user->save();
-    
-            return redirect()->route('users.index');
+
+            $user->update($validated);
+
+            return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente');
         } catch (\Exception $e) {
             Log::error('Error al actualizar usuario: ' . $e->getMessage());
             return redirect()->route('users.index');
