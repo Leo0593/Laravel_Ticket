@@ -380,7 +380,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="color: black;">
                         <form id="addForm" action="{{ route('eventos.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
@@ -393,6 +393,7 @@
                                 <div class="input-container">
                                     <i class="fas fa-map-marker-alt"></i>
                                     <select name="local_id" id="local_id" class="input_1" style="--borderColor: {{ $color_add }}" required>
+                                        <option value="" disabled selected>Selecciona un local</option>
                                         @foreach($locales as $local)
                                             <option value="{{ $local->id }}" data-aforo="{{ $local->Aforo }}">{{ $local->Nombre }}</option>
                                         @endforeach

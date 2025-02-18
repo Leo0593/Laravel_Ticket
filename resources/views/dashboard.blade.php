@@ -16,7 +16,7 @@
             <div class="main_contenedor"
             data-aos="fade-up" data-aos-duration="1000"
             style="margin-top: 20px;">
-                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px var(--color);">
                     <img class="card-img-top" src="../../images/dashboard/estadio-1.webp" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
 
-                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px var(--color);">
                     <img class="card-img-top" src="../../images/dashboard/eventos.jpg" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px var(--color);">
                     <img class="card-img-top" src="../../images/dashboard/asientos.png" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px var(--color);">
                     <img class="card-img-top" src="../../images/dashboard/plans.png" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
    
-                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px var(--color);">
                     <img class="card-img-top" src="../../images/dashboard/tickets.jpg" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
 
-                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);">
+                <div class="scale card" style="width: 18rem; box-shadow: 0 0 10px var(--color);">
                     <img class="card-img-top" src="../../images/dashboard/tickets.jpg" alt="Card image cap" 
                     style="height: 180px; background-color: #f0f0f0; object-fit: cover; width: 100%;">                                
                     <div class="card-body">

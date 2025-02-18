@@ -14,15 +14,15 @@
             </div>
 
             <div class="main_contenedor">
-                <div class="container-fluid main_contenedor mt-4">
+                <div class="container-fluid main_contenedor">
                     @if($noAsientos)
                         <div class="alert alert-warning text-center" role="alert">
                             <p class="mb-0">{{ __('No hay asientos disponibles') }}</p>
                         </div>
                     @else
-                        <div class="row">
+                        <div class="row w-100 d-flex flex-wrap" style="gap: 25px;">
                             @foreach($eventos as $evento)
-                                <div class="col-lg-6 col-md-12 mb-4"> <!-- 2 eventos por fila en pantallas grandes -->
+                                <div class="d-flex flex-column" style="flex: 1 1 calc(50% - 25px);">
                                     <div class="card shadow-sm">
                                         <div class="card-header bg-primary text-white text-center">
                                             <h5 class="mb-0">{{ $evento->nombre }} - {{ $evento->local->Nombre }}</h5>
@@ -45,7 +45,8 @@
                                                         <tbody>
                                                             @foreach($asientos->where('evento_id', $evento->id) as $asiento)
                                                                 <tr>
-                                                                    <td class="text-center">{{ $asiento->plan_id }}</td>
+                                                                    <td class="text-center">    {{ $asiento->plan_id }} - {{ optional($asiento->plan)->tipo }}
+                                                                    </td>
                                                                     <td class="text-center">{{ $asiento->tipo }}</td>
                                                                     <td class="text-center">{{ $asiento->numero_asiento }}</td>
                                                                     <td class="text-center">
@@ -54,21 +55,43 @@
                                                                         </span>
                                                                     </td>
                                                                     <td class="text-center">
+                                                                        <div class="ver-evento-foto-btns">
+                                                                        </div>
+                                                                        <a href="#" class="scale btn btn-sm btn-warning"
+                                                                            style="color: white;" 
+                                                                            data-bs-toggle="modal" data-bs-target="#editModal"
+                                                                            data-id="{{ $asiento->id }}"
+                                                                            data-local_id="{{ $asiento->local_id }}"
+                                                                            data-evento_id="{{ $asiento->evento_id }}"
+                                                                            data-plan_id="{{ $asiento->plan_id }}"
+                                                                            data-numero_asiento="{{ $asiento->numero_asiento }}"
+                                                                            data-tipo="{{ $asiento->tipo }}"
+                                                                            data-estado="{{ $asiento->estado }}"
+                                                                            >
+                                                                            <i class="fa-solid fa-pen"></i>
+                                                                        </a>
+                                                                        
+                                                                        <a href="#" class="btn btn-sm btn-danger scale" style="background-color: var(--Delete); text-decoration: none;" 
+                                                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                                            data-id="{{ $asiento->id }}" data-nombre="{{ $asiento->nombre }}">
+                                                                            <i class="fa-solid fa-trash"></i>
+                                                                        </a>
+                                                                        <!--
                                                                         <a href="{{ route('asientos.edit', $asiento->id) }}" 
                                                                             class="btn btn-sm btn-warning"
                                                                             style="color: white;">
                                                                             <i class="fa-solid fa-pen"></i>
-                                                                        </a>
+                                                                        </a>  -->
+                                                                        <!--
                                                                         <form action="{{ route('asientos.destroy', $asiento->id) }}" 
                                                                             method="POST" class="d-inline">
                                                                             @csrf
-                                                                            @method('DELETE')
                                                                             <button type="submit" 
                                                                                 class="btn btn-sm btn-danger"
                                                                                 onclick="return confirm('¿Estás seguro de eliminar este asiento?')">
                                                                                 <i class="fa-solid fa-trash"></i>
                                                                             </button>
-                                                                        </form>
+                                                                        </form> -->
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
@@ -77,123 +100,220 @@
                                                 </div>
                                             @endif
                                         </div>
-                                        <!--
-                                        <div class="card-footer text-muted text-center mt-0">
-                                            <small>{{ __('Última actualización: ') . now()->format('d/m/Y H:i') }}</small>
-                                        </div> -->
                                     </div>  
                                 </div>
                             @endforeach
                         </div>
                     @endif
-
-                <!--
-                @if($noAsientos)
-                    <p>{{ __('No hay asientos') }}</p>
-                @else
-                    @foreach($eventos as $evento)
-                        <div class="table_cont"> 
-                            <div class="card text-center">
-                                    <div class="card-header">
-                                        {{ $evento->id }}. {{ $evento->nombre }} - {{ $evento->local_id }}
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="min-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                                            <thead>
-                                                <tr>
-                                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Local_id') }}</th>
-                                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Plan_id') }}</th>
-                                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Tipo') }}</th>
-                                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Número Asiento') }}</th>
-                                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Estado') }}</th>
-                                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600">{{ __('Acciones') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($asientos->where('evento_id', $evento->id) as $asiento)
-                                                    <tr>
-                                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->local_id }}</td>
-                                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->plan_id }}</td>
-                                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->tipo }}</td>
-                                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->numero_asiento }}</td>
-                                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->estado }}</td>
-                                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                                                            <a href="{{ route('asientos.edit', $asiento->id) }}" class="text-blue-500 hover:text-blue-700">
-                                                                {{ __('Editar') }}
-                                                            </a>
-                                                            <br>
-                                                            <form action="{{ route('asientos.destroy', $asiento->id) }}" method="POST" class="inline-block">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-4" 
-                                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este asiento?')">
-                                                                    {{ __('Eliminar') }}
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="card-footer text-muted">
-                                    </div>
-                            </div>    
-                        </div>    
-                    @endforeach
-                @endif
--->
             </div>
-                    <!--
-                        <table class="min-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Local') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Evento') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Plan') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Tipo') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Número Asiento') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Estado') }}</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 dark:border-gray-600" scope="col">{{ __('Acciones') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($asientos as $asiento)
-                                    <tr>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->local_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->evento_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->plan_id }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->tipo }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->numero_asiento }}</td>
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">{{ $asiento->estado }}</td>
-
-                                        <td class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-
-                                            <a href="{{ route('asientos.edit', $asiento->id) }}" 
-                                                class="text-blue-500 hover:text-blue-700" 
-                                                style="margin-right: 10px;">
-                                                {{ __('Editar') }}
-                                            </a>
-
-                                            <br>
-
-                                            <form action="{{ route('asientos.destroy', $asiento->id) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-4" 
-                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este local?')">
-                                                    {{ __('Eliminar') }}
-                                                </button>
-                                            </form>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    -->
-
         </div>
+
+        <!-- Modal Editar -->
+        @php
+            $color_edit = 'var(--Edit)';
+        @endphp
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: {{ $color_edit }}; align-items: center; color: white;">
+                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Editar</strong></h5>
+                        <i class="fa-solid fa-pen" style="margin-left: 10px"></i>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="editForm" action="{{ route('asientos.update', $asiento->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="cont_input_1">
+                                <label for="local_select">Local</label>
+                                <div class="input-container">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <select name="local_id" id="local_id" class="input_1" style="--borderColor: {{ $color_edit }}" required>
+                                        <option value="" disabled selected>Selecciona un local</option>
+                                        @foreach($locales as $local)
+                                            <option value="{{ $local->id }}" data-aforo="{{ $local->Aforo }}">{{ $local->Nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="cont_input_1">
+                                <label for="evento_select">Evento</label>
+                                <div class="input-container">
+                                    <i class="fas  fa-music"></i> <!-- fa-paper-plane -->
+                                    <select name="evento_id" id="evento_id" class="input_1" style="--borderColor: {{ $color_edit }}" required>
+                                        <option value="" disabled selected>Selecciona un local</option>
+                                        @foreach($eventos as $evento)
+                                            <option value="{{ $evento->id }}" data-aforo="{{ $evento->aforo }}">{{ $evento->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="cont_input_1">
+                                <label for="plan_select">Plan</label>
+                                <div class="input-container">
+                                    <i class="fas fa-sticky-note"></i>
+                                    <select name="plan_id" id="plan_id" class="input_1" style="--borderColor: {{ $color_edit }}" required>
+                                        <option value="" disabled selected>Selecciona un plan</option>
+                                        @foreach($planes as $plan)
+                                            <option value="{{ $plan->id }}" data-evento_id="{{ $plan->evento_id }}">{{ $plan->tipo }} - {{ $plan->evento->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="cont_input_1">
+                                <label for="numero_asiento">Número de asiento</label>
+                                <div class="input-container">
+                                    <i class="fas fa-sort-numeric-up-alt"></i>
+                                    <input class="input_1" style="--borderColor: {{ $color_edit }}" type="number" name="numero_asiento" id="numero_asiento" required>
+                                </div>
+                            </div>
+
+                            <div class="cont_input_1">
+                                <label for="tipo">Tipo de asiento</label>
+                                <div class="input-container">
+                                    <i class="fas fa-chair"></i>
+                                    <select name="tipo" id="tipo" class="input_1" style="--borderColor: {{ $color_edit }}" required>
+                                        <option value="General" {{ $plan->tipo == 'General' ? 'selected' : '' }}>General</option>
+                                        <option value="VIP" {{ $plan->tipo == 'VIP' ? 'selected' : '' }}>VIP</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="cont_input_1">
+                                <label for="estado">Estado</label>
+                                <div class="input-container">
+                                    <i class="fas fa-flag"></i>
+                                    <select name="estado" id="estado" class="input_1" style="--borderColor: {{ $color_edit }}" required>
+                                        <option value="Disponible" {{ $asiento->estado == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+                                        <option value="Ocupado" {{ $asiento->estado == 'Ocupado' ? 'selected' : '' }}>Ocupado</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer" style="justify-content: center !important;">
+                                <button type="submit" class="btn btn-warning" style="color: white;" id="saveButtonEdit">
+                                    <i class="fas fa-save"></i>
+                                    Actualizar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- EDITAR: Script para manejar el modal de edición -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var editModal = document.getElementById('editModal');
+                console.log('Modal Editar abierto');
+
+                editModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget; // Botón que activó el modal
+
+                    // Limpiar los campos antes de llenarlos con los nuevos datos
+                    document.getElementById('local_id').value = '';
+                    document.getElementById('evento_id').value = '';
+                    document.getElementById('plan_id').value = '';
+                    document.getElementById('numero_asiento').value = '';
+                    document.getElementById('tipo').value = '';
+                    document.getElementById('estado').value = '';
+
+                    // Extraer la información del botón
+                    var id = button.getAttribute('data-id');
+                    var local_id = button.getAttribute('data-local_id');
+                    var evento_id = button.getAttribute('data-evento_id');
+                    var plan_id = button.getAttribute('data-plan_id');
+                    var numero_asiento = button.getAttribute('data-numero_asiento');
+                    var tipo = button.getAttribute('data-tipo');
+                    var estado = button.getAttribute('data-estado');
+                    
+
+                    console.log(id, local_id, evento_id, plan_id, numero_asiento, tipo, estado);
+
+                    // Llenar los campos del formulario en el modal
+                    document.getElementById('local_id').value = local_id;
+                    document.getElementById('evento_id').value = evento_id;
+                    document.getElementById('plan_id').value = plan_id;
+                    document.getElementById('numero_asiento').value = numero_asiento;
+                    document.getElementById('tipo').value = tipo;
+                    document.getElementById('estado').value = estado;        
+                    
+                    // Asignar la acción del formulario dinámicamente
+                    var form = editModal.querySelector('form');
+                    console.log(id, local_id, evento_id, plan_id, numero_asiento, tipo, estado);
+                    form.action = `/asientos/${id}`; // Ajusta según tu ruta en Laravel*/
+                    console.log(form.action);
+                });
+
+                // Guardar el formulario
+                document.getElementById('saveButtonEdit').addEventListener('click', function () {
+                    event.preventDefault(); // Prevenir el envío inmediato del formulario
+
+                    var form = document.getElementById('editForm');
+                    if (form) {
+                        var formData = new FormData(form);
+                        formData.forEach((value, key) => {
+                            console.log(`${key}: ${value}`); // Muestra los datos que se van a enviar
+                        });
+
+                        form.submit(); // Enviar el formulario
+                    } else {
+                        console.error("Formulario no encontrado.");
+                    }
+                });
+            });
+        </script> 
+
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #dc3545; align-items: center; color: white;">
+                        <h5 class="modal-title"  id="exampleModalCenterTitle"><strong>Eliminar</strong></h5>
+                        <i class="fa-solid fa-trash" style="margin-left: 10px"></i>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar: <strong id="deleteLocalName"></strong>?
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: center !important;">
+                        <form id="deleteForm" method="POST" action="{{ route('asientos.ocultar', ':id') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>    
+
+        <!-- ELIMINAR: Script para manejar el modal de eliminación -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var deleteModal = document.getElementById('deleteModal');
+
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    var link = event.relatedTarget; // El enlace que activó el modal
+                    var asientoId = link.getAttribute('data-id'); // Obtener el ID del local
+                    var asientoNombre = link.getAttribute('data-nombre'); // Obtener el nombre del local
+
+                    // Actualizar el texto dentro del modal
+                    document.getElementById('deleteLocalName').textContent = asientoNombre;
+
+                    // Actualizar la acción del formulario de eliminación
+                    var formAction = document.getElementById('deleteForm').action;
+                    document.getElementById('deleteForm').action = formAction.replace(':id', asientoId);
+                });
+            });
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
         <script>

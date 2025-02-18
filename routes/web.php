@@ -46,6 +46,7 @@ Route::prefix('/planes')->name('planes.')->group(function () {
     Route::get('/{id}/edit', [C_Plan::class, 'edit'])->name('edit');
     Route::put('/{id}', [C_Plan::class, 'update'])->name('update');
     Route::delete('/{id}', [C_Plan::class, 'destroy'])->name('destroy');
+    Route::post('/{id}/ocultar', [C_Plan::class, 'ocultar'])->name('ocultar');
 });
 
 Route::get('/planes/{eventoId}', [C_Plan::class, 'getPlanesByEvento']);
@@ -71,6 +72,7 @@ Route::prefix('asientos')->name('asientos.')->group(function () {
     Route::get('/{id}/edit', [C_Asientos::class, 'edit'])->name('edit');
     Route::put('/{id}', [C_Asientos::class, 'update'])->name('update');
     Route::delete('/{id}', [C_Asientos::class, 'destroy'])->name('destroy');
+    Route::post('/{id}/ocultar', [C_Asientos::class, 'ocultar'])->name('ocultar');
 });
 
 use App\Http\Controllers\C_Tickets;
@@ -92,6 +94,8 @@ Route::post('create-payment-intent', [PaymentController::class, 'createPaymentIn
 use App\Http\Controllers\C_Usuarios;
 Route::prefix('users')->name('users.')->group(function () {
     Route::get('/', [C_Usuarios::class, 'index'])->name('index');
+    Route::get('/create', [C_Usuarios::class, 'create'])->name('create');
+    Route::post('/', [C_Usuarios::class, 'store'])->name('store');
     Route::get('/{id}/edit', [C_Usuarios::class, 'edit'])->name('edit');
     Route::put('/{id}', [C_Usuarios::class, 'update'])->name('update');
     Route::delete('/{id}', [C_Usuarios::class, 'destroy'])->name('destroy');

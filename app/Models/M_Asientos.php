@@ -39,6 +39,6 @@ class M_Asientos extends Model
     // Relación con el modelo de Planes
     public function plan()
     {
-        return $this->belongsTo(Plan::class);
+        return $this->belongsTo(M_Plan::class);
     }
 }

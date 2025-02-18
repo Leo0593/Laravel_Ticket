@@ -92,7 +92,6 @@
         @php
             $color_edit = 'var(--Edit)';
         @endphp
-
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -219,7 +218,6 @@
         @php
             $color_add = 'var(--color)';
         @endphp
-
         <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="color: white;">
@@ -229,7 +227,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="color: black;">
                         <form id="addForm" action="{{ route('locales.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
@@ -283,16 +281,6 @@
                                 <label for="Tiene_Asientos">Tiene Asientos</label>
                                 <input  style="margin-left: 8px" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
                                 <i class="fas fa-chair" style="margin-left: 8px; color: {{ $color_add }}; font-size: 20px;"></i> 
-                                <!--
-                                <div class="input-container-2" style="--borderColor: {{ $color_add }}; width: 100px; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-chair" id="icono_silla" style="cursor: pointer; margin-right: 8px;"></i>
-                                    <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1" style="display: none;">
-                                </div>
-                                
-                                <div class="input-container-2" style="--borderColor: {{ $color_add }}">
-                                    <i class="fas fa-chair"></i> 
-                                    <input class="input_1" type="checkbox" id="Tiene_Asientos" name="Tiene_Asientos" value="1">
-                                </div>-->
                             </div>
 
                             <!-- Foto -->

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('plan_id')->constrained('plans')->onDelete('cascade'); // Relación con la tabla 'Plan'
             $table->boolean('pagado'); // Indica si el ticket ha sido pagado
             $table->timestamp('fecha_pago')->nullable(); // Fecha de pago (opcional)
-            $table->string('qr')->unique(); // Código QR único para el ticket
+            $table->string('qr')->nullable()->unique(); // Código QR único para el ticket y permite valores NULL
             $table->boolean('qr_valido'); // Indica si el QR es válido
             $table->boolean('visible')->default(true)->notNull(); // Campo visible con valor predeterminado 'true' y no nulo
             $table->timestamps(); // Timestamps: created_at y updated_at

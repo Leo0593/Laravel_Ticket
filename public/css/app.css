@@ -6,6 +6,7 @@
 
 :root {
     --color: rgba(2, 77, 223, 1);
+    --colorShadow: rgba(2, 77, 223, 0.5);
     --Edit: #ffc107;
     --Delete: #dc3545;
     --Add: #28a745;
@@ -751,7 +752,7 @@ body.dark .text {
 }
 
 .scale {
-    transition: all 0.3s ease;
+    transition: all 0.3s ease !important;
 }
 
 .scale:hover, .scale:focus {
@@ -761,3 +762,4 @@ body.dark .text {
 .scale:active {
     transform: scale(1);
 }
+
