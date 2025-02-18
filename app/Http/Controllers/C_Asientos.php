@@ -17,9 +17,11 @@ class C_Asientos extends Controller
     {
         $eventos = M_Eventos::with('local')->get();
         $asientos = M_Asientos::all();
+        $planes = M_Plan::with('evento')->get();
         $noAsientos = $asientos->isEmpty();
+        $locales = M_Locales::all(); // O cualquier lógica que necesites para obtener los locales
 
-        return view('layouts.asientos.V_todosasientos', compact('eventos', 'asientos', 'noAsientos'));
+        return view('layouts.asientos.V_todosasientos', compact('planes', 'locales', 'eventos', 'asientos', 'noAsientos'));
     }
 
     public function create(): View
@@ -73,7 +75,6 @@ class C_Asientos extends Controller
     {
         try {
             $validated = $request->validate([
-                'local_id' => 'required|integer|exists:locales,id',
                 'evento_id' => 'required|integer|exists:eventos,id',
                 'plan_id' => 'required|integer|exists:plans,id',
                 'tipo' => 'required|string|max:255',
@@ -93,6 +94,9 @@ class C_Asientos extends Controller
 
             return redirect()->route('asientos.index')->with('success', 'Asiento actualizado exitosamente.');
         } catch (\Exception $e) {
+            dd($e->getMessage());
+            dd($e->getTraceAsString());
+            dd($validated);
             return redirect()->back()->withErrors(['error' => 'Hubo un problema al actualizar el asiento.']);
         }
     }
@@ -115,6 +119,25 @@ class C_Asientos extends Controller
             return redirect()->route('asientos.index')->with('success', 'Asiento eliminado exitosamente.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Hubo un problema al eliminar el asiento.']);
+        }
+    }
+
+    public function ocultar($id): RedirectResponse
+    {
+        try {
+            // Buscar el evento por su ID
+            $evento = M_Asientos::findOrFail($id);
+        
+            // Cambiar el valor de 'visible' a 0 para ocultar el evento
+            $evento->visible = 0;
+            $evento->save(); // Guardar los cambios
+        
+            // Redirigir con mensaje de éxito
+            return redirect()->route('asientos.index')->with('success', 'Asiento ocultado exitosamente.');
+        } catch (\Exception $e) {
+            // Si hay un error, lo registramos y mostramos un mensaje de error
+            Log::error('Error al ocultar el asiento: ' . $e->getMessage());
+            return redirect()->route('asientos.index')->with('error', 'Error al ocultar el asiento.');
         }
     }
 }

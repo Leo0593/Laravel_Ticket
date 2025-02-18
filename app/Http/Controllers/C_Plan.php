@@ -78,18 +78,13 @@ class C_Plan extends Controller
 
             $plan = M_Plan::findOrFail($id);
 
-            // Si se ha subido una nueva foto, actualizarla
             if ($request->hasFile('Foto')) {
-                // Borra la foto anterior del almacenamiento si es necesario
-                if ($plan->Foto) {
-                    Storage::delete('public/' . $plan->Foto);
-                }
                 $path = $request->file('Foto')->store('plans', 'public');
                 $validated['Foto'] = $path;
             } else {
-                // Mantener la foto anterior si no se sube una nueva
+                // Mantener la foto existente si no se ha subido una nueva
                 $validated['Foto'] = $plan->Foto;
-            }
+            } 
 
             // Actualizar los datos del plan con los datos validados
             $plan->update($validated);
@@ -97,9 +92,11 @@ class C_Plan extends Controller
             return redirect()->route('planes.index')->with('success', 'Plan actualizado exitosamente.');
         } catch (\Exception $e) {
             // Registrar el error en los logs y mostrar mensaje genérico
+            dd($e->getMessage());
+            dd($e->getTraceAsString());
+            dd($validated);
             Log::error('Error al actualizar el plan: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el plan');
-
         }
     }
 
@@ -125,4 +122,20 @@ class C_Plan extends Controller
             'message' => $planes->isEmpty() ? 'No hay planes disponibles' : 'Planes encontrados'
         ]);
     }    
+
+    public function ocultar(int $id): RedirectResponse
+    {
+        try {
+            $plan = M_Plan::findOrFail($id);
+
+            // Cambiar el valor de 'visible' a 0 para ocultar el evento
+            $plan->visible = 0;
+            $plan->save(); // Guardar los cambios
+
+            return redirect()->route('planes.index')->with('success', 'Plan ocultado exitosamente.');
+        } catch (\Exception $e) {
+            Log::error('Error al ocultar el plan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al ocultar el plan');
+        }
+    }
 }
