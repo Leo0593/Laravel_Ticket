@@ -86,8 +86,10 @@ Route::get('/planes/{eventoId}', [C_Tickets::class, 'getPlanesByEvento']);
 //pago stripe
 use App\Http\Controllers\PaymentController;
 
-Route::get('/payment', [PaymentController::class, 'index']) ->name('payment.index');
-Route::post('create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
+Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
+
+
 
 use App\Http\Controllers\C_Usuarios;
 Route::prefix('users')->name('users.')->group(function () {

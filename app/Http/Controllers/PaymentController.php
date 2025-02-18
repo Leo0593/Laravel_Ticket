@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 
-
 class PaymentController extends Controller
 {
     public function index()
     {
-        return view('payment');
+        return view('payment'); // Renderiza la vista 'payment.blade.php'
     }
 
     public function createPaymentIntent(Request $request)
@@ -26,6 +25,7 @@ class PaymentController extends Controller
             'payment_method_types' => ['card'],
         ]);
 
+        // Retorna el client secret como respuesta JSON
         return response()->json([
             'clientSecret' => $paymentIntent->client_secret
         ]);
