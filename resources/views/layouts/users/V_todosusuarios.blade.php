@@ -57,6 +57,10 @@
                                 <i class="fa-solid fa-trash"></i>
                             </a>
 
+                            <a href="{{ route('tickets.usuariostotales.tickets', $user->id) }}" class="btn btn-info scale">
+                                <i class="fa-solid fa-ticket"></i> Ver Tickets
+                            </a>
+
                         </div>
                     </div>
                 @endforeach
