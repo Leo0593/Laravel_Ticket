@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\C_Tickets;
+use App\Http\Controllers\C_Asientos;
+
 
 /*
 Route::get('', function () {
@@ -13,9 +16,9 @@ Route::get('/', [C_Welcome::class, 'index']);
 Route::get('/evento/{id}', [C_Welcome::class, 'show'])->name('evento.show');
 Route::get('/all', [C_Welcome::class, 'all'])->name('evento.all');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [C_Tickets::class, 'misTickets'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,7 +70,7 @@ Route::prefix('/eventos')->name('eventos.')->group(function () {
     Route::post('/{id}/ocultar', [C_Eventos::class, 'ocultar'])->name('ocultar');
 });
 
-use App\Http\Controllers\C_Asientos;
+//use App\Http\Controllers\C_Asientos;
 
 Route::prefix('asientos')->name('asientos.')->group(function () {
     Route::get('/', [C_Asientos::class, 'index'])->name('index');
@@ -79,7 +82,8 @@ Route::prefix('asientos')->name('asientos.')->group(function () {
     Route::post('/{id}/ocultar', [C_Asientos::class, 'ocultar'])->name('ocultar');
 });
 
-use App\Http\Controllers\C_Tickets;
+//use App\Http\Controllers\C_Tickets;
+
 Route::prefix('tickets')->name('tickets.')->group(function () {
     Route::post('/store', [C_Tickets::class, 'store'])->name('store');
     Route::get('/', [C_Tickets::class, 'index'])->name('index');
@@ -88,7 +92,9 @@ Route::prefix('tickets')->name('tickets.')->group(function () {
     Route::get('/user-tickets', [C_Tickets::class, 'userTickets'])
     ->middleware('auth')
     ->name('usuarios.tickets'); // Agregamos un nombre a la ruta
+    Route::get('/usuarios/{id}/tickets', [C_Tickets::class, 'TicketsTotalUser'])->name('usuariostotales.tickets');
 });
+
 
 
 Route::get('/asientos/{eventoId}', [C_Tickets::class, 'getAsientosByEvento']);
