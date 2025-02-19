@@ -149,6 +149,7 @@
                     </form>
                 </div>
 
+                <!-- ACA LEANDRO -->
                 <div class="main_contenedor">
                     @php
                         $tickets = \App\Models\M_Tickets::where('user_id', auth()->id())->get();
