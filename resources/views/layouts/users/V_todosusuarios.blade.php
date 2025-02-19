@@ -14,6 +14,12 @@
             <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">
                 Agregar
             </button>
+
+            <a href="{{ route('tickets.usuarios.tickets') }}" class="btn-1" data-bs-toggle="modal"
+                data-bs-target="#ticketModal">
+                <i class="fa-solid fa-ticket"></i> Ver Tickets
+            </a>
+
         </div>
 
         <div class="main_contenedor">
@@ -50,12 +56,6 @@
                             </a>
                             <a href="#" class="btn btn-danger scale" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                 <i class="fa-solid fa-trash"></i>
-                            </a>
-
-                            
-
-                            <a href="{{ route('tickets.usuarios.tickets', $user->id) }}" class="btn btn-info scale">
-                                <i class="fa-solid fa-ticket"></i> Ver Tickets
                             </a>
 
                         </div>
