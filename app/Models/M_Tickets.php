@@ -47,4 +47,9 @@ class M_Tickets extends Model
     {
         return $this->belongsTo(M_Eventos::class, 'evento_id');
     }
+
+    public function scopeByUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
 }

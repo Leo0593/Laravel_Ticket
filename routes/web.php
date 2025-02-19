@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RoleMiddleware;
 
 /*
 Route::get('', function () {
@@ -28,15 +29,17 @@ Route::get('/obtener/planes/{eventoId}', [C_Asientos::class, 'getPlanesByEvento'
 
 use App\Http\Controllers\C_Locales;
 
-Route::prefix('/locales')->name('locales.')->group(function () {
-    Route::get('/', [C_Locales::class, 'index'])->name('index');
-    Route::get('/create', [C_Locales::class, 'create'])->name('create');
-    Route::post('/', [C_Locales::class, 'store'])->name('store');
-    Route::get('/{id}/edit', [C_Locales::class, 'edit'])->name('edit');
-    Route::put('/{id}', [C_Locales::class, 'update'])->name('update');
-    Route::delete('/{id}', [C_Locales::class, 'destroy'])->name('destroy');
-    Route::post('/{id}/ocultar', [C_Locales::class, 'ocultar'])->name('ocultar');
-});
+Route::prefix('/locales')->name('locales.')
+    ->middleware([RoleMiddleware::class.':ADMIN,GESTOR']) // Solo ADMIN y GESTOR pueden acceder
+    ->group(function () {
+        Route::get('/', [C_Locales::class, 'index'])->name('index');
+        Route::get('/create', [C_Locales::class, 'create'])->name('create');
+        Route::post('/', [C_Locales::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [C_Locales::class, 'edit'])->name('edit');
+        Route::put('/{id}', [C_Locales::class, 'update'])->name('update');
+        Route::delete('/{id}', [C_Locales::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/ocultar', [C_Locales::class, 'ocultar'])->name('ocultar');
+    });
 
 use App\Http\Controllers\C_Plan;
 Route::prefix('/planes')->name('planes.')->group(function () {
@@ -82,6 +85,8 @@ Route::prefix('tickets')->name('tickets.')->group(function () {
     Route::get('/', [C_Tickets::class, 'index'])->name('index');
     Route::get('/create', [C_Tickets::class, 'create'])->name('create');
     Route::get('/ticket/{id}/{codigo}', [C_Tickets::class, 'mostrarTicket'])->name('ticket.mostrar');
+    Route::get('/usuarios/{id}/tickets', [C_Tickets::class, 'userTickets'])->name('usuarios.tickets');
+
 });
 
 
