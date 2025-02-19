@@ -13,6 +13,7 @@ use App\Models\M_Plan;
 use App\Models\M_Eventos;
 
 use Illuminate\Support\Str;
+use Laravel\Pail\ValueObjects\Origin\Console;
 
 class C_Tickets extends Controller
 {
@@ -43,7 +44,7 @@ class C_Tickets extends Controller
                 'asiento_id' => 'required|integer',
                 'plan_id' => 'required|integer',
                 'evento_id' => 'required|integer',
-                'qr' => 'nullable|string|max:255', 
+                'qr' => 'nullable|string|max:255',
                 'qr_valido' => 'nullable|boolean', // Permitir que 'qr_valido' sea NULL o booleano
             ]);
 
@@ -72,21 +73,31 @@ class C_Tickets extends Controller
         $asientos = M_Asientos::where('Evento_id', $eventoId)
             ->where('Estado', 'Disponible')
             ->get();
-    
+
         if ($asientos->isEmpty()) {
             return response()->json(['message' => 'No hay asientos disponibles'], 404);
         }
-    
+
         return response()->json(['asientos' => $asientos]);
-    }    
+    }
 
     public function getPlanesByEvento($eventoId)
     {
         $planes = M_Plan::where('Evento_id', $eventoId)->get();
-    
+
         return response()->json([
             'planes' => $planes,
             'message' => $planes->isEmpty() ? 'No hay planes disponibles' : 'Planes encontrados'
         ]);
-    }    
+    }
+
+    public function userTickets($userId)
+    {
+        $user = User::findOrFail($userId);
+        $tickets = M_Tickets::byUser($userId)->with(['evento', 'plan', 'asiento'])->get();
+        
+        return view('layouts.tickets.user_tickets', compact('user', 'tickets'));
+    }
+
+
 }

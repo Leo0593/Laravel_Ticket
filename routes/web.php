@@ -83,6 +83,8 @@ Route::prefix('tickets')->name('tickets.')->group(function () {
     Route::get('/', [C_Tickets::class, 'index'])->name('index');
     Route::get('/create', [C_Tickets::class, 'create'])->name('create');
     Route::post('/', [C_Tickets::class, 'store'])->name('store');
+    Route::get('/usuarios/{id}/tickets', [C_Tickets::class, 'userTickets'])->name('usuarios.tickets');
+
 });
 
 Route::get('/asientos/{eventoId}', [C_Tickets::class, 'getAsientosByEvento']);
