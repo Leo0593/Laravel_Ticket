@@ -134,7 +134,7 @@
                     width: 70%;
                     background-color: white;
                     padding: 20px 50px;
-                    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+                    box-shadow: 0 2px 5px 10px rgba(0, 0, 0, 0.4);
 
                     scroll-margin-top: 110px;
                     ">
@@ -484,7 +484,7 @@
 
                             // 🔹 Aplicar el color más adecuado
                             card.style.backgroundImage = `
-                                linear-gradient(to top, ${finalShadowColor}, rgba(0, 0, 0, 0.2) 80%),
+                                linear-gradient(to top, ${finalShadowColor}, rgba(0, 0, 0, 0.5) 60%),
                                 url('${imgUrl}')
                             `;
 
