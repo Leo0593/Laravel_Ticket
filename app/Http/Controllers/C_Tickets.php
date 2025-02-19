@@ -33,7 +33,7 @@ class C_Tickets extends Controller
 
         // Verificar si el ticket existe y el código QR coincide
         if ($ticket && $ticket->qr === $codigo) {
-            return view('V_tickets', compact('ticket'));
+            return view('kayouts.tickets.V_ticket', compact('ticket'));
         } else {
             return redirect()->route('error.page')->with('error', 'Ticket no válido o código incorrecto.');
         }
@@ -94,11 +94,11 @@ class C_Tickets extends Controller
             ]);
 
             \Log::info('Redirigiendo a:', [
-                'url' => route('ticket.mostrar', ['id' => $ticket->id, 'codigo' => $ticket->qr])
+                'url' => route('tickets.ticket.mostrar', ['id' => $ticket->id, 'codigo' => $ticket->qr])
             ]);
+
             return redirect()->route('ticket.mostrar', ['id' => $ticket->id, 'codigo' => $ticket->qr])
             ->with('success', 'Ticket creado y asiento actualizado con éxito.');
-
         } catch (\Exception $e) {
             \Log::error("Error al crear el ticket: " . $e->getMessage(), [
                 'stack' => $e->getTraceAsString(),
@@ -135,46 +135,59 @@ class C_Tickets extends Controller
     }    
 
     public function userTickets(Request $request)
-{
-    // Obtener el usuario autenticado
-    $user = Auth::user();
+    {
+        // Obtener el usuario autenticado
+        $user = Auth::user();
 
-    // Si no hay usuario autenticado, redirigir o lanzar un error
-    if (!$user) {
-        abort(403, 'No tienes permiso para acceder a esta página.');
+        // Si no hay usuario autenticado, redirigir o lanzar un error
+        if (!$user) {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
+
+        // Filtrar solo los tickets del usuario autenticado
+        $query = M_Tickets::where('user_id', $user->id)->with(['evento', 'plan', 'asiento']);
+
+        // Filtrar por fecha de pago
+        if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
+            $query->whereBetween('fecha_pago', [$request->fecha_inicio, $request->fecha_fin]);
+        } elseif ($request->filled('fecha_inicio')) {
+            $query->whereDate('fecha_pago', '>=', $request->fecha_inicio);
+        } elseif ($request->filled('fecha_fin')) {
+            $query->whereDate('fecha_pago', '<=', $request->fecha_fin);
+        }
+
+        // Filtrar por fecha del evento
+        if ($request->filled('evento_fecha_inicio') && $request->filled('evento_fecha_fin')) {
+            $query->whereHas('evento', function ($q) use ($request) {
+                $q->whereBetween('fecha_evento', [$request->evento_fecha_inicio, $request->evento_fecha_fin]);
+            });
+        } elseif ($request->filled('evento_fecha_inicio')) {
+            $query->whereHas('evento', function ($q) use ($request) {
+                $q->whereDate('fecha_evento', '>=', $request->evento_fecha_inicio);
+            });
+        } elseif ($request->filled('evento_fecha_fin')) {
+            $query->whereHas('evento', function ($q) use ($request) {
+                $q->whereDate('fecha_evento', '<=', $request->evento_fecha_fin);
+            });
+        }
+
+        $tickets = $query->get();
+
+        return view('layouts.tickets.user_tickets', compact('user', 'tickets'));
     }
 
-    // Filtrar solo los tickets del usuario autenticado
-    $query = M_Tickets::where('user_id', $user->id)->with(['evento', 'plan', 'asiento']);
 
-    // Filtrar por fecha de pago
-    if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
-        $query->whereBetween('fecha_pago', [$request->fecha_inicio, $request->fecha_fin]);
-    } elseif ($request->filled('fecha_inicio')) {
-        $query->whereDate('fecha_pago', '>=', $request->fecha_inicio);
-    } elseif ($request->filled('fecha_fin')) {
-        $query->whereDate('fecha_pago', '<=', $request->fecha_fin);
+    public function misTickets()
+    {
+        if (!auth()->check()) {
+            // Redirige si el usuario no está autenticado
+            return redirect()->route('login');
+        }
+    
+        $tickets = Ticket::where('user_id', auth()->id())
+                         ->with(['evento', 'asiento', 'plan'])
+                         ->get();
+    
+        return view('dashboard', compact('tickets'));  // Usa compact para pasar la variable
     }
-
-    // Filtrar por fecha del evento
-    if ($request->filled('evento_fecha_inicio') && $request->filled('evento_fecha_fin')) {
-        $query->whereHas('evento', function ($q) use ($request) {
-            $q->whereBetween('fecha_evento', [$request->evento_fecha_inicio, $request->evento_fecha_fin]);
-        });
-    } elseif ($request->filled('evento_fecha_inicio')) {
-        $query->whereHas('evento', function ($q) use ($request) {
-            $q->whereDate('fecha_evento', '>=', $request->evento_fecha_inicio);
-        });
-    } elseif ($request->filled('evento_fecha_fin')) {
-        $query->whereHas('evento', function ($q) use ($request) {
-            $q->whereDate('fecha_evento', '<=', $request->evento_fecha_fin);
-        });
-    }
-
-    $tickets = $query->get();
-
-    return view('layouts.tickets.user_tickets', compact('user', 'tickets'));
-}
-
-
 }
