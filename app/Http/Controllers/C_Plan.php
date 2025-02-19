@@ -17,7 +17,16 @@ class C_Plan extends Controller
     public function index(): View
     {
         $eventos = M_Eventos::all();
-        $planes = M_Plan::with('evento')->get();
+
+        $planes = M_Plan::with(['evento', 'asientosDisponibles' => function ($query) {
+            $query->where('estado', 'disponible');
+        }])->get();
+    
+        $planes = $planes->map(function ($plan) {
+            $plan->asientosDisponibles = $plan->asientosDisponibles->where('evento_id', $plan->evento_id);
+            return $plan;
+        });
+    
         $noPlanes = $planes->isEmpty();
 
         return view('layouts.planes.V_todosplans', compact('eventos', 'planes', 'noPlanes'));

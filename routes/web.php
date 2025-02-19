@@ -65,6 +65,7 @@ Route::prefix('/eventos')->name('eventos.')->group(function () {
 });
 
 use App\Http\Controllers\C_Asientos;
+
 Route::prefix('asientos')->name('asientos.')->group(function () {
     Route::get('/', [C_Asientos::class, 'index'])->name('index');
     Route::get('/create', [C_Asientos::class, 'create'])->name('create');
@@ -77,10 +78,12 @@ Route::prefix('asientos')->name('asientos.')->group(function () {
 
 use App\Http\Controllers\C_Tickets;
 Route::prefix('tickets')->name('tickets.')->group(function () {
+    Route::post('/store', [C_Tickets::class, 'store'])->name('store');
     Route::get('/', [C_Tickets::class, 'index'])->name('index');
     Route::get('/create', [C_Tickets::class, 'create'])->name('create');
-    Route::post('/', [C_Tickets::class, 'store'])->name('store');
+    Route::get('/ticket/{id}/{codigo}', [C_Tickets::class, 'mostrarTicket'])->name('ticket.mostrar');
 });
+
 
 Route::get('/asientos/{eventoId}', [C_Tickets::class, 'getAsientosByEvento']);
 Route::get('/planes/{eventoId}', [C_Tickets::class, 'getPlanesByEvento']);
@@ -90,6 +93,7 @@ use App\Http\Controllers\PaymentController;
 
 Route::get('/payment/{planId}', [PaymentController::class, 'index'])->name('payment.index');
 Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent'])->name('payment.createPaymentIntent');
+Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
 
 
 use App\Http\Controllers\C_Usuarios;

@@ -25,6 +25,20 @@ class C_Tickets extends Controller
         return view('layouts.tickets.V_todoslostickets', compact('eventos', 'tickets', 'noTickets'));
     }
 
+    public function mostrarTicket($id, $codigo)
+    {
+        // Buscar el ticket por ID
+        $ticket = M_Tickets::find($id);
+
+        // Verificar si el ticket existe y el código QR coincide
+        if ($ticket && $ticket->qr === $codigo) {
+            return view('V_tickets', compact('ticket'));
+        } else {
+            return redirect()->route('error.page')->with('error', 'Ticket no válido o código incorrecto.');
+        }
+    }
+
+
     public function create(): View
     {
         $users = User::all();
@@ -35,35 +49,64 @@ class C_Tickets extends Controller
         return view('layouts.tickets.V_agregarticket', compact('users', 'asientos', 'planes', 'eventos'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         try {
+            \Log::info('Datos recibidos:', $request->all());
+
             $validated = $request->validate([
-                'user_id' => 'required|integer',
-                'asiento_id' => 'required|integer',
-                'plan_id' => 'required|integer',
-                'evento_id' => 'required|integer',
-                'qr' => 'nullable|string|max:255', 
-                'qr_valido' => 'nullable|boolean', // Permitir que 'qr_valido' sea NULL o booleano
+                'user_id' => 'required|integer|exists:users,id',
+                'evento_id' => 'required|integer|exists:eventos,id',
+                'asiento_id' => 'required|integer|exists:asientos,id',
+                'plan_id' => 'required|integer|exists:plans,id',
+                'qr' => 'nullable|string|max:255',
+                'qr_valido' => 'nullable|boolean',
+                'pagado' => 'nullable|boolean',
             ]);
 
+            \Log::info('Datos validados:', $validated);
 
-            // Asegura que 'pagado' tenga un valor de 0 (no pagado) si no se proporciona
-            $validated['pagado'] = $validated['pagado'] ?? 0; // Valor por defecto si no está presente
+            $validated['pagado'] = $validated['pagado'] ?? 0;
 
-            // Si no se proporciona un valor para 'qr', asigna uno por defecto
-            $validated['qr'] = $validated['qr'] ?? Str::uuid()->toString(); // Asigna un UUID único
+            $validated['fecha_pago'] = now();
 
-            // Si no se proporciona un valor para 'qr_valido', asigna 0 por defecto
+            // Crear un código QR único para este ticket
+            $codigo = chr(rand(65, 90)) . rand(100000000, 999999999);
+            $validated['qr'] = $codigo;
             $validated['qr_valido'] = $validated['qr_valido'] ?? 0;
 
-            //dd($validated);
+            \Log::info('Creando ticket con datos:', $validated);
+
+            // Crear el ticket
             $ticket = M_Tickets::create($validated);
 
-            return redirect()->route('tickets.index')->with('success', 'Ticket creado exitosamente.');
+            // Actualizar el estado del asiento a 'ocupado'
+            \DB::table('asientos')
+            ->where('id', $validated['asiento_id'])
+            ->update(['estado' => 'Ocupado']);
+
+            \Log::info('Ticket creado:', $ticket->toArray());
+
+            return response()->json([
+                'success' => true,
+                'ticket' => $ticket,
+            ]);
+
+            \Log::info('Redirigiendo a:', [
+                'url' => route('ticket.mostrar', ['id' => $ticket->id, 'codigo' => $ticket->qr])
+            ]);
+            return redirect()->route('ticket.mostrar', ['id' => $ticket->id, 'codigo' => $ticket->qr])
+            ->with('success', 'Ticket creado y asiento actualizado con éxito.');
+
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Hubo un problema al crear el ticket.']);
+            \Log::error("Error al crear el ticket: " . $e->getMessage(), [
+                'stack' => $e->getTraceAsString(),
+                'data' => $request->all(),
+            ]);
+            return response()->json([
+                'success' => false,
+                'error' => 'Error al crear el ticket. Inténtelo de nuevo.',
+            ], 500);
         }
     }
 

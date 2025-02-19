@@ -23,4 +23,16 @@ class M_Plan extends Model
     {
         return $this->belongsTo(M_Eventos::class, 'evento_id');
     }
+
+    public function asientos()
+    {
+        return $this->hasMany(M_Asientos::class, 'plan_id'); 
+    }
+
+    public function asientosDisponibles()
+    {
+        return $this->hasMany(M_Asientos::class, 'plan_id')
+            ->where('estado', 'disponible');
+    }
+    
 }

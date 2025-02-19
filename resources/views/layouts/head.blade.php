@@ -25,6 +25,8 @@
 
     <!-- AOS Library -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             AOS.init();
