@@ -7,9 +7,9 @@
 
     <div class="main">
         <div class="main_banner_2" data-aos="fade-down" data-aos-duration="1000"
-            style="--banner-image: url('../../images/dashboard/plans.png');">
-            <h1><strong>USUARIOS</strong></h1>
-            <h2>Combos Generales o VIP, ¡Tú Decides!</h2>
+            style="--banner-image: url('../../images/dashboard/users.jpg');">
+            <h1><strong>Gestión de Usuarios</strong></h1>
+            <h2>Administra cuentas, roles y accesos de tus usuarios</h2>
 
             <button class="btn-1" data-bs-toggle="modal" data-bs-target="#addModal">
                 Agregar
