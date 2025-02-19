@@ -91,11 +91,37 @@ class C_Tickets extends Controller
         ]);
     }
 
-    public function userTickets($userId)
+    public function userTickets(Request $request, $userId)
     {
         $user = User::findOrFail($userId);
-        $tickets = M_Tickets::byUser($userId)->with(['evento', 'plan', 'asiento'])->get();
-        
+        $query = M_Tickets::where('user_id', $userId)->with(['evento', 'plan', 'asiento']);
+
+        // Filtrar por fecha de pago
+        if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
+            $query->whereBetween('fecha_pago', [$request->fecha_inicio, $request->fecha_fin]);
+        } elseif ($request->filled('fecha_inicio')) {
+            $query->whereDate('fecha_pago', '>=', $request->fecha_inicio);
+        } elseif ($request->filled('fecha_fin')) {
+            $query->whereDate('fecha_pago', '<=', $request->fecha_fin);
+        }
+
+        // Filtrar por fecha del evento
+        if ($request->filled('evento_fecha_inicio') && $request->filled('evento_fecha_fin')) {
+            $query->whereHas('evento', function ($q) use ($request) {
+                $q->whereBetween('fecha_evento', [$request->evento_fecha_inicio, $request->evento_fecha_fin]);
+            });
+        } elseif ($request->filled('evento_fecha_inicio')) {
+            $query->whereHas('evento', function ($q) use ($request) {
+                $q->whereDate('fecha_evento', '>=', $request->evento_fecha_inicio);
+            });
+        } elseif ($request->filled('evento_fecha_fin')) {
+            $query->whereHas('evento', function ($q) use ($request) {
+                $q->whereDate('fecha_evento', '<=', $request->evento_fecha_fin);
+            });
+        }
+
+        $tickets = $query->get();
+
         return view('layouts.tickets.user_tickets', compact('user', 'tickets'));
     }
 
