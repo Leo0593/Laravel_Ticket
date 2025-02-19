@@ -88,7 +88,6 @@ Route::prefix('tickets')->name('tickets.')->group(function () {
     Route::get('/user-tickets', [C_Tickets::class, 'userTickets'])
     ->middleware('auth')
     ->name('usuarios.tickets'); // Agregamos un nombre a la ruta
-
 });
 
 

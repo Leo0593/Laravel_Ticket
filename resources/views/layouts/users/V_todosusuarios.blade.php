@@ -15,8 +15,7 @@
                 Agregar
             </button>
 
-            <a href="{{ route('tickets.usuarios.tickets') }}" class="btn-1" data-bs-toggle="modal"
-                data-bs-target="#ticketModal">
+            <a href="{{ route('tickets.usuarios.tickets') }}" class="btn btn-info scale">
                 <i class="fa-solid fa-ticket"></i> Ver Tickets
             </a>
 
