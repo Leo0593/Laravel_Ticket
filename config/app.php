@@ -118,29 +118,8 @@ return [
     |
     */
 
-    'providers' => [
-        Barryvdh\DomPDF\ServiceProvider::class,
+    'maintenance' => [
+        'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
+        'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
-    'aliases' => [
-        'PDF' => Barryvdh\DomPDF\Facade::class,
-    ],
-    
-    'disks' => [
-
-        'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-
-        'maintenance' => [
-            'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-            'store' => env('APP_MAINTENANCE_STORE', 'database'),
-        ],
-
-    ],
-
 ];
