@@ -141,6 +141,10 @@
 .then(data => {
     if (data.success) {
         alert("Ticket creado exitosamente");
+
+        let ticketUrl = "{{ route('tickets.ticket.mostrar', ['id' => ':id', 'codigo' => ':codigo']) }}";
+        ticketUrl = ticketUrl.replace(':id', data.ticket.id).replace(':codigo', data.ticket.qr);
+        window.location.href = ticketUrl;
     } else {
         alert("Error al crear el ticket: " + data.error);
     }
