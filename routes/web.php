@@ -89,6 +89,7 @@ Route::prefix('tickets')->name('tickets.')->group(function () {
     Route::get('/', [C_Tickets::class, 'index'])->name('index');
     Route::get('/create', [C_Tickets::class, 'create'])->name('create');
     Route::get('/ticket/{id}/{codigo}', [C_Tickets::class, 'mostrarTicket'])->name('ticket.mostrar');
+    Route::get('/ticket/{id}/download', [C_Tickets::class, 'downloadPDF'])->name('ticket.downloadPDF');
     Route::get('/user-tickets', [C_Tickets::class, 'userTickets'])
     ->middleware('auth')
     ->name('usuarios.tickets'); // Agregamos un nombre a la ruta

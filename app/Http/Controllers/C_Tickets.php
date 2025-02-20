@@ -222,4 +222,26 @@ class C_Tickets extends Controller
     
         return view('dashboard', compact('tickets'));  // Usa compact para pasar la variable
     }
+
+    public function downloadPDF($id)
+    {
+        try {
+            // Obtener el ticket desde la base de datos
+            $ticket = Ticket::findOrFail($id);
+            
+            // Cargar la vista con los datos del ticket
+            $pdf = PDF::loadView('layouts.tickets.ticketPDF', compact('ticket'));
+            
+            // Devolver el PDF para su descarga
+            return $pdf->download('ticket_' . $ticket->id . '.pdf');
+        } catch (\Exception $e) {
+            Log::error('Error al generar el PDF para el ticket ID ' . $id, [
+                'error_message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString(),
+            ]);
+            
+            // Si ocurre un error, redirigir a una página de error personalizada
+            return redirect()->route('error.page')->with('error', $e->getMessage());
+        }
+    }
 }
