@@ -72,7 +72,8 @@
                                 justify-content: space-between;
                                 padding: 40px !important;
                                 position: relative;
-                            ">
+                                ">
+                                
                                 <!-- Artista/Grupo en el centro arriba -->
                                 <div style="position: absolute; color: white;">
                                     <h5 class="titulo" style="font-size: 2.5rem">{{ $evento->ArtistaGrupo }}</h5>

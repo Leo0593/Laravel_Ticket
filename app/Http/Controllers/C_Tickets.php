@@ -33,7 +33,7 @@ class C_Tickets extends Controller
 
         // Verificar si el ticket existe y el código QR coincide
         if ($ticket && $ticket->qr === $codigo) {
-            return view('kayouts.tickets.V_ticket', compact('ticket'));
+            return view('layouts.tickets.V_ticket', compact('ticket'));
         } else {
             return redirect()->route('error.page')->with('error', 'Ticket no válido o código incorrecto.');
         }

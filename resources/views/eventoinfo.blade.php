@@ -135,7 +135,6 @@
                     background-color: white;
                     padding: 20px 50px;
                     box-shadow: 0 2px 5px 10px rgba(0, 0, 0, 0.4);
-
                     scroll-margin-top: 110px;
                     ">
 
@@ -143,11 +142,13 @@
                         <h2 class="eventos-title">ENTRADAS</h2>
                     </div>
 
-                        @foreach($evento->planes as $index => $plan)
-                            <div class="contenedor-plan-info">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: space-around;"> 
+                        @foreach($evento->planes as $index => $plan)   
+                            
+                            <div class="contenedor-plan-info scale">
                                 <div class="plan-img" 
                                     data-img="{{ $plan->Foto ? asset('storage/' . $plan->Foto) : 'https://placehold.co/600x400' }}"
-                                    style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2) 80%), 
+                                    style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8) 80%), 
                                     url('{{ $plan->Foto ? asset('storage/' . $plan->Foto) : 'https://placehold.co/600x400' }}');
                                     background-size: cover;
                                     background-position: center;
@@ -160,9 +161,14 @@
                                     <h4 id="headerText-{{ $index }}" style="margin: 0;">{{ $plan->tipo }}</h4>
                                     <h2 style="margin: 10px; font-weight: bold">{{ $plan->precio }} €</h2>
                                     <p><?= htmlspecialchars_decode($plan->descripcion) ?></p>
+                                    <div style="display: flex; justify-content: center; margin: 20px;">
+                                        <a href="{{ route('payment.index', ['planId' => $plan->id]) }}" class="btn-1" style="border: 2px solid #000; color: #000; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center;">
+                                            <i class="fa-solid fa-ticket" style="margin-right: 8px"></i>
+                                            Comprar
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                            <br>
                             <!--
                             <div 
                                 style="
@@ -241,7 +247,7 @@
                                 </div>
                             </div> -->
                         @endforeach
-                    
+                    </div>
                 </div>
             </div>
         </div>
@@ -484,7 +490,7 @@
 
                             // 🔹 Aplicar el color más adecuado
                             card.style.backgroundImage = `
-                                linear-gradient(to top, ${finalShadowColor}, rgba(0, 0, 0, 0.5) 60%),
+                                linear-gradient(to top, ${finalShadowColor}, rgba(0, 0, 0, 0.15) 80%),
                                 url('${imgUrl}')
                             `;
 

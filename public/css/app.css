@@ -664,6 +664,35 @@ body.dark .text {
     box-shadow: 0px 5px 5px 2px rgba(0, 0, 0, 0.4);
 
     transition: all 0.3s ease;
+
+    text-shadow: none;
+}
+
+.ver-evento-foto-asiento {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    width: auto;
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: white;
+    border-radius: 5px;
+    padding: 0px 10px;
+    margin: 8px;
+    font-size: 12px;
+    gap: 0px;
+
+    box-shadow: 0px 5px 5px 2px rgba(0, 0, 0, 0.4);
+
+    transition: all 0.3s ease;
+
+    text-shadow: none;
 }
 
 .ver-evento-foto-fecha:hover, .ver-evento-foto-fecha:focus,
@@ -765,12 +794,15 @@ body.dark .text {
 
 .contenedor-plan-info {
     height: auto;
-    width: 50%;
+    width: 40%;
 
     display: flex;      
-    flex-direction: column;  
+    flex-direction: column; 
+
+    margin-top: 20px;
+    margin-bottom: 50px;
     
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 2px 15px 5px rgba(0, 0, 0, 0.4);
 }
 
 .plan-img, .plan-info {
