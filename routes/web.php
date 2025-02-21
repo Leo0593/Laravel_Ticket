@@ -96,6 +96,9 @@ Route::prefix('tickets')->name('tickets.')->group(function () {
     Route::get('/usuarios/{id}/tickets', [C_Tickets::class, 'TicketsTotalUser'])->name('usuariostotales.tickets');
 });
 
+//PDF TICKETS
+Route::get('/tickets/{id}/downloadPDF', [C_Tickets::class, 'downloadPDF'])->name('tickets.ticket.downloadPDF');
+Route::get('/tickets/{id}/print', [C_Tickets::class, 'printTicket'])->name('tickets.ticket.print');
 
 
 Route::get('/asientos/{eventoId}', [C_Tickets::class, 'getAsientosByEvento']);

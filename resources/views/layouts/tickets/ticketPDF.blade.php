@@ -56,7 +56,7 @@
 
                 <div style="width: 100%; border-bottom: 3px solid var(--color); margin: 15px 0;"></div>
 
-                <button class="btn btn-danger" style="margin: 10px;">
+                <!--<button class="btn btn-danger" style="margin: 10px;">
                     <a href="{{ route('tickets.ticket.downloadPDF', $ticket->id) }}" style="text-decoration: none; color: white;">
                         <i class="fas fa-file-pdf"></i> Descargar PDF
                     </a>
@@ -66,7 +66,8 @@
                     <a  style="text-decoration: none; color: white;">
                         <i class="fas fa-print"></i> Imprimir
                     </a>
-                </button>
+                </button>-->
+                
             </div>
         </div>
 </body>

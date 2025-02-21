@@ -13,7 +13,10 @@ use App\Models\M_Plan;
 use App\Models\M_Eventos;
 use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
+
 
 class C_Tickets extends Controller
 {
@@ -83,8 +86,8 @@ class C_Tickets extends Controller
 
             // Actualizar el estado del asiento a 'ocupado'
             \DB::table('asientos')
-            ->where('id', $validated['asiento_id'])
-            ->update(['estado' => 'Ocupado']);
+                ->where('id', $validated['asiento_id'])
+                ->update(['estado' => 'Ocupado']);
 
             \Log::info('Ticket creado:', $ticket->toArray());
 
@@ -98,7 +101,7 @@ class C_Tickets extends Controller
             ]);
 
             return redirect()->route('ticket.mostrar', ['id' => $ticket->id, 'codigo' => $ticket->qr])
-            ->with('success', 'Ticket creado y asiento actualizado con éxito.');
+                ->with('success', 'Ticket creado y asiento actualizado con éxito.');
         } catch (\Exception $e) {
             \Log::error("Error al crear el ticket: " . $e->getMessage(), [
                 'stack' => $e->getTraceAsString(),
@@ -116,23 +119,23 @@ class C_Tickets extends Controller
         $asientos = M_Asientos::where('Evento_id', $eventoId)
             ->where('Estado', 'Disponible')
             ->get();
-    
+
         if ($asientos->isEmpty()) {
             return response()->json(['message' => 'No hay asientos disponibles'], 404);
         }
-    
+
         return response()->json(['asientos' => $asientos]);
-    }    
+    }
 
     public function getPlanesByEvento($eventoId)
     {
         $planes = M_Plan::where('Evento_id', $eventoId)->get();
-    
+
         return response()->json([
             'planes' => $planes,
             'message' => $planes->isEmpty() ? 'No hay planes disponibles' : 'Planes encontrados'
         ]);
-    }    
+    }
 
     public function userTickets(Request $request)
     {
@@ -215,33 +218,29 @@ class C_Tickets extends Controller
         if (!auth()->check()) {
             return redirect()->route('login');
         }
-    
+
         $tickets = M_Tickets::where('user_id', auth()->id())
-                         ->with(['evento', 'asiento', 'plan'])
-                         ->get();
-    
+            ->with(['evento', 'asiento', 'plan'])
+            ->get();
+
         return view('dashboard', compact('tickets'));  // Usa compact para pasar la variable
     }
 
     public function downloadPDF($id)
     {
-        try {
-            // Obtener el ticket desde la base de datos
-            $ticket = Ticket::findOrFail($id);
-            
-            // Cargar la vista con los datos del ticket
-            $pdf = PDF::loadView('layouts.tickets.ticketPDF', compact('ticket'));
-            
-            // Devolver el PDF para su descarga
-            return $pdf->download('ticket_' . $ticket->id . '.pdf');
-        } catch (\Exception $e) {
-            Log::error('Error al generar el PDF para el ticket ID ' . $id, [
-                'error_message' => $e->getMessage(),
-                'stack_trace' => $e->getTraceAsString(),
-            ]);
-            
-            // Si ocurre un error, redirigir a una página de error personalizada
-            return redirect()->route('error.page')->with('error', $e->getMessage());
-        }
+        $ticket = M_Tickets::with(['evento', 'asiento', 'plan'])->findOrFail($id);
+
+        $pdf = Pdf::loadView('layouts.tickets.ticketPDF', compact('ticket'));
+
+        return $pdf->download('ticket_' . $ticket->id . '.pdf');
     }
+
+    public function printTicket($id)
+    {
+        $ticket = M_Tickets::with(['evento', 'asiento', 'plan'])->findOrFail($id);
+
+        return view('layouts.tickets.ticketPrint', compact('ticket'));
+    }
+
+
 }
