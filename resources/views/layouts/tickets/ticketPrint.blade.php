@@ -39,15 +39,23 @@
 </head>
 <body>
     <div id="ticket">
-        <div class="text-center" style="margin-bottom: 10px;">
+        <div style="margin-bottom: 10px; text-align: center;">
             <img src="{{ asset('../../images/login/ticketLogo.png') }}" alt="logo" style="width: 100px; height: 100px;">
         </div>
 
         <h3 style="text-align: center;">{{ $ticket->evento->nombre }}</h3>
         <p style="text-align: center;">{{ $ticket->evento->ArtistaGrupo }}</p>
         <p style="text-align: center;">
-            {{ \Carbon\Carbon::parse($ticket->evento->fecha_evento)->translatedFormat('M j, H:i') }}
+            {{ \Carbon\Carbon::parse($ticket->evento->fecha_evento)->locale('es')->translatedFormat('j M, H:i') }}
         </p>
+
+        <hr>
+
+        <div style="margin-bottom: 10px; display:flex; text-align: center; justify-content: center; width: 100%; height: auto;">
+            <img src="{{ $ticket->evento->Foto ? asset('storage/' . $ticket->evento->Foto) : 'https://placehold.co/600x400' }}" alt="foto evento" style="background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;"">
+        </div>
 
         <hr>
 
