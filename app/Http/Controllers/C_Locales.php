@@ -17,24 +17,41 @@ class C_Locales extends Controller
         // Obtener el valor de 'orderBy' desde la solicitud, con valor por defecto 'nombre'
         $orderBy = $request->input('orderBy', 'nombre');
 
-        // Ordenar los locales según el parámetro 'orderBy'
+        // Obtener el valor de 'showWithoutSeats' desde la solicitud (por defecto '0')
+        //$showWithoutSeats = $request->input('showWithoutSeats', '0');
+        $asientos = $request->input('asientos');
+
+        // Inicializar la consulta de locales
+        $query = M_Locales::query();
+
+        // Aplicar filtro de asientos (solo si se selecciona una opción)
+        if ($asientos !== null) {
+            if ($asientos == '1') {
+                $query->where('Tiene_Asientos', false); // Mostrar locales sin asientos
+            } elseif ($asientos == '0') {
+                $query->where('Tiene_Asientos', true); // Mostrar locales con asientos
+            }
+            // Si es "Todos", no se aplica ningún filtro
+        }
+
+        // Aplicar filtro y orden según el parámetro 'orderBy'
         switch ($orderBy) {
             case 'nombre':
-                $locales = M_Locales::orderBy('Nombre')->get();
+                $query->orderBy('Nombre');
                 break;
             case 'aforo':
-                $locales = M_Locales::orderBy('Aforo')->get();
+                $query->orderBy('Aforo');
                 break;
             case 'ubicacion':
-                $locales = M_Locales::orderBy('Direccion')->get();
-                break;
-            case 'asientos':
-                $locales = M_Locales::orderBy('Tiene_Asientos')->get();
+                $query->orderBy('Direccion');
                 break;
             default:
-                $locales = M_Locales::orderBy('Nombre')->get(); // Orden por defecto
+                $query->orderBy('Nombre'); // Orden por defecto
                 break;
         }
+
+        // Obtener los locales filtrados y ordenados
+        $locales = $query->get();
 
         // Verificar si no hay locales
         $noLocales = $locales->isEmpty();

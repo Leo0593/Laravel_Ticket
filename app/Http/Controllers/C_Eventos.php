@@ -15,10 +15,52 @@ use App\Models\M_Asientos;
 
 class C_Eventos extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $eventos =  M_Eventos::with('local')->get();
+        // Obtener el valor de 'orderBy' desde la solicitud, con valor por defecto 'nombre'
+        $orderBy = $request->input('orderBy', 'nombre');
+
+        // Obtener el valor de 'estado' desde la solicitud, con valor por defecto 'ACTIVO'
+        $estado = $request->input('estado', 'ACTIVO');
+
+        // Inicializar la consulta de eventos
+        $query = M_Eventos::with('local');
+
+        if ($estado) {
+            $query->where('estado', $estado);
+        }
+
+        // Aplicar orden según el parámetro 'orderBy'
+        switch ($orderBy) {
+            case 'nombre':
+                $query->orderBy('nombre');
+                break;
+            case 'artista':
+                $query->orderBy('ArtistaGrupo');
+                break;
+            case 'ubicacion':
+                $query->join('locales', 'eventos.local_id', '=', 'locales.id')
+                  ->orderBy('locales.Nombre')
+                  ->select('eventos.*');// Ordenamos por el nombre del local (sin mostrarlo)
+            break;
+            case 'fecha':
+                $query->orderBy('fecha_evento');
+                break;
+            case 'aforo':
+                $query->orderBy('aforo_evento'); // Ordena por el ID del local, no por detalles del local
+                break;
+            default:
+                $query->orderBy('nombre'); // Orden por defecto
+                break;
+        }
+        // Obtener los eventos ordenados
+        $eventos = $query->get();
+
+        // Verificar si no hay eventos
         $noEventos = $eventos->isEmpty();
+        /*        
+        $eventos =  M_Eventos::with('local')->get();
+        $noEventos = $eventos->isEmpty();*/
 
         $users = User::all(); 
         $locales = M_Locales::all();

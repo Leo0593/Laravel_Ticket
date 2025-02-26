@@ -17,13 +17,73 @@
                 </button>
             </div>
 
-            <div class="main_contenedor">
+            <div class="main_organizar" data-aos="zoom-in" data-aos-duration="1000">
+                <form method="GET" action="">
+                    <h4>Ordenar por:</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <button type="submit" name="orderBy" value="nombre" class="btn btn-outline-primary {{ request('orderBy') == 'nombre' ? 'active' : '' }}">
+                                Nombre
+                            </button>
+                            <button type="submit" name="orderBy" value="artista" class="btn btn-outline-primary {{ request('orderBy') == 'artista' ? 'active' : '' }}">
+                                Artista/Grupo
+                            </button>
+                            <button type="submit" name="orderBy" value="ubicacion" class="btn btn-outline-primary {{ request('orderBy') == 'ubicacion' ? 'active' : '' }}">
+                                Ubicación
+                            </button>
+                            <button type="submit" name="orderBy" value="fecha" class="btn btn-outline-primary {{ request('orderBy') == 'fecha' ? 'active' : '' }}">
+                                Fecha
+                            </button>
+                            <button type="submit" name="orderBy" value="aforo" class="btn btn-outline-primary {{ request('orderBy') == 'aforo' ? 'active' : '' }}">
+                                Aforo
+                            </button>
+
+                            <!-- Desplegable para seleccionar el estado -->
+                            <div class="dropup" style="margin-left: 15px;">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="estadoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Estado
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="estadoDropdown">
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="" {{ !request('estado') ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Todos
+                                        </label>
+                                    </li>
+
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="ACTIVO" {{ request('estado') == 'ACTIVO' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Activo
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="CANCELADO" {{ request('estado') == 'CANCELADO' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Cancelado
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="FINALIZADO" {{ request('estado') == 'FINALIZADO' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Finalizado
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> 
+                </form>
+            </div>
+
+            <div class="main_contenedor" data-aos="fade-up" data-aos-duration="1000">
                 @if($noEventos)
                     <div class="alert alert-primary" role="alert">
                         <p class="mb-0">{{ __('No hay eventos aun.') }}</p>
                     </div>
                 @else
                     @foreach($eventos as $evento)
+                    @if($evento->visible)
                         <div class="ver-evento">
                             <div class="ver-evento-info">
                                 <p class="card-title">
@@ -39,6 +99,11 @@
                                 <p class="card-title">
                                     <i class="fas fa-map-marker-alt"></i>
                                     {{ $evento->local_id }} - {{ optional($evento->local)->Nombre }}
+                                </p>
+
+                                <p class="card-title">
+                                    <i class="fas fa-users"></i> 
+                                    {{ $evento->aforo_evento }} personas
                                 </p>
 
                                 <p class="card-text">
@@ -60,7 +125,8 @@
                             @endphp
 
                             <div class="ver-evento-foto" 
-                                style="background-image: url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');">
+                                style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.02) 70%), 
+                                url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');">
 
                                 <div class="ver-evento-foto-fecha">
                                     <div style="font-size: 12px; color: var(--Delete)">{{ $fecha->format('M') }}</div>
@@ -116,6 +182,7 @@
                                 </div>
                             </div>
                         </div>
+                    @endif
                     @endforeach
                 @endif
             </div>

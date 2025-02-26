@@ -31,24 +31,57 @@
                             <button type="submit" name="orderBy" value="ubicacion" class="btn btn-outline-primary {{ request('orderBy') == 'ubicacion' ? 'active' : '' }}">
                                 Ubicación
                             </button>
+
+                            <div class="dropup" style="margin-left: 15px;">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="asientosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Asientos                
+                                </button>
+
+                                <ul class="dropdown-menu" aria-labelledby="asientosDropdown">
+                                    <!-- Opción "Todos" -->
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="asientos" value="" {{ !request('asientos') ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Todos
+                                        </label>
+                                    </li>
+                                    <!-- Opción "Con asientos" -->
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="asientos" value="0" {{ request('asientos') == '0' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Con asientos
+                                        </label>
+                                    </li>
+                                    <!-- Opción "Sin asientos" -->
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="asientos" value="1" {{ request('asientos') == '1' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Sin asientos
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!--
                             <button type="submit" name="orderBy" value="asientos" class="btn btn-outline-primary {{ request('orderBy') == 'asientos' ? 'active' : '' }}">
-                                Asientos
+                                Asientos ({{ request('showWithoutSeats', '0') == '1' ? 'Sin asientos' : 'Con asientos' }})
                             </button>
+                            <input type="hidden" name="showWithoutSeats" value="{{ request('showWithoutSeats', '0') == '1' ? '0' : '1' }}">
+                            -->
                         </div>
-                    </div>
+                    </div> 
                 </form>
             </div>
 
-            <div class="main_contenedor"
-            data-aos="fade-up" data-aos-duration="1000">
+            <div class="main_contenedor" data-aos="fade-up" data-aos-duration="1000">
                 @if($noLocales)
                     <div class="alert alert-primary" role="alert">
                         <p class="mb-0">{{ __('No hay locales aun.') }}</p>
                     </div>
                 @else
                     @foreach($locales as $local)
-                    @if($local->visible)
-                    <div class="ver-evento">
+                        @if($local->visible)
+                        <div class="ver-evento">
                             <div class="ver-evento-info">
                                 <p class="card-title">
                                     <i class="fas fa-building"></i> 
@@ -61,9 +94,26 @@
                                 </p>
 
                                 <p class="card-title">
+                                    <i class="fas fa-users"></i>
+                                    {{ $local->Aforo }}
+                                </p>
+
+                                <p class="card-title">
                                     <i class="fas fa-phone-alt"></i>
                                     {{ $local->Telefono }}
                                 </p>
+
+                                @if($local->Tiene_Asientos)
+                                    <p class="card-title text-success">
+                                        <i class="fas fa-chair"></i>
+                                        Tiene asientos
+                                    </p>
+                                @else
+                                    <p class="card-title text-danger">
+                                        <i class="fas fa-chair"></i>
+                                        No tiene asientos
+                                    </p>
+                                @endif
 
                                 <p class="card-text">
                                     <span class="info-icon">
@@ -77,7 +127,8 @@
                             </div>
 
                             <div class="ver-evento-foto" 
-                                style="background-image: url('{{ $local->Foto ? asset('storage/' . $local->Foto) : 'https://placehold.co/600x400' }}');">
+                                style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.02) 70%), 
+                                url('{{ $local->Foto ? asset('storage/' . $local->Foto) : 'https://placehold.co/600x400' }}');">
                             
                                 <div class="ver-evento-foto-btns">
                                     <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;"
@@ -105,7 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
+                        @endif
                     @endforeach
                 @endif
             </div>
