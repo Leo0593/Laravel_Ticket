@@ -578,8 +578,12 @@ body.dark .text {
     margin-right: 5px;
 }
 
-.ver-evento:hover {
+.ver-evento:hover, .ver-evento:focus {
     scale: 1.05;
+}
+
+.ver-evento:active {
+    scale: 0.95;
 }
 
 .ver-evento-info {
@@ -698,7 +702,8 @@ body.dark .text {
 .ver-evento-foto-datos:hover, .ver-evento-foto-datos:focus,
 .btns:hover, .btns:focus 
 {
-    scale: 1.1;
+    opacity: 0.5;
+    scale: 1.2;
 }
 
 .ver-evento-foto-fecha:active,
@@ -818,4 +823,19 @@ body.dark .text {
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+
+.modal-view {
+    font-size: 20px;
+}
+
+.modal-view p {
+    font-size: 15px;
+}
+
+.modal-view h1 {
+    font-size: 30px;
+}
+
+.modal-view strong {
 }

@@ -39,50 +39,73 @@
                 </form>
             </div>
 
-            <div class="main_contenedor">
+            <div class="main_contenedor"
+            data-aos="fade-up" data-aos-duration="1000">
                 @if($noLocales)
-                    <p>{{ __('No hay locales') }}</p>
+                    <div class="alert alert-primary" role="alert">
+                        <p class="mb-0">{{ __('No hay locales aun.') }}</p>
+                    </div>
                 @else
                     @foreach($locales as $local)
-                        <div class="card" style="width: 18rem;box-shadow: 0 0 10px rgba(2, 77, 223, 0.4);"> <!-- rgba(0, 0, 0, 0.4) -->
-                            <img class="card-img-top" 
-                                src="{{ $local->Foto ? asset('storage/' . $local->Foto) : 'https://placehold.co/600x400' }}"  
-                                alt="Foto del local">
+                    @if($local->visible)
+                    <div class="ver-evento">
+                            <div class="ver-evento-info">
+                                <p class="card-title">
+                                    <i class="fas fa-building"></i> 
+                                    {{ $local->Nombre }}
+                                </p>
 
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $local->Nombre }}</h5>
-                                <p class="card-text">{{ $local->Descripcion }}</p>
+                                <p class="card-title">
+                                    <i class="fas fa-map-marker-alt"></i> 
+                                    {{ $local->Direccion }}
+                                </p>
+
+                                <p class="card-title">
+                                    <i class="fas fa-phone-alt"></i>
+                                    {{ $local->Telefono }}
+                                </p>
+
+                                <p class="card-text">
+                                    <span class="info-icon">
+                                        <i class="fas fa-align-left"></i> 
+                                        <span class="descripcion-corta">
+                                            {{ Str::limit($local->Descripcion, 100, '...') }} <!-- Solo muestra 100 caracteres -->
+                                        </span>
+                                        <br>
+                                    </span>
+                                </p>
                             </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>UBICACIÓN: </strong>{{ $local->Direccion }}</li>
-                                <li class="list-group-item"><strong>TELÉFONO: </strong>{{ $local->Telefono }}</li>
-                                <li class="list-group-item"><strong>AFORO: </strong>{{ $local->Aforo }}</li>
-                                <li class="list-group-item"><strong>ASIENTOS: </strong>{{ $local->Tiene_Asientos ? 'Tiene Asientos' : 'No tiene Asientos' }}</li>
-                            </ul>
-                            <div class="card-body d-flex justify-content-around" style="max-height: 70px;">
-                                <!--
-                                <a href="#" class="btn btn-primary">
-                                    <i class="fa-solid fa-eye"></i>
-                                </a>-->
-                                <a href="#" class="btn btn-warning" style="color: white;" 
-                                data-bs-toggle="modal" data-bs-target="#editModal" 
-                                    data-id="{{ $local->id }}"
-                                    data-nombre="{{ $local->Nombre }}"
-                                    data-descripcion="{{ $local->Descripcion }}"
-                                    data-direccion="{{ $local->Direccion }}"
-                                    data-telefono="{{ $local->Telefono }}"
-                                    data-aforo="{{ $local->Aforo }}"
-                                    data-tiene_asientos="{{ $local->Tiene_Asientos }}"
-                                    data-foto="{{ $local->Foto }}">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="#" class="btn btn-danger" 
-                                data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                                    data-id="{{ $local->id }}"data-nombre="{{ $local->Nombre }}">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
+
+                            <div class="ver-evento-foto" 
+                                style="background-image: url('{{ $local->Foto ? asset('storage/' . $local->Foto) : 'https://placehold.co/600x400' }}');">
+                            
+                                <div class="ver-evento-foto-btns">
+                                    <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;"
+                                        data-bs-toggle="modal" data-bs-target="#viewModal"
+                                        >
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="#" class="btns" style="background-color: var(--Edit); text-decoration: none;" 
+                                        data-bs-toggle="modal" data-bs-target="#editModal" 
+                                        data-id="{{ $local->id }}"
+                                        data-nombre="{{ $local->Nombre }}"
+                                        data-descripcion="{{ $local->Descripcion }}"
+                                        data-direccion="{{ $local->Direccion }}"
+                                        data-telefono="{{ $local->Telefono }}"
+                                        data-aforo="{{ $local->Aforo }}"
+                                        data-tiene_asientos="{{ $local->Tiene_Asientos }}"
+                                        data-foto="{{ $local->Foto }}">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <a href="#" class="btns" style="background-color: var(--Delete); text-decoration: none;" 
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                        data-id="{{ $local->id }}" data-nombre="{{ $local->Nombre }}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                    @endif
                     @endforeach
                 @endif
             </div>
