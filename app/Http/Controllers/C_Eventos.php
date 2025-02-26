@@ -21,11 +21,11 @@ class C_Eventos extends Controller
         $orderBy = $request->input('orderBy', 'nombre');
 
         // Obtener el valor de 'estado' desde la solicitud, con valor por defecto 'ACTIVO'
-        $estado = $request->input('estado', 'ACTIVO');
+        $estado = $request->input('estado', '');
 
         // Inicializar la consulta de eventos
         $query = M_Eventos::with('local');
-
+        
         if ($estado) {
             $query->where('estado', $estado);
         }

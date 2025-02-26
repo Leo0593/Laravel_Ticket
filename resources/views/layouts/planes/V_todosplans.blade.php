@@ -61,18 +61,20 @@
                                                                     </td>
                                                                     <td class="text-center">
                                                                         <!-- Botón de Editar -->
-                                                                        <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
-                                                                           data-id="{{ $plan->id }}"
-                                                                           data-evento_id="{{ $plan->evento_id }}"
-                                                                           data-tipo="{{ $plan->tipo }}"
-                                                                           data-precio="{{ $plan->precio }}"
-                                                                           data-descripcion="{{ $plan->descripcion }}"
-                                                                           data-foto="{{ $plan->Foto }}">
+                                                                        <a href="#" class="btn btn-sm btn-warning scale" 
+                                                                            style="color: white; text-decoration: none;"
+                                                                            data-bs-toggle="modal" data-bs-target="#editModal"
+                                                                            data-id="{{ $plan->id }}"
+                                                                            data-evento_id="{{ $plan->evento_id }}"
+                                                                            data-tipo="{{ $plan->tipo }}"
+                                                                            data-precio="{{ $plan->precio }}"
+                                                                            data-descripcion="{{ $plan->descripcion }}"
+                                                                            data-foto="{{ $plan->Foto }}">
                                                                             <i class="fa-solid fa-pen"></i>
                                                                         </a>
 
                                                                         <!-- Botón de Eliminar -->
-                                                                        <a href="#" class="btn btn-sm btn-danger" 
+                                                                        <a href="#" class="btn btn-sm btn-danger scale" 
                                                                             style="background-color: var(--Delete); text-decoration: none;" 
                                                                             data-bs-toggle="modal" data-bs-target="#deleteModal"
                                                                             data-id="{{ $plan->id }}" data-tipo="{{ $plan->tipo }}" 
