@@ -17,13 +17,74 @@
                 </button>
             </div>
 
-            <div class="main_contenedor">
+            <div class="main_organizar" data-aos="zoom-in" data-aos-duration="1000">
+                <form method="GET" action="">
+                    <h4>Ordenar por:</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <button type="submit" name="orderBy" value="nombre" class="btn btn-outline-primary {{ request('orderBy') == 'nombre' ? 'active' : '' }}">
+                                Nombre
+                            </button>
+                            <button type="submit" name="orderBy" value="artista" class="btn btn-outline-primary {{ request('orderBy') == 'artista' ? 'active' : '' }}">
+                                Artista/Grupo
+                            </button>
+                            <button type="submit" name="orderBy" value="ubicacion" class="btn btn-outline-primary {{ request('orderBy') == 'ubicacion' ? 'active' : '' }}">
+                                Ubicación
+                            </button>
+                            <button type="submit" name="orderBy" value="fecha" class="btn btn-outline-primary {{ request('orderBy') == 'fecha' ? 'active' : '' }}">
+                                Fecha
+                            </button>
+                            <button type="submit" name="orderBy" value="aforo" class="btn btn-outline-primary {{ request('orderBy') == 'aforo' ? 'active' : '' }}">
+                                Aforo
+                            </button>
+
+                            <!-- Desplegable para seleccionar el estado -->
+                            <div class="dropup" style="margin-left: 15px;">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="estadoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Estado
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="estadoDropdown">
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="" {{ !request('estado') ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Todos
+                                        </label>
+                                    </li>
+
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="ACTIVO" {{ request('estado') == 'ACTIVO' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Activo
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="CANCELADO" {{ request('estado') == 'CANCELADO' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Cancelado
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="radio" name="estado" value="FINALIZADO" {{ request('estado') == 'FINALIZADO' ? 'checked' : '' }} onchange="this.form.submit()">
+                                            Finalizado
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+                    </div> 
+                </form>
+            </div>
+
+            <div class="main_contenedor" data-aos="fade-up" data-aos-duration="1000">
                 @if($noEventos)
                     <div class="alert alert-primary" role="alert">
                         <p class="mb-0">{{ __('No hay eventos aun.') }}</p>
                     </div>
                 @else
                     @foreach($eventos as $evento)
+                    @if($evento->visible)
                         <div class="ver-evento">
                             <div class="ver-evento-info">
                                 <p class="card-title">
@@ -41,6 +102,11 @@
                                     {{ $evento->local_id }} - {{ optional($evento->local)->Nombre }}
                                 </p>
 
+                                <p class="card-title">
+                                    <i class="fas fa-users"></i> 
+                                    {{ $evento->aforo_evento }} personas
+                                </p>
+
                                 <p class="card-text">
                                     <span class="info-icon">
                                         <i class="fas fa-align-left"></i> 
@@ -51,7 +117,6 @@
                                             {{ $evento->descripcion }} <!-- Texto completo -->
                                         </span>
                                         <br>
-                                        <button class="ver-mas-btn" onclick="toggleDescripcion(this)">Ver más</button>
                                     </span>
                                 </p>
                             </div>
@@ -61,7 +126,8 @@
                             @endphp
 
                             <div class="ver-evento-foto" 
-                                style="background-image: url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');">
+                                style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.02) 70%), 
+                                url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');">
 
                                 <div class="ver-evento-foto-fecha">
                                     <div style="font-size: 12px; color: var(--Delete)">{{ $fecha->format('M') }}</div>
@@ -79,7 +145,18 @@
                                 </div>
 
                                 <div class="ver-evento-foto-btns">
-                                    <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;">
+                                    <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;"
+                                        data-bs-toggle="modal" data-bs-target="#viewModal"
+                                        data-nombre="{{ $evento->nombre }}"
+                                        data-artista="{{ $evento->ArtistaGrupo }}"
+                                        data-descripcion="{{ $evento->descripcion }}"
+                                        data-local="{{ $evento->local_id }}"
+                                        data-fecha_inicio="{{ $evento->fecha_inicio }}"
+                                        data-fecha_fin="{{ $evento->fecha_fin }}"
+                                        data-fecha_evento="{{ $evento->fecha_evento }}"
+                                        data-aforo="{{ $evento->aforo_evento }}"
+                                        data-estado="{{ $evento->estado }}"
+                                        data-foto="{{ $evento->Foto }}">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
                                     <a href="#" class="btns" style="background-color: var(--Edit); text-decoration: none;" 
@@ -106,6 +183,7 @@
                                 </div>
                             </div>
                         </div>
+                    @endif
                     @endforeach
                 @endif
             </div>
@@ -506,6 +584,121 @@
                         form.submit(); // Enviar el formulario para agregar el nuevo evento
                     } else {
                         console.error("Formulario no encontrado.");
+                    }
+                });
+            });
+        </script>
+
+        <!-- Modal Ver -->
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
+                <div class="modal-content" style="color: white;">
+                    <div class="modal-header" style="background-color: {{ $color_add }}; align-items: center;">
+                        <h5 class="modal-title" id="addModalLabel"><strong><i class="fa fa-info-circle" aria-hidden="true"></i>
+                        Info</strong></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body" style="color: black; padding: 50px;">
+                    <div style="width: 100%; overflow: hidden;">
+                        <div id="modalFoto" 
+                            style="float: right; margin-left: 15px; margin-bottom: 15px;
+                            width: 55%; height: 350px; border-radius: 10px; overflow: hidden;
+                            background-image: url('https://placehold.co/600x400'); 
+                            background-size: cover;
+                            background-position: center;
+                            background-repeat: no-repeat;">
+                            </div>
+
+                        <h1 class="sub-titulo" style="font-size: 1.9rem; margin-bottom: 0px;" id="modalArtista"></h1>
+                        <h1 class="titulo" style="font-size: 3.5rem; margin-bottom: 25px;" id="modalNombre"></h1>
+                        <ul style="font-size: 1.2rem; margin-bottom: 25px;">
+                            <li><strong>Local:</strong> <span id="modalLocal"></span></li>
+                            <li><strong>Fecha de inicio de venta:</strong> <span id="modalFechaInicio"></span></li>
+                            <li><strong>Fecha de fin de venta:</strong> <span id="modalFechaFin"></span></li>
+                            <li><strong>Fecha del evento:</strong> <span id="modalFechaEvento"></span></li>
+                            <li><strong>Aforo del evento:</strong> <span id="modalAforo"></span></li>
+                            <li><strong>Estado del evento:</strong> <span style="border-radius: 30px; padding: 1px 8px; display: felx; align-items: center;" id="modalEstado"></span></li>
+                        </ul>
+
+                        <p><span id="modalDescripcion"></span></p>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+
+        <!-- Script Ver -->
+        <script>
+            // Función de sanitización básica
+            function decodeHtml(html) {
+                var txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                let viewModal = document.getElementById("viewModal");
+
+                viewModal.addEventListener("show.bs.modal", function (event) {
+                    let button = event.relatedTarget; // Botón que activó el modal
+
+                    // Obtener los valores del botón
+                    let nombre = button.getAttribute("data-nombre");
+                    let artista = button.getAttribute("data-artista");
+                    let descripcion = button.getAttribute("data-descripcion");
+                    let local = button.getAttribute("data-local");
+                    let fechaInicio = button.getAttribute("data-fecha_inicio");
+                    let fechaFin = button.getAttribute("data-fecha_fin");
+                    let fechaEvento = button.getAttribute("data-fecha_evento");
+                    let aforo = button.getAttribute("data-aforo");
+                    let estado = button.getAttribute("data-estado");
+                    let foto = button.getAttribute("data-foto");
+
+                    // Asignar valores al modal
+                    document.getElementById("modalNombre").textContent = nombre;
+                    document.getElementById("modalArtista").textContent = artista;
+
+                    // Decodificar la descripción
+                    let decodedDescripcion = decodeHtml(descripcion);
+                    document.getElementById("modalDescripcion").innerHTML = decodedDescripcion || "Descripción no disponible";
+
+                    // Formatear las fechas
+                    let formatDate = (dateString) => {
+                        let options = { day: '2-digit', month: 'short', year: 'numeric' };
+                        let date = new Date(dateString);
+                        return date.toLocaleDateString('es-ES', options);
+                    };
+                    let estadoElement = document.getElementById("modalEstado");
+
+                    document.getElementById("modalLocal").textContent = local;
+                    document.getElementById("modalFechaInicio").textContent = formatDate(fechaInicio);
+                    document.getElementById("modalFechaFin").textContent = formatDate(fechaFin);
+                    document.getElementById("modalFechaEvento").textContent = formatDate(fechaEvento);
+                    document.getElementById("modalAforo").textContent = aforo;
+                    document.getElementById("modalEstado").textContent = estado;
+
+                    // Cambiar el estilo según el estado
+                    if (estado === "ACTIVO") {
+                        estadoElement.style.backgroundColor = "var(--Add)";
+                        estadoElement.style.color = "white";
+                    } else if (estado === "FINALIZADO") {
+                        estadoElement.style.backgroundColor = "white";
+                        estadoElement.style.color = "black";
+                    } else {
+                        estadoElement.style.backgroundColor = "var(--Delete)";
+                        estadoElement.style.color = "white";
+                    }
+    
+                    console.log(foto);
+                    
+                    let modalFoto = document.getElementById("modalFoto");
+                    if (foto) {
+                        // Si hay foto, establecer la imagen de fondo
+                        modalFoto.style.backgroundImage = `url('/storage/${foto}')`; // Imagen dinámica
+                    } else {
+                        // Si no hay foto, poner una imagen de fondo predeterminada
+                        modalFoto.style.backgroundImage = 'url(https://placehold.co/600x400)';
                     }
                 });
             });

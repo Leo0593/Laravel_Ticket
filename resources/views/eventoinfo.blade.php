@@ -38,19 +38,19 @@
                 ">
 
                 <div style=" 
-                width: 100%;
-                display: flex;
-                justify-content: center; 
-                padding: 10px;
-                background-color: white;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+                    width: 100%;
+                    display: flex;
+                    justify-content: center; 
+                    padding: 10px;
+                    background-color: white;
+                    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 
-                position: sticky;
-                top: 0;
-                z-index: 1000;
-                "
-                data-aos="fade-down" data-aos-duration="1000"
-                >
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    "
+                    data-aos="fade-down" data-aos-duration="1000" data-aos-once="true"
+                    >
                     <nav class="nav">
                         <a class="nav-link" href="#banner">BANNER</a>
                         <a class="nav-link" href="#fecha">FECHA</a>
@@ -134,7 +134,7 @@
                     width: 70%;
                     background-color: white;
                     padding: 20px 50px;
-                    box-shadow: 0 2px 5px 10px rgba(0, 0, 0, 0.4);
+                    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
                     scroll-margin-top: 110px;
                     ">
 
@@ -369,12 +369,12 @@
                         });
                     }
 
-                    let finalGradientColorWithOpacity = adjustOpacity(finalGradientColor, 0.9);
+                    let finalGradientColorWithOpacity = adjustOpacity(finalGradientColor, 0.7);
 
                     // Aplicar el nuevo gradiente al fondo
                     eventoBanner.style.backgroundImage = `
-                        linear-gradient(to top, ${finalGradientColorWithOpacity}, rgba(0, 0, 0, 0.05) 40%),
-                        linear-gradient(to bottom, ${finalGradientColorWithOpacity}, rgba(0, 0, 0, 0.05) 40%), 
+                        linear-gradient(to top, ${finalGradientColorWithOpacity}, rgba(0, 0, 0, 0.01) 70%),
+                        linear-gradient(to bottom, ${finalGradientColorWithOpacity}, rgba(0, 0, 0, 0.1) 70%), 
                         url('${imgUrl}')
                     `;
                 };
@@ -490,7 +490,7 @@
 
                             // 🔹 Aplicar el color más adecuado
                             card.style.backgroundImage = `
-                                linear-gradient(to top, ${finalShadowColor}, rgba(0, 0, 0, 0.15) 80%),
+                                linear-gradient(to top, ${finalShadowColor}, rgba(0, 0, 0, 0.05) 100%),
                                 url('${imgUrl}')
                             `;
 

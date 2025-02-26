@@ -15,6 +15,7 @@
         "endroid/qr-code": "^5.0",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "livewire/livewire": "^3.5",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "stripe/stripe-php": "^16.5"
     },

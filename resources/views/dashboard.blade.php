@@ -9,8 +9,8 @@
 
     @if(Auth::user() && Auth::user()->role === 'ADMIN')
         <div class="main">
-            <div class="main_banner_2" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="250"
-                style="--banner-image: url('../../images/dashboard/dash.jpg');">
+            <div class="main_banner_2" data-aos="fade-down" data-aos-duration="1000"
+                style="--banner-image: url('../../images/dashboard/dashboard2.jpg');">
                 <h1><strong>DASHBOARD</strong></h1>
             </div>
 
