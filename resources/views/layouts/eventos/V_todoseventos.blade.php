@@ -150,7 +150,7 @@
                                         data-nombre="{{ $evento->nombre }}"
                                         data-artista="{{ $evento->ArtistaGrupo }}"
                                         data-descripcion="{{ $evento->descripcion }}"
-                                        data-local="{{ $evento->local_id }}"
+                                        data-local="{{ $evento->local->Nombre }}"
                                         data-fecha_inicio="{{ $evento->fecha_inicio }}"
                                         data-fecha_fin="{{ $evento->fecha_fin }}"
                                         data-fecha_evento="{{ $evento->fecha_evento }}"

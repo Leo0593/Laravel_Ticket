@@ -23,7 +23,7 @@
 
                 <div
                     style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center; width: 100%; height: auto;">
-                    <div style="flex:1 1 40%; background-color:rgb(255, 0, 0);
+                    <div style="flex:1 1 40%; height: 200px; border-radius: 15px; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
                         background-image: 
                         url('{{ $ticket->evento->Foto ? asset('storage/' . $ticket->evento->Foto) : 'https://placehold.co/600x400' }}');
                         background-size: cover;
@@ -71,22 +71,23 @@
 
                 <div style="width: 100%; border-bottom: 3px solid var(--color); margin: 15px 0;"></div>
 
-                <button class="btn btn-danger" style="margin: 10px;">
+                <button class="btn btn-danger scale" style="margin: 10px;">
                     <a href="{{ route('tickets.ticket.downloadPDF', $ticket->id) }}"
                         style="text-decoration: none; color: white;">
                         <i class="fas fa-file-pdf"></i> Descargar PDF
                     </a>
                 </button>
 
-                <button class="btn btn-primary" style="margin: 10px;">
+                <button class="btn btn-primary scale" style="margin: 10px;">
                     <a href="{{ route('tickets.ticket.print', $ticket->id) }}" target="_blank"
                         style="text-decoration: none; color: white;">
                         <i class="fas fa-print"></i> Imprimir
                     </a>
                 </button>
 
-                <button id="start-scan" class="btn btn-success" style="margin: 10px;">
-                    Iniciar Verificación
+                <button id="start-scan" class="btn btn-success scale" style="margin: 10px;">
+                    <i class="fas fa-qrcode"></i>
+                    Verificación
                 </button>
             </div>
 
