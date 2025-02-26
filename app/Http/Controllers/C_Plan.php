@@ -18,15 +18,22 @@ class C_Plan extends Controller
     {
         $eventos = M_Eventos::all();
 
-        $planes = M_Plan::with(['evento', 'asientosDisponibles' => function ($query) {
-            $query->where('estado', 'disponible');
-        }])->get();
-    
+        $planes = M_Plan::with([
+            'evento' => function ($query) {
+                $query->select('id', 'estado'); // Solo obtener el id y estado del evento
+            },
+            'asientosDisponibles' => function ($query) {
+                $query->where('estado', 'disponible');
+            }
+        ])->get();
+
+        // Agregar el estado del evento a cada plan
         $planes = $planes->map(function ($plan) {
             $plan->asientosDisponibles = $plan->asientosDisponibles->where('evento_id', $plan->evento_id);
+            $plan->estadoEvento = $plan->evento->estado; // Agregar el estado del evento
             return $plan;
         });
-    
+
         $noPlanes = $planes->isEmpty();
 
         return view('layouts.planes.V_todosplans', compact('eventos', 'planes', 'noPlanes'));
@@ -93,7 +100,7 @@ class C_Plan extends Controller
             } else {
                 // Mantener la foto existente si no se ha subido una nueva
                 $validated['Foto'] = $plan->Foto;
-            } 
+            }
 
             // Actualizar los datos del plan con los datos validados
             $plan->update($validated);
@@ -125,12 +132,12 @@ class C_Plan extends Controller
     public function getPlanesByEvento($eventoId)
     {
         $planes = M_Plan::where('Evento_id', $eventoId)->get();
-    
+
         return response()->json([
             'planes' => $planes,
             'message' => $planes->isEmpty() ? 'No hay planes disponibles' : 'Planes encontrados'
         ]);
-    }    
+    }
 
     public function ocultar(int $id): RedirectResponse
     {

@@ -22,14 +22,42 @@ use Endroid\QrCode\Writer\PngWriter;
 
 class C_Tickets extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $eventos = M_Eventos::all();
-        $tickets = M_Tickets::with('evento', 'plan')->get();
+        // Obtener valores de los filtros de la solicitud
+        $nombreEvento = $request->input('nombre_evento');
+        $fechaInicio = $request->input('fecha_inicio');
+        $fechaFin = $request->input('fecha_fin');
+        $estadoEvento = $request->input('estado');
+
+        // Consulta base de eventos
+        $eventos = M_Eventos::query();
+
+        // Filtro por nombre de evento
+        if ($nombreEvento) {
+            $eventos->where('nombre', 'LIKE', "%{$nombreEvento}%");
+        }
+
+        // Filtro por estado del evento
+        if ($estadoEvento) {
+            $eventos->where('estado', $estadoEvento);
+        }
+
+        $eventos = $eventos->get();
+
+        // Consulta base de tickets
+        $tickets = M_Tickets::with('evento', 'plan')->whereHas('evento', function ($query) use ($fechaInicio, $fechaFin) {
+            // Filtrar por rango de fechas si se proporciona
+            if ($fechaInicio && $fechaFin) {
+                $query->whereBetween('fecha_evento', [$fechaInicio, $fechaFin]);
+            }
+        })->get();
+
         $noTickets = $tickets->isEmpty();
 
         return view('layouts.tickets.V_todoslostickets', compact('eventos', 'tickets', 'noTickets'));
     }
+
 
     public function mostrarTicket($id, $codigo)
     {
@@ -299,23 +327,23 @@ class C_Tickets extends Controller
     }
 
     public function verificarQr(Request $request, $codigo)
-{
-    $ticket = M_Tickets::where('qr', $codigo)->first();
+    {
+        $ticket = M_Tickets::where('qr', $codigo)->first();
 
-    if ($ticket) {
-        if ($ticket->qr_valido == 1) {
-            // Cambia el estado a "no válido"
-            $ticket->qr_valido = 0;
-            $ticket->save();
+        if ($ticket) {
+            if ($ticket->qr_valido == 1) {
+                // Cambia el estado a "no válido"
+                $ticket->qr_valido = 0;
+                $ticket->save();
 
-            return response()->json(['success' => true, 'message' => 'Código QR verificado y marcado como no válido.']);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Código QR ya utilizado.']);
+                return response()->json(['success' => true, 'message' => 'Código QR verificado y marcado como no válido.']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Código QR ya utilizado.']);
+            }
         }
-    }
 
-    return response()->json(['success' => false, 'message' => 'Código QR no válido.']);
-}
+        return response()->json(['success' => false, 'message' => 'Código QR no válido.']);
+    }
 
 
 }
