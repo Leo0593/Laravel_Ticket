@@ -10,7 +10,7 @@
             overflow: hidden;
             ">
 
-            <div style="padding: 40px">
+        <div style="padding: 40px">
 
             <div class="text-center" style="margin-bottom: 40px;">
                 <img src="{{ asset('../../images/login/ticketLogo.png') }}" alt="logo"
@@ -46,7 +46,8 @@
             </div>
 
             <div class="text-center">
-                {!! QrCode::size(200)->generate(url('/ticket/' . $ticket->id . '/' . $ticket->qr)) !!}
+                <!-- Mostrar el código QR en formato base64 -->
+                <img src="{{ $ticket->qr_log }}" alt="Código QR" style="width: 200px; height: 200px;">
             </div>
 
             </div>
@@ -55,19 +56,6 @@
                 <p style="margin: 0;">Gracias por tu compra</p>
 
                 <div style="width: 100%; border-bottom: 3px solid var(--color); margin: 15px 0;"></div>
-
-                <!--<button class="btn btn-danger" style="margin: 10px;">
-                    <a href="{{ route('tickets.ticket.downloadPDF', $ticket->id) }}" style="text-decoration: none; color: white;">
-                        <i class="fas fa-file-pdf"></i> Descargar PDF
-                    </a>
-                </button>
-
-                <button class="btn btn-primary" style="margin: 10px;">
-                    <a  style="text-decoration: none; color: white;">
-                        <i class="fas fa-print"></i> Imprimir
-                    </a>
-                </button>-->
-                
             </div>
         </div>
 </body>

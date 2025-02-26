@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Auth;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
-
-
+use App\Mail\TicketPDFMail;
+use Illuminate\Support\Facades\Mail;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class C_Tickets extends Controller
 {
@@ -71,13 +73,21 @@ class C_Tickets extends Controller
             \Log::info('Datos validados:', $validated);
 
             $validated['pagado'] = $validated['pagado'] ?? 0;
-
             $validated['fecha_pago'] = now();
 
             // Crear un código QR único para este ticket
             $codigo = chr(rand(65, 90)) . rand(100000000, 999999999);
             $validated['qr'] = $codigo;
             $validated['qr_valido'] = $validated['qr_valido'] ?? 0;
+
+            // Generar el QR en base64
+            $qrCode = new QrCode($codigo);
+            $writer = new PngWriter();
+            $result = $writer->write($qrCode);
+            $base64QrCode = base64_encode($result->getString());
+
+            // Guardar el código QR en formato base64 en qr_log
+            $validated['qr_log'] = 'data:image/png;base64,' . $base64QrCode;
 
             \Log::info('Creando ticket con datos:', $validated);
 
@@ -96,6 +106,7 @@ class C_Tickets extends Controller
                 'ticket' => $ticket,
             ]);
 
+            // Notar que el siguiente código no se ejecutará
             \Log::info('Redirigiendo a:', [
                 'url' => route('tickets.ticket.mostrar', ['id' => $ticket->id, 'codigo' => $ticket->qr])
             ]);
@@ -228,12 +239,21 @@ class C_Tickets extends Controller
 
     public function downloadPDF($id)
     {
-        $ticket = M_Tickets::with(['evento', 'asiento', 'plan'])->findOrFail($id);
+        // Obtener el ticket con su relación al usuario
+        $ticket = M_Tickets::with(['evento', 'asiento', 'plan', 'user'])->findOrFail($id);
 
+        // Generar el PDF
         $pdf = Pdf::loadView('layouts.tickets.ticketPDF', compact('ticket'));
 
+        // Verificar si el ticket tiene un usuario asociado con un email válido
+        if ($ticket->user && $ticket->user->email) {
+            Mail::to($ticket->user->email)->send(new TicketPDFMail($ticket));
+        }
+
+        // Descargar el PDF en el dispositivo
         return $pdf->download('ticket_' . $ticket->id . '.pdf');
     }
+
 
     public function printTicket($id)
     {
@@ -241,6 +261,61 @@ class C_Tickets extends Controller
 
         return view('layouts.tickets.ticketPrint', compact('ticket'));
     }
+
+
+    //CODIGOS OPCIONALES DE ENVIO POR CORREO Y DESCARGA SEPARADOS 
+    public function sendTicket($id)
+    {
+        // Obtener el ticket con su relación al usuario
+        $ticket = M_Tickets::with(['evento', 'asiento', 'plan', 'user'])->findOrFail($id);
+
+        // Verificar si el ticket tiene un usuario asociado
+        if (!$ticket->user || !$ticket->user->email) {
+            return response()->json(['message' => 'No se encontró un correo electrónico válido para el usuario.'], 400);
+        }
+
+        // Obtener el correo del usuario asociado al ticket
+        $recipientEmail = $ticket->user->email;
+
+        // Generar el PDF
+        $pdf = Pdf::loadView('layouts.tickets.ticketPDF', compact('ticket'));
+
+        // Enviar el correo con el ticket en PDF
+        Mail::to($recipientEmail)->send(new TicketPDFMail($ticket));
+
+        // Retornar una respuesta
+        return response()->json(['message' => 'Ticket enviado por correo.']);
+    }
+
+    //ticket fusion
+
+    public function downloadPDF1234($id)
+    {
+        $ticket = M_Tickets::with(['evento', 'asiento', 'plan'])->findOrFail($id);
+
+        $pdf = Pdf::loadView('layouts.tickets.ticketPDF', compact('ticket'));
+
+        return $pdf->download('ticket_' . $ticket->id . '.pdf');
+    }
+
+    public function verificarQr(Request $request, $codigo)
+{
+    $ticket = M_Tickets::where('qr', $codigo)->first();
+
+    if ($ticket) {
+        if ($ticket->qr_valido == 1) {
+            // Cambia el estado a "no válido"
+            $ticket->qr_valido = 0;
+            $ticket->save();
+
+            return response()->json(['success' => true, 'message' => 'Código QR verificado y marcado como no válido.']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Código QR ya utilizado.']);
+        }
+    }
+
+    return response()->json(['success' => false, 'message' => 'Código QR no válido.']);
+}
 
 
 }

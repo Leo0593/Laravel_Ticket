@@ -20,6 +20,7 @@ class M_Tickets extends Model
         'fecha_pago',
         'qr',
         'qr_valido',
+        'qr_log',
     ];
 
     protected $casts = [
