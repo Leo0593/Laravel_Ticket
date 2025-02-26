@@ -7,8 +7,8 @@
 
         <div class="main">
             <div class="main_banner_2" 
-            data-aos="fade-down" data-aos-duration="1000"
-            style="--banner-image: url('../../images/dashboard/eventos.jpg');">
+                data-aos="fade-down" data-aos-duration="1000"
+                style="--banner-image: url('../../images/dashboard/eventos.jpg');">
                 <h1><strong>Diseña la Experiencia Perfecta</strong></h1>
                 <h2>Planifica la Mejor Ubicación para tu Público</h2>
                 
