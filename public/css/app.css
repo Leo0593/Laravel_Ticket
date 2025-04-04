@@ -836,3 +836,13 @@ body.dark .text {
 .modal-view h1 {
     font-size: 30px;
 }
+
+.dropdown-item:active {
+ color: #ffffff;
+}
+
+.nocolor {
+    color: none;
+}
+
+

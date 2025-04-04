@@ -93,6 +93,7 @@
                                     {{ $local->Direccion }}
                                 </p>
 
+                                <!--
                                 <p class="card-title">
                                     <i class="fas fa-users"></i>
                                     {{ $local->Aforo }}
@@ -101,7 +102,7 @@
                                 <p class="card-title">
                                     <i class="fas fa-phone-alt"></i>
                                     {{ $local->Telefono }}
-                                </p>
+                                </p> -->
 
                                 @if($local->Tiene_Asientos)
                                     <p class="card-title text-success">
@@ -133,6 +134,13 @@
                                 <div class="ver-evento-foto-btns">
                                     <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;"
                                         data-bs-toggle="modal" data-bs-target="#viewModal"
+                                        data-nombre="{{ $local->Nombre }}"
+                                        data-descripcion="{{ $local->Descripcion }}"
+                                        data-direccion="{{ $local->Direccion }}"
+                                        data-telefono="{{ $local->Telefono }}"
+                                        data-aforo="{{ $local->Aforo }}"
+                                        data-asiento="{{ $local->Tiene_Asientos }}"  
+                                        data-foto="{{ $local->Foto }}"              
                                         >
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
@@ -471,6 +479,95 @@
                         form.submit(); // Enviar el formulario para agregar el nuevo local
                     } else {
                         console.error("Formulario no encontrado.");
+                    }
+                });
+            });
+        </script>
+
+        <!-- Modal Ver -->
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
+                <div class="modal-content" style="color: white;">
+                    <div class="modal-header" style="background-color: {{ $color_add }}; align-items: center;">
+                        <h5 class="modal-title" id="addModalLabel"><strong><i class="fa fa-info-circle" aria-hidden="true"></i>
+                        Info</strong></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body" style="color: black; padding: 50px;">
+                    <div style="width: 100%; overflow: hidden;">
+                        <div id="modalFoto" 
+                            style="float: right; margin-left: 15px; margin-bottom: 15px;
+                            width: 55%; height: 350px; border-radius: 10px; overflow: hidden;
+                            background-image: url('https://placehold.co/600x400'); 
+                            background-size: cover;
+                            background-position: center;
+                            background-repeat: no-repeat;">
+                            </div>
+
+                        <h1 class="titulo" style="font-size: 3.5rem; margin-bottom: 25px;" id="modalNombre"></h1>
+                        <ul style="font-size: 1.2rem; margin-bottom: 25px;">
+                            <li><strong>Dirección:</strong> <span id="modalDireccion"></span></li>
+                            <li><strong>Telefono:</strong> <span id="modalTelefono"></span></li>
+                            <li><strong>Aforo:</strong> <span id="modalAforo"></span></li>   
+                            <li><strong>Tiene Asientos:</strong> <span id="modalAsientos"></span></li>
+                        </ul>
+
+                        <p><span id="modalDescripcion"></span></p>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+
+        <!-- Script Ver -->
+        <script>
+            // Función de sanitización básica
+            function decodeHtml(html) {
+                var txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                let viewModal = document.getElementById("viewModal");
+
+                viewModal.addEventListener("show.bs.modal", function (event) {
+                    let button = event.relatedTarget; // Botón que activó el modal
+
+                    // Obtener los valores del botón
+                    let nombre = button.getAttribute("data-nombre");
+                    let descripcion = button.getAttribute("data-descripcion");
+                    let telefono = button.getAttribute("data-telefono");
+                    let aforo = button.getAttribute("data-aforo");
+                    let direccion = button.getAttribute("data-direccion");
+                    let asiento = button.getAttribute("data-asiento");
+                    let foto = button.getAttribute("data-foto");
+
+                    console.log(nombre, descripcion, telefono, aforo, direccion, asiento);
+
+                    // Asignar valores al modal
+                    document.getElementById("modalNombre").textContent = nombre;
+
+                    // Decodificar la descripción
+                    let decodedDescripcion = decodeHtml(descripcion);
+                    document.getElementById("modalDescripcion").innerHTML = decodedDescripcion || "Descripción no disponible";
+
+
+                    document.getElementById("modalTelefono").textContent = telefono;
+                    document.getElementById("modalAforo").textContent = aforo;
+                    document.getElementById("modalDireccion").textContent = direccion;
+                    document.getElementById("modalAsientos").textContent = asiento === "1" ? "Sí" : "No";
+    
+                    console.log(foto);
+                    
+                    let modalFoto = document.getElementById("modalFoto");
+                    if (foto) {
+                        // Si hay foto, establecer la imagen de fondo
+                        modalFoto.style.backgroundImage = `url('/storage/${foto}')`; // Imagen dinámica
+                    } else {
+                        // Si no hay foto, poner una imagen de fondo predeterminada
+                        modalFoto.style.backgroundImage = 'url(https://placehold.co/600x400)';
                     }
                 });
             });

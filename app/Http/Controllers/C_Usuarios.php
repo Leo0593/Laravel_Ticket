@@ -129,10 +129,7 @@ class C_Usuarios extends Controller
             // Intenta obtener al usuario
             $user = User::findOrFail($id);
     
-            // Cambia el estado del usuario
-            $user->estado = !$user->estado;
-    
-            // Guarda el usuario
+            $user->visible = 0;
             $user->save();
     
             // Mensaje flash de éxito

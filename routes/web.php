@@ -131,6 +131,7 @@ Route::prefix('users')->name('users.')
         Route::get('/{id}/edit', [C_Usuarios::class, 'edit'])->name('edit');
         Route::put('/{id}', [C_Usuarios::class, 'update'])->name('update');
         Route::delete('/{id}', [C_Usuarios::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/ocultar', [C_Usuarios::class, 'ocultar'])->name('ocultar');
     });
 
 

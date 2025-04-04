@@ -65,6 +65,7 @@
                                         @if($planes->where('evento_id', $evento->id)->isEmpty())
                                             <p class="text-center text-muted">No hay planes para este evento.</p>
                                         @else
+                                        @if($evento->visible == 1)
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover m-0">
                                                     <thead class="table-dark">
@@ -78,6 +79,7 @@
                                                     </thead>
                                                     <tbody>
                                                         @foreach($planes->where('evento_id', $evento->id) as $plan)
+                                                            @if($plan->visible == 1)
                                                             <tr data-estado-evento="{{ $plan->estadoEvento }}">
                                                                 <!-- Aquí se agrega el estado del evento -->
                                                                 <td class="text-center">{{ $plan->tipo }}</td>
@@ -113,10 +115,12 @@
                                                                     </a>
                                                                 </td>
                                                             </tr>
+                                                            @endif
                                                         @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            @endif
                                         @endif
                                     </div>
                                 </div>

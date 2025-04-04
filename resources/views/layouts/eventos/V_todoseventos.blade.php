@@ -83,108 +83,213 @@
                         <p class="mb-0">{{ __('No hay eventos aun.') }}</p>
                     </div>
                 @else
-                    @foreach($eventos as $evento)
-                    @if($evento->visible)
-                        <div class="ver-evento">
-                            <div class="ver-evento-info">
-                                <p class="card-title">
-                                    <i class="fas fa-microphone-alt"></i> 
-                                    {{ $evento->ArtistaGrupo }}
-                                </p>
+                    @if(Auth::user()->role === 'ADMIN')
+                        @foreach($eventos as $evento)
+                            @if($evento->visible)
+                                <div class="ver-evento">
+                                    <div class="ver-evento-info">
+                                        <p class="card-title">
+                                            <i class="fas fa-microphone-alt"></i> 
+                                            {{ $evento->ArtistaGrupo }}
+                                        </p>
 
-                                <p class="card-title">
-                                    <i class="fas fa-pencil-alt"></i> 
-                                    {{ $evento->nombre }}
-                                </p>
+                                        <p class="card-title">
+                                            <i class="fas fa-pencil-alt"></i> 
+                                            {{ $evento->nombre }}
+                                        </p>
 
-                                <p class="card-title">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    {{ $evento->local_id }} - {{ optional($evento->local)->Nombre }}
-                                </p>
+                                        <p class="card-title">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{ $evento->local_id }} - {{ optional($evento->local)->Nombre }}
+                                        </p>
 
-                                <p class="card-title">
-                                    <i class="fas fa-users"></i> 
-                                    {{ $evento->aforo_evento }} personas
-                                </p>
+                                        <p class="card-title">
+                                            <i class="fas fa-users"></i> 
+                                            {{ $evento->aforo_evento }} personas
+                                        </p>
 
-                                <p class="card-text">
-                                    <span class="info-icon">
-                                        <i class="fas fa-align-left"></i> 
-                                        <span class="descripcion-corta">
-                                            {{ Str::limit($evento->descripcion, 100, '...') }} <!-- Solo muestra 100 caracteres -->
-                                        </span>
-                                        <span class="descripcion-larga" style="display: none;">
-                                            {{ $evento->descripcion }} <!-- Texto completo -->
-                                        </span>
-                                        <br>
-                                    </span>
-                                </p>
-                            </div>
+                                        <p class="card-text">
+                                            <span class="info-icon">
+                                                <i class="fas fa-align-left"></i> 
+                                                <span class="descripcion-corta">
+                                                    {{ Str::limit($evento->descripcion, 100, '...') }} <!-- Solo muestra 100 caracteres -->
+                                                </span>
+                                                <span class="descripcion-larga" style="display: none;">
+                                                    {{ $evento->descripcion }} <!-- Texto completo -->
+                                                </span>
+                                                <br>
+                                            </span>
+                                        </p>
+                                    </div>
 
-                            @php
-                                $fecha = \Carbon\Carbon::parse($evento->fecha_evento);
-                            @endphp
+                                    @php
+                                        $fecha = \Carbon\Carbon::parse($evento->fecha_evento);
+                                    @endphp
 
-                            <div class="ver-evento-foto" 
-                                style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.02) 70%), 
-                                url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');">
+                                    <div class="ver-evento-foto" 
+                                        style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.02) 70%), 
+                                        url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');">
 
-                                <div class="ver-evento-foto-fecha">
-                                    <div style="font-size: 12px; color: var(--Delete)">{{ $fecha->format('M') }}</div>
-                                    <div style="font-size: 25px;">{{ $fecha->day }}</div> 
-                                    <div style="font-size: 10px; color: gray;">{{ $fecha->locale('es')->dayName }}</div>
-                                </div>       
+                                        <div class="ver-evento-foto-fecha">
+                                            <div style="font-size: 12px; color: var(--Delete)">{{ $fecha->format('M') }}</div>
+                                            <div style="font-size: 25px;">{{ $fecha->day }}</div> 
+                                            <div style="font-size: 10px; color: gray;">{{ $fecha->locale('es')->dayName }}</div>
+                                        </div>       
 
-                                <div class="ver-evento-foto-datos"
-                                    style="background-color: 
-                                            {{ $evento->estado == 'ACTIVO' ? 'var(--Add)' : 
-                                                ($evento->estado == 'FINALIZADO' ? 'white' : 
-                                                'var(--Delete)') }};
-                                            color: {{ $evento->estado == 'FINALIZADO' ? 'black' : 'white' }};">
-                                    {{ $evento->estado }}
+                                        <div class="ver-evento-foto-datos"
+                                            style="background-color: 
+                                                    {{ $evento->estado == 'ACTIVO' ? 'var(--Add)' : 
+                                                        ($evento->estado == 'FINALIZADO' ? 'white' : 
+                                                        'var(--Delete)') }};
+                                                    color: {{ $evento->estado == 'FINALIZADO' ? 'black' : 'white' }};">
+                                            {{ $evento->estado }}
+                                        </div>
+
+                                        <div class="ver-evento-foto-btns">
+                                            <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;"
+                                                data-bs-toggle="modal" data-bs-target="#viewModal"
+                                                data-nombre="{{ $evento->nombre }}"
+                                                data-artista="{{ $evento->ArtistaGrupo }}"
+                                                data-descripcion="{{ $evento->descripcion }}"
+                                                data-local="{{ $evento->local->Nombre }}"
+                                                data-fecha_inicio="{{ $evento->fecha_inicio }}"
+                                                data-fecha_fin="{{ $evento->fecha_fin }}"
+                                                data-fecha_evento="{{ $evento->fecha_evento }}"
+                                                data-aforo="{{ $evento->aforo_evento }}"
+                                                data-estado="{{ $evento->estado }}"
+                                                data-foto="{{ $evento->Foto }}">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="#" class="btns" style="background-color: var(--Edit); text-decoration: none;" 
+                                            data-bs-toggle="modal" data-bs-target="#editModal"
+                                                data-id="{{ $evento->id }}"
+                                                data-user_id="{{ $evento->user_id }}"
+                                                data-local_id="{{ $evento->local_id }}"
+                                                data-nombre="{{ $evento->nombre }}"
+                                                data-descripcion="{{ $evento->descripcion }}"
+                                                data-artista="{{ $evento->ArtistaGrupo }}"
+                                                data-fecha_inicio="{{ $evento->fecha_inicio }}"
+                                                data-fecha_fin="{{ $evento->fecha_fin }}"
+                                                data-fecha_evento="{{ $evento->fecha_evento }}"
+                                                data-aforo_evento="{{ $evento->aforo_evento }}"
+                                                data-estado="{{ $evento->estado }}"
+                                                data-foto="{{ $evento->Foto }}">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                            <a href="#" class="btns" style="background-color: var(--Delete); text-decoration: none;" 
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                data-id="{{ $evento->id }}" data-nombre="{{ $evento->nombre }}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
+                            @endif
+                        @endforeach
+                    @elseif (Auth::user()->role === 'GESTOR') 
+                        @foreach($eventos as $evento)
+                            @if($evento->visible)
+                                <div class="ver-evento">
+                                    <div class="ver-evento-info">
+                                        <p class="card-title">
+                                            <i class="fas fa-microphone-alt"></i> 
+                                            {{ $evento->ArtistaGrupo }}
+                                        </p>
 
-                                <div class="ver-evento-foto-btns">
-                                    <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;"
-                                        data-bs-toggle="modal" data-bs-target="#viewModal"
-                                        data-nombre="{{ $evento->nombre }}"
-                                        data-artista="{{ $evento->ArtistaGrupo }}"
-                                        data-descripcion="{{ $evento->descripcion }}"
-                                        data-local="{{ $evento->local->Nombre }}"
-                                        data-fecha_inicio="{{ $evento->fecha_inicio }}"
-                                        data-fecha_fin="{{ $evento->fecha_fin }}"
-                                        data-fecha_evento="{{ $evento->fecha_evento }}"
-                                        data-aforo="{{ $evento->aforo_evento }}"
-                                        data-estado="{{ $evento->estado }}"
-                                        data-foto="{{ $evento->Foto }}">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </a>
-                                    <a href="#" class="btns" style="background-color: var(--Edit); text-decoration: none;" 
-                                    data-bs-toggle="modal" data-bs-target="#editModal"
-                                        data-id="{{ $evento->id }}"
-                                        data-user_id="{{ $evento->user_id }}"
-                                        data-local_id="{{ $evento->local_id }}"
-                                        data-nombre="{{ $evento->nombre }}"
-                                        data-descripcion="{{ $evento->descripcion }}"
-                                        data-artista="{{ $evento->ArtistaGrupo }}"
-                                        data-fecha_inicio="{{ $evento->fecha_inicio }}"
-                                        data-fecha_fin="{{ $evento->fecha_fin }}"
-                                        data-fecha_evento="{{ $evento->fecha_evento }}"
-                                        data-aforo_evento="{{ $evento->aforo_evento }}"
-                                        data-estado="{{ $evento->estado }}"
-                                        data-foto="{{ $evento->Foto }}">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </a>
-                                    <a href="#" class="btns" style="background-color: var(--Delete); text-decoration: none;" 
-                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                        data-id="{{ $evento->id }}" data-nombre="{{ $evento->nombre }}">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                        <p class="card-title">
+                                            <i class="fas fa-pencil-alt"></i> 
+                                            {{ $evento->nombre }}
+                                        </p>
+
+                                        <p class="card-title">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{ $evento->local_id }} - {{ optional($evento->local)->Nombre }}
+                                        </p>
+
+                                        <p class="card-title">
+                                            <i class="fas fa-users"></i> 
+                                            {{ $evento->aforo_evento }} personas
+                                        </p>
+
+                                        <p class="card-text">
+                                            <span class="info-icon">
+                                                <i class="fas fa-align-left"></i> 
+                                                <span class="descripcion-corta">
+                                                    {{ Str::limit($evento->descripcion, 100, '...') }} <!-- Solo muestra 100 caracteres -->
+                                                </span>
+                                                <span class="descripcion-larga" style="display: none;">
+                                                    {{ $evento->descripcion }} <!-- Texto completo -->
+                                                </span>
+                                                <br>
+                                            </span>
+                                        </p>
+                                    </div>
+
+                                    @php
+                                        $fecha = \Carbon\Carbon::parse($evento->fecha_evento);
+                                    @endphp
+
+                                    <div class="ver-evento-foto" 
+                                        style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.02) 70%), 
+                                        url('{{ $evento->Foto ? asset('storage/' . $evento->Foto) : 'https://placehold.co/600x400' }}');">
+
+                                        <div class="ver-evento-foto-fecha">
+                                            <div style="font-size: 12px; color: var(--Delete)">{{ $fecha->format('M') }}</div>
+                                            <div style="font-size: 25px;">{{ $fecha->day }}</div> 
+                                            <div style="font-size: 10px; color: gray;">{{ $fecha->locale('es')->dayName }}</div>
+                                        </div>       
+
+                                        <div class="ver-evento-foto-datos"
+                                            style="background-color: 
+                                                    {{ $evento->estado == 'ACTIVO' ? 'var(--Add)' : 
+                                                        ($evento->estado == 'FINALIZADO' ? 'white' : 
+                                                        'var(--Delete)') }};
+                                                    color: {{ $evento->estado == 'FINALIZADO' ? 'black' : 'white' }};">
+                                            {{ $evento->estado }}
+                                        </div>
+
+                                        <div class="ver-evento-foto-btns">
+                                            <a href="#" class="btns" style="background-color: var(--color); text-decoration: none;"
+                                                data-bs-toggle="modal" data-bs-target="#viewModal"
+                                                data-nombre="{{ $evento->nombre }}"
+                                                data-artista="{{ $evento->ArtistaGrupo }}"
+                                                data-descripcion="{{ $evento->descripcion }}"
+                                                data-local="{{ $evento->local->Nombre }}"
+                                                data-fecha_inicio="{{ $evento->fecha_inicio }}"
+                                                data-fecha_fin="{{ $evento->fecha_fin }}"
+                                                data-fecha_evento="{{ $evento->fecha_evento }}"
+                                                data-aforo="{{ $evento->aforo_evento }}"
+                                                data-estado="{{ $evento->estado }}"
+                                                data-foto="{{ $evento->Foto }}">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="#" class="btns" style="background-color: var(--Edit); text-decoration: none;" 
+                                            data-bs-toggle="modal" data-bs-target="#editModal"
+                                                data-id="{{ $evento->id }}"
+                                                data-user_id="{{ $evento->user_id }}"
+                                                data-local_id="{{ $evento->local_id }}"
+                                                data-nombre="{{ $evento->nombre }}"
+                                                data-descripcion="{{ $evento->descripcion }}"
+                                                data-artista="{{ $evento->ArtistaGrupo }}"
+                                                data-fecha_inicio="{{ $evento->fecha_inicio }}"
+                                                data-fecha_fin="{{ $evento->fecha_fin }}"
+                                                data-fecha_evento="{{ $evento->fecha_evento }}"
+                                                data-aforo_evento="{{ $evento->aforo_evento }}"
+                                                data-estado="{{ $evento->estado }}"
+                                                data-foto="{{ $evento->Foto }}">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                            <a href="#" class="btns" style="background-color: var(--Delete); text-decoration: none;" 
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                data-id="{{ $evento->id }}" data-nombre="{{ $evento->nombre }}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            @endif
+                        @endforeach
                     @endif
-                    @endforeach
                 @endif
             </div>
         </div>

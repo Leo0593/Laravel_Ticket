@@ -252,8 +252,9 @@ class C_Tickets extends Controller
         return view('layouts.tickets.V_Total_Ticket', compact('user', 'tickets'));
     }
 
-    public function misTickets()
+    public function misTickets(Request $request)
     {
+        /*
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -262,7 +263,31 @@ class C_Tickets extends Controller
             ->with(['evento', 'asiento', 'plan'])
             ->get();
 
-        return view('dashboard', compact('tickets'));  // Usa compact para pasar la variable
+        return view('dashboard', compact('tickets'));  // Usa compact para pasar la variable*/
+    
+        $user = Auth::user();
+
+        // Obtener los tickets del usuario autenticado
+        $tickets = \App\Models\M_Tickets::where('user_id', $user->id)
+        ->with(['evento', 'asiento', 'plan'])
+        ->get();
+
+        // Filtrar según el botón presionado
+        if ($request->has('orderBy')) {
+            if ($request->orderBy == 'tickets') {
+                // Mis Tickets: Eventos que aún no han pasado
+                $tickets = $tickets->filter(function ($ticket) {
+                    return \Carbon\Carbon::parse($ticket->evento->fecha_evento)->isFuture();
+                });
+            } elseif ($request->orderBy == 'historial') {
+                // Historial: Eventos que ya pasaron
+                $tickets = $tickets->filter(function ($ticket) {
+                    return \Carbon\Carbon::parse($ticket->evento->fecha_evento)->isPast();
+                });
+            }
+        }
+
+        return view('dashboard', compact('tickets'));
     }
 
     public function downloadPDF($id)

@@ -144,7 +144,7 @@
 
                     <div style="display: flex; flex-wrap: wrap; justify-content: space-around;"> 
                         @foreach($evento->planes as $index => $plan)   
-                            
+                            @if($plan->visible == 1)
                             <div class="contenedor-plan-info scale">
                                 <div class="plan-img" 
                                     data-img="{{ $plan->Foto ? asset('storage/' . $plan->Foto) : 'https://placehold.co/600x400' }}"
@@ -246,6 +246,7 @@
                                     style="display: none;">
                                 </div>
                             </div> -->
+                            @endif
                         @endforeach
                     </div>
                 </div>

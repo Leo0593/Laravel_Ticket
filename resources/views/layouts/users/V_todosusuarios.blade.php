@@ -15,9 +15,10 @@
                 Agregar
             </button>
 
+            <!--
             <a href="{{ route('tickets.usuarios.tickets') }}" class="btn btn-info scale">
-                <i class="fa-solid fa-ticket"></i> Ver Tickets
-            </a>
+                <i class="fa-solid fa-ticket"></i>
+            </a> -->
 
         </div>
 
@@ -26,6 +27,7 @@
                 <p>{{ __('No hay usuarios') }}</p>
             @else
                 @foreach($users as $user)
+                @if($user->visible)
                     <div class="card scale" style="width: 18rem;box-shadow: 8px 10px 10px var(--colorShadow);">
                         <img class="card-img-top"
                             src="{{ $user->Foto ? asset('storage/' . $user->Foto) : 'https://placehold.co/600x400' }}"
@@ -53,16 +55,20 @@
                                 data-foto="{{ $user->Foto }}" data-id="{{ $user->id }}" data-estado="{{ $user->estado }}">
                                 <i class="fa-solid fa-pen"></i>
                             </a>
-                            <a href="#" class="btn btn-danger scale" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
+
+                            <a href="#" class="btn btn-danger scale" 
+                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                data-id="{{ $user->id }}" data-nombre="{{ $user->name }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
 
                             <a href="{{ route('tickets.usuariostotales.tickets', $user->id) }}" class="btn btn-info scale">
-                                <i class="fa-solid fa-ticket"></i> Ver Tickets
+                                <i class="fa-solid fa-ticket" style="color: white;"></i> 
                             </a>
 
                         </div>
                     </div>
+                    @endif
                 @endforeach
             @endif
         </div>
@@ -347,6 +353,53 @@
             });
         });
     </script>
+
+    <!-- Modal Eliminar -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #dc3545; align-items: center; color: white;">
+                    <h5 class="modal-title" id="deleteModalLabel"><strong>Eliminar</strong></h5>
+                    <i class="fa-solid fa-trash" style="margin-left: 10px"></i>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar: <strong id="deleteLocalName"></strong>?
+                </div>
+
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <form id="deleteForm" method="POST" action="{{ route('users.ocultar', ':id') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para manejar el modal de eliminación -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var deleteModal = document.getElementById('deleteModal');
+
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var link = event.relatedTarget; // El enlace que activó el modal
+                var userId = link.getAttribute('data-id'); // Obtener el ID del local
+                var userName = link.getAttribute('data-nombre'); // Obtener el nombre del local
+
+                console.log(userId, userName);
+
+                // Actualizar el texto dentro del modal
+                document.getElementById('deleteLocalName').textContent = userName;
+
+                // Actualizar la acción del formulario de eliminación
+                var formAction = document.getElementById('deleteForm').action;
+                document.getElementById('deleteForm').action = formAction.replace(':id', userId);
+            });
+        });
+    </script>
+
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
